@@ -24,17 +24,13 @@ import com.google.gwt.user.client.Random;
 
 public class PFMweb implements EntryPoint {
 
-  private VerticalPanel mainPanel = new VerticalPanel();
+  private static VerticalPanel walletPanel = new VerticalPanel();
+  private VerticalPanel makerPanel = new VerticalPanel();
+  private VerticalPanel transPanel = new VerticalPanel();
   
-  //private FlexTable stocksFlexTable = new FlexTable();
+  private HorizontalPanel toolbar = new HorizontalPanel();
   
-  private HorizontalPanel addPanel = new HorizontalPanel();
-  
- 
-  
-  private Button clearStocksButton = new Button("Clear all");
-  private Label lastUpdatedLabel = new Label();
-  private ArrayList<String> stocks = new ArrayList<String>();
+  //private Label lastUpdatedLabel = new Label();
   
   private static final int REFRESH_INTERVAL = 1000; //ms
 
@@ -43,34 +39,21 @@ public class PFMweb implements EntryPoint {
    */
   public void onModuleLoad() {
     
-	  Wallets.walletTable.setText(0, 0, "Name | ");
-	  Wallets.walletTable.setText(0, 1, "Value | ");
-	
+	  Wallets.init(walletPanel);
+	  TransactionMaker.init(makerPanel);
+	  Transactions.init(transPanel);
+	  
+	  RootPanel.get("walletsView").add(walletPanel);
+	  RootPanel.get("makeView").add(makerPanel);
+	  RootPanel.get("transactionsView").add(transPanel);
+	  
+	  TransactionMaker.focus();
+	  
   }
+  
   
 }
   /*
-	// Create table for stock data.
-    stocksFlexTable.setText(0, 0, "Symbol|");
-    stocksFlexTable.setText(0, 1, "Price|");
-    stocksFlexTable.setText(0, 2, "Change|");
-    stocksFlexTable.setText(0, 3, "Remove");
-
-    // Assemble Add Stock panel.
-    addPanel.add(newSymbolTextBox);
-    addPanel.add(addStockButton);
-    addPanel.add(clearStocksButton);
-
-    // Assemble Main panel.
-    mainPanel.add(stocksFlexTable);
-    mainPanel.add(addPanel);
-    mainPanel.add(lastUpdatedLabel);
-
-    // Associate the Main panel with the HTML host page.
-    RootPanel.get("stockList").add(mainPanel);
-
-    // Move cursor focus to the input box.
-    newSymbolTextBox.setFocus(true);
     
     Timer refreshTimer = new Timer(){
     	@Override
