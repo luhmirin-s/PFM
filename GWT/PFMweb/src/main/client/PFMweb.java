@@ -2,14 +2,24 @@ package main.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
+//import com.google.gwt.sample.stockwatcher.client.StockData;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -30,9 +40,12 @@ public class PFMweb implements EntryPoint {
   private VerticalPanel editPanel = new VerticalPanel();
   
   private HorizontalPanel toolbar = new HorizontalPanel();
+  private Timer refreshTimer;
+  private Label errorMsgLabel = new Label();
   
   //private Label lastUpdatedLabel = new Label(); 
-  //private static final int REFRESH_INTERVAL = 1000; //ms
+  private static final int REFRESH_INTERVAL = 1000; //ms
+  private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
 
   /**
    * Entry point method.
@@ -51,8 +64,70 @@ public class PFMweb implements EntryPoint {
 	  
 	  TransactionMaker.focus();
 	  
+	  refreshTimer = new Timer() {
+	        @Override
+	        public void run() {
+	        	refreshDataFromServer();
+	        }
+	      };
+      refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
+	  
   }
-  
+ 
+  	private void refreshDataFromServer(){
+	    String url = JSON_URL;
+
+	    // Append watch list stock symbols to query URL.
+	    /*
+	    Iterator iter; = stocks.iterator();
+	    while (iter.hasNext()) {
+	      url += iter.next();
+	      if (iter.hasNext()) {
+	        url += "+";
+	      }
+	    }
+	    */
+
+	    url = URL.encode(url);
+
+	 // Send request to server and catch any errors.
+	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+
+	    try {
+	      Request request = builder.sendRequest(null, new RequestCallback() {
+	        public void onError(Request request, Throwable exception) {
+	          displayError("Couldn't retrieve JSON");
+	        }
+
+	        public void onResponseReceived(Request request, Response response) {
+	          if (200 == response.getStatusCode()) {
+	            //updateTable(asArrayOfStockData(response.getText()));
+	          } else {
+	            displayError("Couldn't retrieve JSON (" + response.getStatusText()
+	                + ")");
+	          }
+	        }
+	      });
+	    } catch (RequestException e) {
+	      displayError("Couldn't retrieve JSON");
+	    }
+  	}
+    /**
+     * Convert the string of JSON into JavaScript object.
+     */
+    /*
+  	private final native JsArray<StockData> asArrayOfStockData(String json) /*-{
+      return eval(json);
+    }-*/;
+    
+    /**
+     * If can't get JSON, display error message.
+     * @param error
+     */
+    private void displayError(String error) {
+      errorMsgLabel.setText("Error: " + error);
+      errorMsgLabel.setVisible(true);
+    }
   
 }
   /*

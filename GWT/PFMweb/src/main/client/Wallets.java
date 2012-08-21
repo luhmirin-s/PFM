@@ -64,7 +64,7 @@ public class Wallets {
 	public static boolean removeWallet(int walletID){
 		if(walletID!=-1){
 			if(!walletList.isEmpty()) walletList.remove(walletID);
-			//if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
+			if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
 			refreshData();
 			TransactionMaker.refreshData();
 			return true;

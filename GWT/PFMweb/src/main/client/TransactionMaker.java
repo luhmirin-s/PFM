@@ -68,7 +68,7 @@ public class TransactionMaker {
 				
 			}
 		});
-		
+		/*
 		delWalletButton.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -84,7 +84,7 @@ public class TransactionMaker {
 				
 			}
 		});
-		
+		*/
 		panel.add(inputBox);
 		panel.add(buttons);
 		buttons.add(makeButton);
@@ -111,6 +111,7 @@ public class TransactionMaker {
 		walletBox.clear();
 		for(Wallet w:Wallets.getList())
 			walletBox.addItem(w.getName());
+		walletBox.setItemSelected(walletBox.getItemCount()-1, true);
 	}
 	
 	public static void focus(){
