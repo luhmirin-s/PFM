@@ -55,13 +55,16 @@ public class Wallets {
 	}
 	
 	public static void addWallet(String name, int amount){
-		
+		Wallet w = new Wallet(name, amount);
+		walletList.add(w);
+		refreshData();
+		TransactionMaker.refreshData();
 	}
 	
 	public static boolean removeWallet(int walletID){
 		if(walletID!=-1){
 			if(!walletList.isEmpty()) walletList.remove(walletID);
-			if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
+			//if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
 			refreshData();
 			TransactionMaker.refreshData();
 			return true;

@@ -31,9 +31,8 @@ public class PFMweb implements EntryPoint {
   
   private HorizontalPanel toolbar = new HorizontalPanel();
   
-  //private Label lastUpdatedLabel = new Label();
-  
-  private static final int REFRESH_INTERVAL = 1000; //ms
+  //private Label lastUpdatedLabel = new Label(); 
+  //private static final int REFRESH_INTERVAL = 1000; //ms
 
   /**
    * Entry point method.
@@ -66,26 +65,12 @@ public class PFMweb implements EntryPoint {
     };
     refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
     
-    
- // Listen for mouse events on the Add button.
-    addStockButton.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        addStock();
-      }
-    });
-
     // Listen for keyboard events in the input box.
     newSymbolTextBox.addKeyPressHandler(new KeyPressHandler() {
       public void onKeyPress(KeyPressEvent event) {
         if (event.getCharCode() == KeyCodes.KEY_ENTER) {
           addStock();
         }
-      }
-    });
-    
-    clearStocksButton.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        clearStocks();
       }
     });
     

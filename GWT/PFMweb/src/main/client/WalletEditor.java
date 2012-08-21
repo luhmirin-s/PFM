@@ -21,6 +21,7 @@ public class WalletEditor {
 	private static Button delWalletButton = new Button("Remove selected wallet");
 	private static Label lN = new Label("Enter new wallet name");
 	private static Label lA = new Label("Enter new wallet amount");
+	private static Label lE = new Label("ok");
 	private static HorizontalPanel buttons = new HorizontalPanel();
 	 
 	public static TextBox getInputNameBox(){
@@ -39,10 +40,13 @@ public class WalletEditor {
 			public void onClick(ClickEvent event) {				
 				String name = inputNameBox.getText().trim();
 				String amount = inputAmountBox.getText().trim();
-				if(name.matches("^[0-9A-Z\\.]{1,10}") && amount.matches("[0-9]")){
+				if(name.matches("^[0-9A-Za-z\\s]{1,16}$") && amount.matches("[0-9]{1,10}$")){
+					lE.setText("ok");
 					Wallets.addWallet(name, Integer.valueOf(amount));
 					inputNameBox.setText("My Wallet");
 					inputAmountBox.setText("0");
+				} else {
+					lE.setText("Check your input!");
 				}
 				
 			}
@@ -58,7 +62,7 @@ public class WalletEditor {
 				if(TransactionMaker.getWalletBox().getItemCount()<1){
 					delWalletButton.setText("<none>");
 				} else {
-					delWalletButton.setText("<- Remove wallet");
+					delWalletButton.setText("Remove selected wallet");
 				}
 				
 			}
@@ -69,8 +73,8 @@ public class WalletEditor {
 		panel.add(inputAmountBox);
 		panel.add(buttons);
 		buttons.add(addWalletButton);
-		buttons.add(delWalletButton);		
-		
+		buttons.add(lE);
+		panel.add(delWalletButton);		
 		refreshData();
 
 	}
