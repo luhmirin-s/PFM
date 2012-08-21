@@ -20,6 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ExpendActivity"
+            android:label="@string/title_activity_expend" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="main.pfmandroid.MainActivity" />
+        </activity>
+        <activity
+            android:name=".EarnActivity"
+            android:label="@string/title_activity_earn" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="main.pfmandroid.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
