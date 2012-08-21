@@ -30,7 +30,7 @@ public class Transactions {
 	public static void init(VerticalPanel myPanel){
 		
 		panel = myPanel;
-		panel.add(transactionTable);
+		
 		setText(0, 0, "Value ");
 	    setText(0, 1, "Action ");
 	    setText(0, 2, "Wallet ");
@@ -40,5 +40,7 @@ public class Transactions {
 	    setText(1, 2, "Income");
 	    
 	    transactionTable.setBorderWidth(1);
+	    transactionTable.setCellPadding(5);
+	    panel.add(transactionTable);
 	}
 }

@@ -3,12 +3,14 @@ package main.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Wallets {
 
 	private static VerticalPanel panel;
 	private static FlexTable walletTable = new FlexTable();		
+	//private static RadioButton walletSelectors = new RadioButton();
 	private static ArrayList<Wallet> walletList = new ArrayList<Wallet>();
 	
 	public static FlexTable getWalletTable(){
@@ -32,7 +34,7 @@ public class Wallets {
 		setText(0, 1, "Value");		  
 		
 	  	walletTable.setBorderWidth(1);
-	  	walletTable.setCellPadding(2);
+	  	walletTable.setCellPadding(5);
 	  	//set size to 100%!
 	  	
 	  	walletList.add(new Wallet("Main income", 450));
@@ -44,17 +46,34 @@ public class Wallets {
 	}
 	
 	public static void refreshData(){
+		//send to server
+		
 		//get from server
 		
 		fillTable();
 		
 	}
 	
+	public static void addWallet(String name, int amount){
+		
+	}
+	
+	public static boolean removeWallet(int walletID){
+		if(walletID!=-1){
+			if(!walletList.isEmpty()) walletList.remove(walletID);
+			if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
+			refreshData();
+			TransactionMaker.refreshData();
+			return true;
+		}
+		return false; //return false if now empty or none selected
+	}
+	
 	private static void fillTable(){
 		int c=1;
 		walletTable.clear();
 		
-		setText(0, 0, "Name | ");
+		setText(0, 0, "Name ");
 		setText(0, 1, "Value");	
 		
 		for(Wallet w: walletList){

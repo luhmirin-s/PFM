@@ -15,15 +15,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class TransactionMaker {
 
 	private static VerticalPanel panel;
-	private static TextBox inputBox = new TextBox();;
+	private static TextBox inputBox = new TextBox();
 	private static Button makeButton = new Button("Make transaction");
-	private static Button dirButton = new Button("pay");
+	private static Button dirButton = new Button("Pay");
+	private static Button delWalletButton = new Button("<- Remove wallet");
 	//private static MultiWordSuggestOracle wallets = new MultiWordSuggestOracle(); 
 	//private static SuggestBox searchWallet = new SuggestBox();
 	private static ListBox walletBox = new ListBox();
 	private static Label lE = new Label("Enter amount: ");
 	private static Label lS = new Label("Select wallet: ");
 	private static HorizontalPanel buttons = new HorizontalPanel();
+	private static HorizontalPanel walletPanel = new HorizontalPanel();
 	
 	private static boolean pay=true;
 	private static String wallet="<empty>";
@@ -67,14 +69,36 @@ public class TransactionMaker {
 			}
 		});
 		
+		delWalletButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {				
+				
+				Wallets.removeWallet(walletBox.getSelectedIndex());
+						
+				if(walletBox.getItemCount()<1){
+					delWalletButton.setText("<none>");
+				} else {
+					delWalletButton.setText("<- Remove wallet");
+				}
+				
+			}
+		});
+		
 		panel.add(inputBox);
 		panel.add(buttons);
 		buttons.add(makeButton);
 		buttons.add(dirButton);		
 		panel.add(lS);
-		panel.add(walletBox);
+		panel.add(walletPanel);
+		walletPanel.add(walletBox);
+		//walletPanel.add(delWalletButton);
 		refreshData();
 
+	}
+	
+	public static ListBox getWalletBox(){
+		return walletBox;
 	}
 	
 	public static void refreshData(){

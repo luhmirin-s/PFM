@@ -27,6 +27,7 @@ public class PFMweb implements EntryPoint {
   private static VerticalPanel walletPanel = new VerticalPanel();
   private VerticalPanel makerPanel = new VerticalPanel();
   private VerticalPanel transPanel = new VerticalPanel();
+  private VerticalPanel editPanel = new VerticalPanel();
   
   private HorizontalPanel toolbar = new HorizontalPanel();
   
@@ -42,10 +43,12 @@ public class PFMweb implements EntryPoint {
 	  Wallets.init(walletPanel);
 	  TransactionMaker.init(makerPanel);
 	  Transactions.init(transPanel);
+	  WalletEditor.init(editPanel);
 	  
 	  RootPanel.get("walletsView").add(walletPanel);
 	  RootPanel.get("makeView").add(makerPanel);
 	  RootPanel.get("transactionsView").add(transPanel);
+	  RootPanel.get("editView").add(editPanel);
 	  
 	  TransactionMaker.focus();
 	  
