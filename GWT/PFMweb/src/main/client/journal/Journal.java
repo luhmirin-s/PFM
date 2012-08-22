@@ -1,7 +1,9 @@
-package main.client;
+package main.client.journal;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import main.client.Transaction;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.FlexTable;

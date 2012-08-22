@@ -1,4 +1,6 @@
-package main.client;
+package main.client.manager;
+
+import main.client.balance.Balance;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

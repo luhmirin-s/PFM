@@ -1,7 +1,8 @@
-package main.client;
+package main.client.balance;
 
 import java.util.ArrayList;
 
+import main.client.Wallet;
 import main.client.transactions.ExpenseTransactions;
 
 import com.google.gwt.user.client.ui.FlexTable;
