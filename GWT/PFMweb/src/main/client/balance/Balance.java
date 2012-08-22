@@ -6,57 +6,55 @@ import main.client.Wallet;
 import main.client.transactions.ExpenseTransactions;
 
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Balance {
 
-	private static VerticalPanel panel;
-	private static FlexTable walletTable = new FlexTable();		
-	//private static RadioButton walletSelectors = new RadioButton();
-	private static ArrayList<Wallet> walletList = new ArrayList<Wallet>();
+	private static TabPanel balanceTabs = new TabPanel();
+	private static VerticalPanel panel = new VerticalPanel();
+	private static HorizontalPanel totalPanel = new HorizontalPanel();
+	private static FlexTable balanceTable = new FlexTable();
+	private static Label lTotal = new Label("Total:");
+	private static FlexTable totalBalanceTable = new FlexTable();
+	//private static ArrayList<Wallet> walletList = new ArrayList<Wallet>();
 	
-	public static FlexTable getWalletTable(){
-		return walletTable;
-	}
-	
-	public static void setText(int r, int c, String txt){
-		walletTable.setText(r, c, txt);		
-	}
-	
-	public static ArrayList<Wallet> getList(){
-		return walletList;
-	}
-	
-	public static void init(VerticalPanel myPanel){
+	public static TabPanel init(){
 		
+		panel.add(balanceTable);
+		totalPanel.add(lTotal);
+		totalPanel.add(totalBalanceTable);
+		panel.add(totalPanel);
 		
-		panel = myPanel;
+		balanceTable.setText(0, 0, "Name ");
+		balanceTable.setText(0, 1, "Value");	
+		balanceTable.setText(0, 2, "Currency ");
 		
-		setText(0, 0, "Name ");
-		setText(0, 1, "Value");		  
-		
-	  	walletTable.setBorderWidth(1);
-	  	walletTable.setCellPadding(5);
+	  	balanceTable.setBorderWidth(1);
+	  	balanceTable.setCellPadding(5);
 	  	//set size to 100%!
 	  	
-	  	walletList.add(new Wallet("Main income", 450));
-	  	walletList.add(new Wallet("Bank", 1000));
-	  	walletList.add(new Wallet("Gifts", 50));
+	  	balanceTable.setText(1, 0, "Sberbank");
+	  	balanceTable.setText(1, 0, "500");
+	  	balanceTable.setText(1, 0, "USD");
+	  	balanceTable.setText(2, 0, "100");
+	  	balanceTable.setText(2, 0, "RUR");
 	  	
-	  	panel.add(walletTable);
-	  	refreshData();
+	  	balanceTabs.add(panel, "Balance");
+	  	balanceTabs.selectTab(0);
+	  	
+	  	return balanceTabs;
 	}
 	
 	public static void refreshData(){
-		//send to server
-		
+	
 		//get from server
 		
-		fillTable();
-		
 	}
-	
+	/*
 	public static void addWallet(String name, int amount){
 		Wallet w = new Wallet(name, amount);
 		walletList.add(w);
@@ -88,5 +86,5 @@ public class Balance {
 			c++;
 		}
 	}
-	
+	*/
 }

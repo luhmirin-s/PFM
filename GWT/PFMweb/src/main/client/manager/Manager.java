@@ -44,7 +44,7 @@ public class Manager {
 				String amount = inputAmountBox.getText().trim();
 				if(name.matches("^[0-9A-Za-z\\s]{1,16}$") && amount.matches("[0-9]{1,10}$")){
 					lE.setText("ok");
-					Balance.addWallet(name, Integer.valueOf(amount));
+					//Balance.addWallet(name, Integer.valueOf(amount));
 					inputNameBox.setText("My Wallet");
 					inputAmountBox.setText("0");
 				} else {
