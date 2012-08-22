@@ -1,5 +1,7 @@
 package PFM.jaxrs;
 
+import javax.ejb.Stateless;
+import javax.persistence.*;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -8,17 +10,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import model.Employee;
+
 @Path("account")
+@Stateless
 public class Account {
     @SuppressWarnings("unused")
     @Context
     private UriInfo context;
+    
+    @PersistenceContext
+    EntityManager em;
 
     /**
      * Default constructor. 
      */
     public Account() {
-        // TODO Auto-generated constructor stub
+    	
     }
 
     /**
@@ -27,9 +35,15 @@ public class Account {
      */
     @GET
     @Produces("application/json")
-    public String getJson() {
-        // TODO return proper representation object
-        throw new UnsupportedOperationException();
+    public String getJson() {       
+    	//Employee emp = new Employee();
+    	//emp.setFirstName("gennadij");
+    	//emp.setLastName("lokenbah");
+    	//emp.setLevel(2);
+        //em.persist(emp);
+        
+    	Employee emp = em.find(Employee.class, 2);
+        return emp.getFirstName();
     }
 
     /**
