@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import main.client.transactions.Transactions;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -23,9 +25,11 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -34,12 +38,15 @@ import com.google.gwt.user.client.Random;
 
 public class PFMweb implements EntryPoint {
 
-  private static VerticalPanel walletPanel = new VerticalPanel();
-  private VerticalPanel makerPanel = new VerticalPanel();
-  private VerticalPanel transPanel = new VerticalPanel();
-  private VerticalPanel editPanel = new VerticalPanel();
-  
-  private HorizontalPanel toolbar = new HorizontalPanel();
+	
+private static TabPanel mainTabs = new TabPanel();
+/*
+private static VerticalPanel transPanel = new VerticalPanel();
+private static VerticalPanel balancePanel = new VerticalPanel();
+private static VerticalPanel journalPanel = new VerticalPanel();
+private static VerticalPanel managerPanel = new VerticalPanel();
+*/  
+  //private HorizontalPanel toolbar = new HorizontalPanel();
   private Timer refreshTimer;
   private Label errorMsgLabel = new Label();
   
@@ -51,18 +58,27 @@ public class PFMweb implements EntryPoint {
    * Entry point method.
    */
   public void onModuleLoad() {
-    
-	  Wallets.init(walletPanel);
-	  TransactionMaker.init(makerPanel);
-	  Transactions.init(transPanel);
-	  WalletEditor.init(editPanel);
+	  /*
+	  Balance.init(walletPanel);
+	  ExpenseTransactions.init(makerPanel);
+	  Journal.init(transPanel);
+	  Manager.init(editPanel);
+	  */  
+	  mainTabs.add(Transactions.init(), "Transactions");
+	  //mainTabs.add(walletPanel, "Wallets");
+	  //mainTabs.add(transPanel, "Transactions");
+	  //mainTabs.add(editPanel, "Manage");
 	  
+	  
+	  RootPanel.get("mainTabsView").add(mainTabs);
+	  mainTabs.selectTab(0);
+	  /*
 	  RootPanel.get("walletsView").add(walletPanel);
 	  RootPanel.get("makeView").add(makerPanel);
 	  RootPanel.get("transactionsView").add(transPanel);
 	  RootPanel.get("editView").add(editPanel);
-	  
-	  TransactionMaker.focus();
+	  */
+	  //TransactionMaker.focus();
 	  
 	  refreshTimer = new Timer() {
 	        @Override

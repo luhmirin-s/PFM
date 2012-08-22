@@ -7,7 +7,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class Transactions {
+public class Journal {
 	
 	private static VerticalPanel panel;
 	private static FlexTable transactionTable = new FlexTable();

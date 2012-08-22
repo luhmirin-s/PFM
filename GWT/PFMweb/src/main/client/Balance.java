@@ -2,11 +2,13 @@ package main.client;
 
 import java.util.ArrayList;
 
+import main.client.transactions.ExpenseTransactions;
+
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class Wallets {
+public class Balance {
 
 	private static VerticalPanel panel;
 	private static FlexTable walletTable = new FlexTable();		
@@ -58,7 +60,7 @@ public class Wallets {
 		Wallet w = new Wallet(name, amount);
 		walletList.add(w);
 		refreshData();
-		TransactionMaker.refreshData();
+		ExpenseTransactions.refreshData();
 	}
 	
 	public static boolean removeWallet(int walletID){
@@ -66,7 +68,7 @@ public class Wallets {
 			if(!walletList.isEmpty()) walletList.remove(walletID);
 			if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
 			refreshData();
-			TransactionMaker.refreshData();
+			ExpenseTransactions.refreshData();
 			return true;
 		}
 		return false; //return false if now empty or none selected

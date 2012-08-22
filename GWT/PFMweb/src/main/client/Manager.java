@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class WalletEditor {
+public class Manager {
 
 	private static VerticalPanel panel;
 	private static TextBox inputNameBox = new TextBox();
@@ -42,7 +42,7 @@ public class WalletEditor {
 				String amount = inputAmountBox.getText().trim();
 				if(name.matches("^[0-9A-Za-z\\s]{1,16}$") && amount.matches("[0-9]{1,10}$")){
 					lE.setText("ok");
-					Wallets.addWallet(name, Integer.valueOf(amount));
+					Balance.addWallet(name, Integer.valueOf(amount));
 					inputNameBox.setText("My Wallet");
 					inputAmountBox.setText("0");
 				} else {
@@ -57,14 +57,14 @@ public class WalletEditor {
 			@Override
 			public void onClick(ClickEvent event) {				
 				
-				Wallets.removeWallet(TransactionMaker.getWalletBox().getSelectedIndex());
-						
-				if(TransactionMaker.getWalletBox().getItemCount()<1){
+				//Balance.removeWallet(ExpenseTransactions.getWalletBox().getSelectedIndex());
+				/*		
+				if(ExpenseTransactions.getWalletBox().getItemCount()<1){
 					delWalletButton.setText("<none>");
 				} else {
 					delWalletButton.setText("Remove selected wallet");
 				}
-				
+				*/
 			}
 		});
 		panel.add(lN);
