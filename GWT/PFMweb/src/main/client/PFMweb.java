@@ -2,14 +2,24 @@ package main.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
+//import com.google.gwt.sample.stockwatcher.client.StockData;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -24,53 +34,109 @@ import com.google.gwt.user.client.Random;
 
 public class PFMweb implements EntryPoint {
 
-  private VerticalPanel mainPanel = new VerticalPanel();
+  private static VerticalPanel walletPanel = new VerticalPanel();
+  private VerticalPanel makerPanel = new VerticalPanel();
+  private VerticalPanel transPanel = new VerticalPanel();
+  private VerticalPanel editPanel = new VerticalPanel();
   
-  //private FlexTable stocksFlexTable = new FlexTable();
+  private HorizontalPanel toolbar = new HorizontalPanel();
+  private Timer refreshTimer;
+  private Label errorMsgLabel = new Label();
   
-  private HorizontalPanel addPanel = new HorizontalPanel();
-  
- 
-  
-  private Button clearStocksButton = new Button("Clear all");
-  private Label lastUpdatedLabel = new Label();
-  private ArrayList<String> stocks = new ArrayList<String>();
-  
+  //private Label lastUpdatedLabel = new Label(); 
   private static final int REFRESH_INTERVAL = 1000; //ms
+  private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
 
   /**
    * Entry point method.
    */
   public void onModuleLoad() {
     
-	  Wallets.walletTable.setText(0, 0, "Name | ");
-	  Wallets.walletTable.setText(0, 1, "Value | ");
-	
+	  Wallets.init(walletPanel);
+	  TransactionMaker.init(makerPanel);
+	  Transactions.init(transPanel);
+	  WalletEditor.init(editPanel);
+	  
+	  RootPanel.get("walletsView").add(walletPanel);
+	  RootPanel.get("makeView").add(makerPanel);
+	  RootPanel.get("transactionsView").add(transPanel);
+	  RootPanel.get("editView").add(editPanel);
+	  
+	  TransactionMaker.focus();
+	  
+	  refreshTimer = new Timer() {
+	        @Override
+	        public void run() {
+	        	//refreshDataFromServer();
+	        }
+	      };
+      refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
+	  
   }
+ 
+  	private String prepareURL(){
+  		String url = JSON_URL;
+
+	    // Append watch list stock symbols to query URL.
+	    /*
+	    Iterator iter; = stocks.iterator();
+	    while (iter.hasNext()) {
+	      url += iter.next();
+	      if (iter.hasNext()) {
+	        url += "+";
+	      }
+	    }
+	    */
+
+	    url = URL.encode(url);
+		
+  		return url;
+  	}
+  
+  	private void refreshDataFromServer(){
+	    String url = prepareURL();
+
+	 // Send request to server and catch any errors.	    
+	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+
+	    try {
+	      Request request = builder.sendRequest(null, new RequestCallback() {
+	        public void onError(Request request, Throwable exception) {
+	          displayError("Couldn't retrieve JSON");
+	        }
+
+	        public void onResponseReceived(Request request, Response response) {
+	          if (200 == response.getStatusCode()) {
+	            //updateTable(asArrayOfStockData(response.getText()));
+	          } else {
+	            displayError("Couldn't retrieve JSON (" + response.getStatusText()
+	                + ")");
+	          }
+	        }
+	      });
+	    } catch (RequestException e) {
+	      displayError("Couldn't retrieve JSON");
+	    }
+  	}
+    /**
+     * Convert the string of JSON into JavaScript object.
+     */
+    /*
+  	private final native JsArray<StockData> asArrayOfStockData(String json) /*-{
+      return eval(json);
+    }-*/;
+    
+    /**
+     * If can't get JSON, display error message.
+     * @param error
+     */
+    private void displayError(String error) {
+      errorMsgLabel.setText("Error: " + error);
+      errorMsgLabel.setVisible(true);
+    }
   
 }
   /*
-	// Create table for stock data.
-    stocksFlexTable.setText(0, 0, "Symbol|");
-    stocksFlexTable.setText(0, 1, "Price|");
-    stocksFlexTable.setText(0, 2, "Change|");
-    stocksFlexTable.setText(0, 3, "Remove");
-
-    // Assemble Add Stock panel.
-    addPanel.add(newSymbolTextBox);
-    addPanel.add(addStockButton);
-    addPanel.add(clearStocksButton);
-
-    // Assemble Main panel.
-    mainPanel.add(stocksFlexTable);
-    mainPanel.add(addPanel);
-    mainPanel.add(lastUpdatedLabel);
-
-    // Associate the Main panel with the HTML host page.
-    RootPanel.get("stockList").add(mainPanel);
-
-    // Move cursor focus to the input box.
-    newSymbolTextBox.setFocus(true);
     
     Timer refreshTimer = new Timer(){
     	@Override
@@ -80,26 +146,12 @@ public class PFMweb implements EntryPoint {
     };
     refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
     
-    
- // Listen for mouse events on the Add button.
-    addStockButton.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        addStock();
-      }
-    });
-
     // Listen for keyboard events in the input box.
     newSymbolTextBox.addKeyPressHandler(new KeyPressHandler() {
       public void onKeyPress(KeyPressEvent event) {
         if (event.getCharCode() == KeyCodes.KEY_ENTER) {
           addStock();
         }
-      }
-    });
-    
-    clearStocksButton.addClickHandler(new ClickHandler() {
-      public void onClick(ClickEvent event) {
-        clearStocks();
       }
     });
     
