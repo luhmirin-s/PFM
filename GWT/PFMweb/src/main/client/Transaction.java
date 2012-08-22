@@ -2,7 +2,11 @@ package main.client;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import java.util.Date;
-
+/**
+ * 
+ * This class needs to be renewed
+ *
+ */
 public class Transaction {
 	
 	private boolean pay;

@@ -85,6 +85,8 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  */
 	  //TransactionMaker.focus();
 	  
+	  //TestDBData.initData();
+	  
 	  refreshTimer = new Timer() {
 	        @Override
 	        public void run() {
