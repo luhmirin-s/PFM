@@ -32,4 +32,14 @@ public class MainActivity extends Activity {
     	Intent intent = new Intent(this, EarnActivity.class);
     	startActivity(intent);
     }
+    
+    public void transferTransaction(View view){
+    	Intent intent = new Intent(this, TransferActivity.class);
+    	startActivity(intent);
+    }
+    
+    public void balanceShow(View view){
+    	Intent intent = new Intent(this, BalanceActivity.class);
+    	startActivity(intent);
+    }
 }
