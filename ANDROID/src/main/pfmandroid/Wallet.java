@@ -1,24 +1,21 @@
 package main.pfmandroid;
 
+import java.util.ArrayList;
+
 public class Wallet {
 	private String name;
-	private double amount;
+	private ArrayList<Money> type;
 	
 	Wallet(){
 		name = "default";
-		amount = 0;
+		type = new ArrayList<Money>();
 	}
 	
 	Wallet(String name){
 		this.name = name;
-		amount = 0;
+		type = new ArrayList<Money>();
 	}
-	
-	Wallet(String name, double amount){
-		this.name = name;
-		this.amount = amount;
-	}
-	
+		
 	public void setName(String name){
 		this.name = name;
 	}
@@ -27,14 +24,34 @@ public class Wallet {
 		return name;
 	}
 	
-	public void setAmount(double amount){
-		this.amount = amount;
+	public void addMoney(Money mon){
+		type.add(mon);
 	}
 	
-	public double getAmount(){
-		return amount;
+	public void addMoney(String name, double currency){
+		type.add(new Money(name, currency));
 	}
 	
+	public ArrayList<Money> getMoney(){
+		return type;
+	}
+	
+	public void editCurrency(String code, double amount){
+		for(int i=0; i < type.size(); i++){
+			if(code.equals(type.get(i).getCode())){
+				type.get(i).editMoney(amount);
+				return;
+			}
+		}
+	}
+	
+	public Money findCurrency(String code){
+		for(int i=0; i < type.size(); i++){
+			if(code.equals(type.get(i).getCode()))
+				return type.get(i);
+		}
+		return null;
+	}
 	@Override
 	public String toString(){
 		return name;

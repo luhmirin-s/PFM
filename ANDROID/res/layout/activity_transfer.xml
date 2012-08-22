@@ -4,79 +4,79 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textViewEa1"
+        android:id="@+id/textViewTr1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:text="@string/accountlabel"
+        android:text="@string/accountfromlabel"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Spinner
-        android:id="@+id/spinnerEa1"
+        android:id="@+id/spinnerTr1"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:layout_alignLeft="@+id/textViewEa1"
-        android:layout_below="@+id/textViewEa1"
+        android:layout_alignLeft="@+id/textViewTr1"
+        android:layout_below="@+id/textViewTr1"
         android:layout_marginTop="15dp" />
 
     <EditText
-        android:id="@+id/editTextEa2"
+        android:id="@+id/editTextTr2"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinnerEa1"
-        android:layout_below="@+id/spinnerEa1"
+        android:layout_alignLeft="@+id/spinnerTr1"
+        android:layout_below="@+id/spinnerTr1"
         android:layout_marginTop="24dp"
         android:inputType="numberDecimal"
         android:ems="10"
         android:hint="@string/amount" />
 
     <TextView
-        android:id="@+id/textViewEa2"
+        android:id="@+id/textViewTr2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextEa2"
-        android:layout_below="@+id/editTextEa2"
+        android:layout_alignLeft="@+id/editTextTr2"
+        android:layout_below="@+id/editTextTr2"
         android:layout_marginTop="24dp"
-        android:text="@string/sourcelabel"
+        android:text="@string/accounttolabel"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Spinner
-        android:id="@+id/spinnerEa2"
+        android:id="@+id/spinnerTr2"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:layout_alignLeft="@+id/textViewEa2"
-        android:layout_below="@+id/textViewEa2"
+        android:layout_alignLeft="@+id/textViewTr2"
+        android:layout_below="@+id/textViewTr2"
         android:layout_marginTop="20dp" />
 
-    <Button
-        android:id="@+id/buttonEa1"
+   <Button
+        android:id="@+id/buttonTr1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_alignLeft="@+id/spinnerEa2"
-        android:layout_alignRight="@+id/spinnerEa3"
+        android:layout_alignLeft="@+id/spinnerTr2"
+        android:layout_alignRight="@+id/spinnerTr3"
         android:text="@string/confirmbutton" />
     
     <Spinner
-        android:id="@+id/spinnerEa3"
+        android:id="@+id/spinnerTr3"
         android:layout_width="100dp"
         android:layout_height="60dp"
-        android:layout_above="@+id/editTextEa2"
-        android:layout_toRightOf="@+id/spinnerEa1" />
+        android:layout_above="@+id/editTextTr2"
+        android:layout_toRightOf="@+id/spinnerTr1" />
     
     <TextView
-        android:id="@+id/textViewEa3"
+        android:id="@+id/textViewTr3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24dp"
-        android:layout_alignBaseline="@+id/editTextEa2"
-        android:layout_alignBottom="@+id/editTextEa2"
-        android:layout_toRightOf="@+id/editTextEa2"
+        android:layout_alignBaseline="@+id/editTextTr2"
+        android:layout_alignBottom="@+id/editTextTr2"
+        android:layout_toRightOf="@+id/editTextTr2"
         android:text="@string/currentamount" />
 
 </RelativeLayout>
