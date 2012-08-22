@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import main.client.balance.Balance;
 import main.client.journal.Journal;
+import main.client.manager.Manager;
 import main.client.transactions.Transactions;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -69,10 +70,10 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  mainTabs.add(Transactions.init(), "Transactions");
 	  mainTabs.add(Balance.init(), "Balance");
 	  mainTabs.add(Journal.init(), "Journal");
+	  mainTabs.add(Manager.init(), "Manage");
 	  //mainTabs.add(walletPanel, "Wallets");
 	  //mainTabs.add(transPanel, "Transactions");
-	  //mainTabs.add(editPanel, "Manage");
-	  
+	  //mainTabs.add(editPanel, "Manage");	  
 	  
 	  RootPanel.get("mainTabsView").add(mainTabs);
 	  mainTabs.selectTab(0);

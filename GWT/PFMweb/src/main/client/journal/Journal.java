@@ -5,6 +5,8 @@ import java.util.Date;
 
 import main.client.Transaction;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -26,11 +28,10 @@ public class Journal {
 	private static ListBox typeBox = new ListBox();
 	private static Label lTimeFrame = new Label("Timeframe:");
 	private static ListBox timeBox = new ListBox();
-	private static Button showButton = new Button("Show:");
+	private static Button showButton = new Button("Show");
 	
 	private static VerticalPanel transactionPanel = new VerticalPanel();
 	private static FlexTable transactionTable = new FlexTable();
-	private static Button backButton = new Button("Back");
 	
 	//private static ArrayList<Transaction> transList = new ArrayList<Transaction>();
 	
@@ -39,6 +40,7 @@ public class Journal {
 		panel.add(typePanel);
 		panel.add(timeframePanel);
 		panel.add(buttonPanel);
+		panel.add(transactionPanel);
 		
 		typePanel.add(lType);
 		typePanel.add(typeBox);
@@ -47,13 +49,23 @@ public class Journal {
 		buttonPanel.add(showButton);
 		
 		transactionPanel.add(transactionTable);
-		transactionPanel.add(backButton);
 				
 	    transactionTable.setBorderWidth(1);
 	    transactionTable.setCellPadding(5);	
+	    transactionTable.setText(0, 0, "text");
 	    
 		journalTabs.add(panel, "Transaction journal");
 		journalTabs.add(panel, "Transactions:");  
+		
+		showButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {				
+				
+				//refresh data
+				
+			}
+		});
 		
 		journalTabs.selectTab(0);
 	    
