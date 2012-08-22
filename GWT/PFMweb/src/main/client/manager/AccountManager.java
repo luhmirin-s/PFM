@@ -51,6 +51,15 @@ public class AccountManager {
 		tablePanel.add(accTable);
 		tablePanel.add(createNewButton);		
 		
+		newNamePanel.add(lNewName);
+		newNamePanel.add(inputNewName);
+		newButtons.add(newSaveButton);
+		newButtons.add(newCancelButton);
+		newDialogPanel.add(newNamePanel);
+		newDialogPanel.add(newButtons);
+		newDialog.add(newDialogPanel);
+		newDialog.setGlassEnabled(true);
+		
 		initListeners();
 		
 		return tablePanel;
@@ -61,15 +70,9 @@ public class AccountManager {
 		createNewButton.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {								
-				newNamePanel.add(lNewName);
-				newNamePanel.add(inputNewName);
-				newButtons.add(newSaveButton);
-				newButtons.add(newCancelButton);
-				newDialogPanel.add(newNamePanel);
-				newDialogPanel.add(newButtons);
-				newDialog.add(newDialogPanel);
-				newDialog.setGlassEnabled(true);
-				newDialog.center();				
+
+				newDialog.center();	
+				
 			}
 		});
 		
