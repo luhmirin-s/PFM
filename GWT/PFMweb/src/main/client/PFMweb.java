@@ -67,15 +67,15 @@ public class PFMweb implements EntryPoint {
 	  refreshTimer = new Timer() {
 	        @Override
 	        public void run() {
-	        	refreshDataFromServer();
+	        	//refreshDataFromServer();
 	        }
 	      };
       refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
 	  
   }
  
-  	private void refreshDataFromServer(){
-	    String url = JSON_URL;
+  	private String prepareURL(){
+  		String url = JSON_URL;
 
 	    // Append watch list stock symbols to query URL.
 	    /*
@@ -89,8 +89,14 @@ public class PFMweb implements EntryPoint {
 	    */
 
 	    url = URL.encode(url);
+		
+  		return url;
+  	}
+  
+  	private void refreshDataFromServer(){
+	    String url = prepareURL();
 
-	 // Send request to server and catch any errors.
+	 // Send request to server and catch any errors.	    
 	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 
 	    try {
