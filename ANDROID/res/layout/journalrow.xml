@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent">
+   <TextView  
+          android:id="@+id/trWallet"
+          android:paddingRight="3dip"
+          android:paddingLeft="6dip"
+          android:gravity="center"
+          android:layout_width="0px"
+          android:layout_weight="0.40" />
+   <TextView  
+       	  android:id="@+id/trCode"
+       	  android:paddingRight="3dip"
+       	  android:gravity="left"
+          android:layout_width="0px"
+          android:layout_weight="0.10" />
+   <TextView
+          android:id="@+id/trAmount"
+          android:paddingLeft="3dip"
+          android:gravity="left"
+          android:layout_width="0px"
+          android:layout_weight="0.20" />
+   <TextView
+          android:id="@+id/trDate"
+          android:paddingLeft="3dip"
+          android:paddingRight="3dip"
+          android:gravity="left"
+          android:layout_width="0px"
+          android:layout_weight="0.30" />  
+</TableRow>

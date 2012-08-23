@@ -28,8 +28,8 @@ public class WalletListener implements OnItemSelectedListener{
 			
 			CharSequence message = String.valueOf(amount);
 			
-			Log.d("WLposOfWallet", String.valueOf(test.posOfWallet));
-			Log.d("WLposOfCode", String.valueOf(test.posOfCode));
+			//Log.d("WLposOfWallet", String.valueOf(test.posOfWallet));
+			//Log.d("WLposOfCode", String.valueOf(test.posOfCode));
 			
 			changable.setText(message);
 		}
