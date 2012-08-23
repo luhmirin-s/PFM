@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/main_subtitle"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -23,7 +23,7 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_alignRight="@+id/textView1"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/expend" 
         android:onClick="expenditureTransaction" />
 
@@ -34,7 +34,7 @@
         android:layout_alignLeft="@+id/button2"
         android:layout_alignRight="@+id/button2"
         android:layout_below="@+id/button2"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/earn"
         android:onClick="earnTransaction" />
     
@@ -45,7 +45,7 @@
         android:layout_alignLeft="@+id/button3"
         android:layout_alignRight="@+id/button3"
         android:layout_below="@+id/button3"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/transfer"
         android:onClick="transferTransaction" />
     
@@ -56,8 +56,29 @@
         android:layout_alignLeft="@+id/button4"
         android:layout_alignRight="@+id/button4"
         android:layout_below="@+id/button4"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/balanceShow"
         android:onClick="balanceShow" />
-
+    
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button5"
+        android:layout_alignRight="@+id/button5"
+        android:layout_below="@+id/button5"
+        android:layout_marginTop="10dp"
+        android:text="@string/journalShow"
+        android:onClick="journalShow" />
+    
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button6"
+        android:layout_alignRight="@+id/button6"
+        android:layout_below="@+id/button6"
+        android:layout_marginTop="10dp"
+        android:text="Connection Test"
+        android:onClick="connectionTest" />
 </RelativeLayout>

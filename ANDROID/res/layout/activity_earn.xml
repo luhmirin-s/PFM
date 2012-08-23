@@ -17,10 +17,10 @@
     <Spinner
         android:id="@+id/spinnerEa1"
         android:layout_width="180dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_alignLeft="@+id/textViewEa1"
-        android:layout_below="@+id/textViewEa1"
-        android:layout_marginTop="15dp" />
+        android:layout_below="@+id/textViewEa1" />
 
     <EditText
         android:id="@+id/editTextEa2"
@@ -46,10 +46,10 @@
     <Spinner
         android:id="@+id/spinnerEa2"
         android:layout_width="180dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_alignLeft="@+id/textViewEa2"
-        android:layout_below="@+id/textViewEa2"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/textViewEa2" />
 
     <Button
         android:id="@+id/buttonEa1"
@@ -60,19 +60,23 @@
         android:layout_marginBottom="20dp"
         android:layout_alignLeft="@+id/spinnerEa2"
         android:layout_alignRight="@+id/spinnerEa3"
-        android:text="@string/confirmbutton" />
+        android:text="@string/confirmbutton"
+        android:onClick="returnBack" />
     
     <Spinner
         android:id="@+id/spinnerEa3"
         android:layout_width="100dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
         android:layout_above="@+id/editTextEa2"
-        android:layout_toRightOf="@+id/spinnerEa1" />
+        android:layout_toRightOf="@+id/spinnerEa1"
+        android:layout_alignBaseline="@+id/spinnerEa1" />
     
     <TextView
         android:id="@+id/textViewEa3"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="24dp"
         android:layout_alignBaseline="@+id/editTextEa2"
         android:layout_alignBottom="@+id/editTextEa2"

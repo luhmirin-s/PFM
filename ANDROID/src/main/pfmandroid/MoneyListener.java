@@ -24,8 +24,8 @@ public class MoneyListener implements OnItemSelectedListener{
 			
 			CharSequence message = String.valueOf(amount);
 			
-			Log.d("MLposOfWallet", String.valueOf(test.posOfWallet));
-			Log.d("MLposOfCode", String.valueOf(test.posOfCode));
+			//Log.d("MLposOfWallet", String.valueOf(test.posOfWallet));
+			//Log.d("MLposOfCode", String.valueOf(test.posOfCode));
 			
 			changable.setText(message);
 		}

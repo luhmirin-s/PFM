@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,9 +43,9 @@ public class ExpendActivity extends Activity {
         
         Spinner spinner = (Spinner) findViewById(R.id.spinnerEx1);
         // Create an ArrayAdapter using the Wallet array and a default spinner layout
-        ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, android.R.layout.simple_spinner_item, wallets);
+        ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, R.layout.spinneritem, R.id.spinneritem, wallets);
 	    // Specify the layout to use when the list of choices appears
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    // Apply the adapter to the spinner
 	    spinner.setAdapter(adapter);
 	    walletlistener = new WalletListener(changable, poscon);
@@ -52,9 +53,9 @@ public class ExpendActivity extends Activity {
 	    
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerEx2);
         // Create an ArrayAdapter using the String array and a default spinner layout
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, categories);
 	    // Specify the layout to use when the list of choices appears
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    // Apply the adapter to the spinner
 	    spinner2.setAdapter(adapter2);
 	    categorylistener = new CategoryListener();
@@ -62,9 +63,9 @@ public class ExpendActivity extends Activity {
 	    
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerEx3);
         // Create an ArrayAdapter using the String array and a default spinner layout
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, DataStorage.typesOfCurrency);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
 	    // Specify the layout to use when the list of choices appears
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    // Apply the adapter to the spinner
 	    spinner3.setAdapter(adapter3);
 	    moneylistener = new MoneyListener(changable, poscon);
@@ -93,5 +94,9 @@ public class ExpendActivity extends Activity {
     	super.onStop();
     	wallets = null;
     	categories = null;
+    }
+    
+    public void returnBack(View view){
+    	this.finish();
     }
 }

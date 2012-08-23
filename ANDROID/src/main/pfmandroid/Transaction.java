@@ -5,15 +5,31 @@ import java.util.Date;
 
 public class Transaction {
 	
-	private boolean pay;
 	private String wallet;
+	private String code;
 	private double value;
 	private Date date;
 	
-	public Transaction(boolean pay, String wallet, int value){
-		this.pay = pay;
+	public Transaction(String wallet, String code, double value){
 		this.wallet = wallet;
+		this.code = code;
 		this.value = value;
-		date = Calendar.getInstance().getTime();
+		date = new Date();
+	}
+	
+	public String getName(){
+		return wallet;
+	}
+	
+	public String getCode(){
+		return code;
+	}
+	
+	public double getAmount(){
+		return value;
+	}
+	
+	public Date getDate(){
+		return date;
 	}
 }

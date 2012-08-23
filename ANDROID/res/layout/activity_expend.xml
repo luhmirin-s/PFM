@@ -17,10 +17,10 @@
     <Spinner
         android:id="@+id/spinnerEx1"
         android:layout_width="180dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_alignLeft="@+id/textViewEx1"
-        android:layout_below="@+id/textViewEx1"
-        android:layout_marginTop="15dp" />
+        android:layout_below="@+id/textViewEx1" />
 
     <EditText
         android:id="@+id/editTextEx2"
@@ -46,10 +46,10 @@
     <Spinner
         android:id="@+id/spinnerEx2"
         android:layout_width="180dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_alignLeft="@+id/textViewEx2"
-        android:layout_below="@+id/textViewEx2"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/textViewEx2" />
 
     <Button
         android:id="@+id/buttonEx1"
@@ -60,19 +60,23 @@
         android:layout_marginBottom="20dp"
         android:layout_alignLeft="@+id/spinnerEx2"
         android:layout_alignRight="@+id/spinnerEx3"
-        android:text="@string/confirmbutton" />
+        android:text="@string/confirmbutton"
+        android:onClick="returnBack" />
 
     <Spinner
         android:id="@+id/spinnerEx3"
         android:layout_width="100dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
         android:layout_above="@+id/editTextEx2"
-        android:layout_toRightOf="@+id/spinnerEx1" />
+        android:layout_toRightOf="@+id/spinnerEx1"
+        android:layout_alignBaseline="@+id/spinnerEx1" />
 
     <TextView
         android:id="@+id/textViewEx3"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="24dp"
         android:layout_alignBaseline="@+id/editTextEx2"
         android:layout_alignBottom="@+id/editTextEx2"

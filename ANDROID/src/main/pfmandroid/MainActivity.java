@@ -42,4 +42,14 @@ public class MainActivity extends Activity {
     	Intent intent = new Intent(this, BalanceActivity.class);
     	startActivity(intent);
     }
+    
+    public void journalShow(View view){
+    	Intent intent = new Intent(this, JournalActivity.class);
+    	startActivity(intent);
+    }
+    
+    public void connectionTest(View view){
+    	Intent intent = new Intent(this, ConnectionTest.class);
+    	startActivity(intent);
+    }
 }
