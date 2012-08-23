@@ -4,15 +4,20 @@ import main.client.Account;
 import main.client.PFMweb;
 import main.client.TestDBData;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -25,6 +30,8 @@ import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.Resource;
 */
+
+																	//toDo: get url from txt/html; rb.setHeader("Content-Type", "application/json");
 
 public class AccountManager {
 	
@@ -242,18 +249,20 @@ public class AccountManager {
 	
 	public static void refreshData(){
 		lUpdating.setText(("Updating data from server..."));
-		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, URL.encode(PFMweb.dataURL));
-				//"http://10.0.1.59:8080/PFMWebService/jaxrs/source"));
-				//"http://google.ru"));
-		//rb.setHeader("_____", "none");
-        //rb.setHeader("_______", "_________");
-		rb.setHeader("Accept", "application/json");
+		final String url=URL.encode(//URL.encode(PFMweb.dataURL));
+				GWT.getModuleBaseURL()+"test?q=ABC+DEF");
+				//"http://10.0.1.59:8080/PFMWebService/jaxrs/source");
+				//"http://google.ru");
+				
+		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, url);				
+		rb.setHeader("Content-Type", "application/json");
 		 //RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, "http://www.lenta.ru");
 		 //rb.setTimeoutMillis(3000);
 	    rb.setCallback(new RequestCallback(){
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
+				lUpdating.setText("Connecting to "+url+"...");
 				if (200 == response.getStatusCode()) {
 					Window.alert("Received message: \n "+response.getText());
 		          } else {
@@ -296,6 +305,69 @@ public class AccountManager {
 		*/
 		
 		lUpdating.setText("Data updated successfully");
+	}	
+		/*
+		JavaScriptObject json;
+	    //JavaScriptObject executeQuery(String query) {
+	        	        
+	        try {
+	            @SuppressWarnings("unused")
+	            Request request = builder.sendRequest(null, new RequestCallback() {
+	                public void onError(Request request, Throwable exception) {
+	                    // violation, etc.)
+	                }
+
+	                public void onResponseReceived(Request request,
+	                        Response response) {
+	                    if (200 == response.getStatusCode()) {
+	                        // Process the response in response.getText()
+	                        json =parseJson(response.getText());
+	                    } else {
+
+	                    }
+	                }
+	            });
+	        } catch (RequestException e) {
+	            // Couldn't connect to server
+	        }
+	        return json;
+	    //}
+
+	    public static native JavaScriptObject parseJson(String jsonStr) /*-{
+	        return eval(jsonStr );
+	        ;
+	    }-*/;
+	    
+	    
+    public void executeQuery(String query, final AsyncCallback<JavaScriptObject> callback){
+	
+    	//String url = "http://api.domain.com?client_id=xxxx&query=";
+    	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
+	                URL.encode(PFMweb.dataURL + query));
+    	
+    	try{
+    		builder.sendRequest(null, new RequestCallback() {
+    			public void onError(Request request, Throwable caught) {
+    				callback.onFailure(caught);
+    			}
+		
+    			public void onResponseReceived(Request request, Response response) {
+    				if(Response.SC_OK == response.getStatusCode()) {
+						 try {
+						   callback.onSuccess(JsonUtils.safeEval(response.getText()));
+						 } catch (IllegalArgumentException iax) {
+						   callback.onFailure(iax);
+						 }
+					} else {
+						// Better to use a typed exception here to indicate the specific
+						// cause of the failure.
+						callback.onFailure(new Exception("Bad return code."));
+					}
+    			}
+    		});
+    	} catch (RequestException e) {
+    		callback.onFailure(e);
+    	}
 	}	
 	
 	public static void uploadData(){
