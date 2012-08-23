@@ -56,6 +56,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   //private Label lastUpdatedLabel = new Label(); 
   private static final int REFRESH_INTERVAL = 1000; //ms
   private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
+  public static final String dataURL = "http://10.0.1.59:8080/PFMWebService/jaxrs/source";
 
   /**
    * Entry point method.
