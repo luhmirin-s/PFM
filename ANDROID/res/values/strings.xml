@@ -26,5 +26,6 @@
     <string name="title_activity_journal">Transaction Journal</string>
     <string name="title_activity_connection">ConnectionActivity</string>
     <string name="title_activity_connection_test">ConnectionTest</string>
+    <string name="title_activity_login">Login Prompt</string>
 
 </resources>

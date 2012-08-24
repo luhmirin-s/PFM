@@ -67,6 +67,10 @@ public class BalanceActivity extends Activity {
                 
                 balanceTable.addView(tr);
 	        }
+        	LayoutInflater inflater = getLayoutInflater();
+        	
+            TableRow tr = (TableRow)inflater.inflate(R.layout.balancerow, balanceTable, false);
+            balanceTable.addView(tr);
         }
     }
     
