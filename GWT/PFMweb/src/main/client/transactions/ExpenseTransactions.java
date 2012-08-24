@@ -66,5 +66,9 @@ public class ExpenseTransactions {
 	public static void refreshData(){
 		//get from server
 	}
-	 
+
+	public static void focus(){
+		amountInput.setFocus(true);
+	}
+	
 }

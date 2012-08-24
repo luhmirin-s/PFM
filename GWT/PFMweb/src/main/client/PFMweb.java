@@ -7,11 +7,14 @@ import java.util.Iterator;
 import main.client.balance.Balance;
 import main.client.journal.Journal;
 import main.client.manager.Manager;
+import main.client.transactions.ExpenseTransactions;
 import main.client.transactions.Transactions;
+import main.client.users.LoginForm;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.dom.client.Style.Display;
 //import com.google.gwt.sample.stockwatcher.client.StockData;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -34,6 +37,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -62,32 +66,24 @@ private static VerticalPanel managerPanel = new VerticalPanel();
    * Entry point method.
    */
   public void onModuleLoad() {
-	  /*
-	  Balance.init(walletPanel);
-	  ExpenseTransactions.init(makerPanel);
-	  Journal.init(transPanel);
-	  Manager.init(editPanel);
-	  */
 	  
 	  mainTabs.getTabBar().getElement().setId("tabBarId");
 	  //mainTabs.getDeckPanel().getElement().setId("mainTabsId");
+	  //mainTabs.add(LoginForm.init(), "Login");
 	  mainTabs.add(Transactions.init(), "Transactions");
 	  mainTabs.add(Balance.init(), "Balance");
 	  mainTabs.add(Journal.init(), "Journal");
-	  mainTabs.add(Manager.init(), "Manage");
-	  mainTabs.setSize("100%", "100%");
-	  //mainTabs.add(walletPanel, "Wallets");
-	  //mainTabs.add(transPanel, "Transactions");
-	  //mainTabs.add(editPanel, "Manage");	  
+	  mainTabs.add(Manager.init(), "Manage");	  
+	  mainTabs.setSize("100%", "100%");  
+	  
+	  RootPanel.get("loginView").add(LoginForm.init());
+	  RootPanel.get("sysPanelView").add(SystemPanel.init());
 	  RootPanel.get("mainTabsView").add(mainTabs);
 	  mainTabs.selectTab(0);
-	  /*
-	  RootPanel.get("walletsView").add(walletPanel);
-	  RootPanel.get("makeView").add(makerPanel);
-	  RootPanel.get("transactionsView").add(transPanel);
-	  RootPanel.get("editView").add(editPanel);
-	  */
-	  //TransactionMaker.focus();
+	  ExpenseTransactions.focus();
+	  
+	  toggleView("loadingView", false);
+	  toggleView("loginView", true);
 	  
 	  //TestDBData.initData();
 	  
@@ -100,7 +96,16 @@ private static VerticalPanel managerPanel = new VerticalPanel();
       refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
 	  
   }
+  
+  public static void toggleView(String viewId, boolean enable){
+	  if(enable)
+		  DOM.getElementById(viewId).getStyle().setDisplay(Display.BLOCK);
+	  else
+		  DOM.getElementById(viewId).getStyle().setDisplay(Display.NONE);
+  }
  
+  	/* 					U N U S E D:					*/
+  
   	private String prepareURL(){
   		String url = JSON_URL;
 

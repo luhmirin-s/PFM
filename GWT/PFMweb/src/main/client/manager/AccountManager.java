@@ -1,8 +1,8 @@
 package main.client.manager;
 
-import main.client.Account;
 import main.client.PFMweb;
 import main.client.TestDBData;
+import main.client.data.Account;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -74,6 +74,7 @@ public class AccountManager {
 	private static Label lUpdating = new Label("Updating data from server...");
 	private static HorizontalPanel updatingPanel = new HorizontalPanel();
 	
+	/*					For testing purposes									*/
 	private static Button refreshButton = new Button("Refresh");
 	private static Button setHostButton = new Button("Set server host");
 	private static TextBox inputServer = new TextBox();
@@ -138,20 +139,15 @@ public class AccountManager {
 		refreshButton.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {				
-				//if(inputServer.getText().matches("^[0-9A-Za-z\\s]{1,16}$")){
 					refreshButton.setText("Refresh");
-					refreshData(inputServer.getText());
-				//}
-				//refreshButton.setText("<- Check input!");
-				
+					refreshData(inputServer.getText());				
 			}
 		});	
 		
 		setHostButton.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {				
-					inputServer.setText(GWT.getModuleBaseURL());
-				
+					inputServer.setText(GWT.getModuleBaseURL());			
 			}
 		});
 		
@@ -243,39 +239,13 @@ public class AccountManager {
 		return b;
 	}
 	
-	/**
-	 * Creates an Account from table data, starting with the given row (one Account per call)
-	 * Table headers are name|value|currency
-	 * @param row - what row to start from
-	 * @return Returns a newly created account
-	 */
-	public static Account convertToAccount(int row){
-		
-		int size=row;
-		while(accTable.getText(size, 0)!="") size++;
-		int[] values = new int[size];
-		String[] currencies = new String[size];
-		for(int i=0; i<size; i++){
-			values[i]=Integer.valueOf(accTable.getText(row+i, 1));
-			currencies[i]=accTable.getText(row+i, 2);
-		}
-		
-		Account acc = new Account(TestDBData.retrieveData().size(), accTable.getText(row, 0), values, currencies);
-		
-		return acc;
-	}
-	
 	public static void refreshData(final String url){
 		lUpdating.setText(("Updating data from server..."));
-		//final String url=URL.encode(//URL.encode(PFMweb.dataURL));
 				//GWT.getModuleBaseURL()+"test?q=ABC+DEF");
 				//"http://10.0.1.59:8080/PFMWebService/jaxrs/source");
-				//"http://google.ru");
 				
 		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, url);				
 		rb.setHeader("Content-Type", "application/json");
-		 //RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, "http://www.lenta.ru");
-		 //rb.setTimeoutMillis(3000);
 	    rb.setCallback(new RequestCallback(){
 			
 			@Override
@@ -286,11 +256,7 @@ public class AccountManager {
 		          } else {
 		            Window.alert("Couldn't retrieve message: (" + response.getStatusText()
 		                + ") code "+response.getStatusCode());
-		          }
-				
-				
-				//accTable.setText(accTable.getRowCount(), 1, response.getText());
-				//accTable.setText(accTable.getRowCount()-1, 0, "test: ");
+		          }			
 			}
 			
 			@Override
@@ -305,61 +271,12 @@ public class AccountManager {
 		} catch (com.google.gwt.http.client.RequestException e) {
 			Window.alert(e.toString());
 		}
-				                          //new DateCallbackHandler());
-
-		
-		/*
-		Resource resource = new Resource("http://10.0.1.59:8080/PFMWebService/jaxrs/source");
-
-		resource.get().send(new JsonCallback() {
-		    public void onSuccess(Method method, JSONValue response) {		    	
-		    	Window.alert(response.toString()+" "+method.getResponse().getText());
-		    	System.out.println(response);
-		    }
-		    public void onFailure(Method method, Throwable exception) {
-		        Window.alert("Error: "+exception);
-		    }
-		});
-		*/
 		
 		lUpdating.setText("Data updated successfully");
-	}	
-		/*
-		JavaScriptObject json;
-	    //JavaScriptObject executeQuery(String query) {
-	        	        
-	        try {
-	            @SuppressWarnings("unused")
-	            Request request = builder.sendRequest(null, new RequestCallback() {
-	                public void onError(Request request, Throwable exception) {
-	                    // violation, etc.)
-	                }
-
-	                public void onResponseReceived(Request request,
-	                        Response response) {
-	                    if (200 == response.getStatusCode()) {
-	                        // Process the response in response.getText()
-	                        json =parseJson(response.getText());
-	                    } else {
-
-	                    }
-	                }
-	            });
-	        } catch (RequestException e) {
-	            // Couldn't connect to server
-	        }
-	        return json;
-	    //}
-
-	    public static native JavaScriptObject parseJson(String jsonStr) /*-{
-	        return eval(jsonStr );
-	        ;
-	    }-*/;
-	    
+	}		    
 	    
     public void executeQuery(String query, final AsyncCallback<JavaScriptObject> callback){
-	
-    	//String url = "http://api.domain.com?client_id=xxxx&query=";
+
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
 	                URL.encode(PFMweb.dataURL + query));
     	

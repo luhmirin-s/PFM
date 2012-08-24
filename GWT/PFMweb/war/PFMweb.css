@@ -13,18 +13,13 @@ body{
 	background: #fff;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
-}
-
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
   width: 400px;
 }
 
 .gwt-Button {
-	color: #777;	
+	color: #333;
 }
 
 .gwt-Button:active {
@@ -33,18 +28,21 @@ body{
 }
 .gwt-Button:hover {
   border: 1px outset #444;
-  color: #111;
+  background: #55BBFC;
+  color: #FFF;
 }
 
 .gwt-TabBar {
   background: #fcfcfc;
-  padding-top: 6px;
+  padding-top: 16px;
   border-color: #d0d0d0;
   border-style: solid;
   border-width: 0px 0px 0px;
 }
 
 .gwt-TabBar .gwt-TabBarItem {
+  font-size: 150%;
+  font-weight: bold; 
   background: #f0f0f0;
   color: #555;
 }
@@ -60,7 +58,7 @@ body{
   border-color: #3399CB;
   border-style: solid;
   border-width: 2px 2px 2px 2px;
-}
+}	
 
 .gwt-TabPanelBottom-mainTabsId{
   border-color: #3399CB;
@@ -77,8 +75,24 @@ body{
   margin: 5px;
 }
 
-.serverResponseLabelError {
-  color: red;
+.gwt-DisclosurePanel {
+}
+.gwt-DisclosurePanel-open {
+}
+.gwt-DisclosurePanel-closed {
+}
+.gwt-DisclosurePanel .header,
+.gwt-DisclosurePanel .header a,
+.gwt-DisclosurePanel .header td {
+  text-decoration: none;  /* Remove underline from header */
+  color: black; 
+  cursor: pointer;
+  cursor: hand;
+}
+.gwt-DisclosurePanel .content {
+  border-left: 3px solid #e7e7e7;
+  padding: 4px 0px 4px 8px;
+  margin-left: 6px;
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */
