@@ -75,6 +75,8 @@ public class AccountManager {
 	private static HorizontalPanel updatingPanel = new HorizontalPanel();
 	
 	private static Button refreshButton = new Button("Refresh");
+	private static Button setHostButton = new Button("Set server host");
+	private static TextBox inputServer = new TextBox();
 	
 	public static VerticalPanel init(){
 		
@@ -83,7 +85,10 @@ public class AccountManager {
 		updatingPanel.add(lUpdating);
 		updatingPanel.setVisible(true);
 		lUpdating.setText(("Ready to update!"));
-		updatingPanel.add(refreshButton);
+		updatingPanel.add(inputServer);
+		inputServer.setText(GWT.getModuleBaseURL()+"test?q=ABC+DEF");
+		updatingPanel.add(refreshButton);	
+		updatingPanel.add(setHostButton);
 		tablePanel.add(updatingPanel);
 			
 		newNamePanel.add(lNewName);
@@ -133,7 +138,20 @@ public class AccountManager {
 		refreshButton.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {				
-				refreshData();
+				//if(inputServer.getText().matches("^[0-9A-Za-z\\s]{1,16}$")){
+					refreshButton.setText("Refresh");
+					refreshData(inputServer.getText());
+				//}
+				//refreshButton.setText("<- Check input!");
+				
+			}
+		});	
+		
+		setHostButton.addClickHandler(new ClickHandler() {			
+			@Override
+			public void onClick(ClickEvent event) {				
+					inputServer.setText(GWT.getModuleBaseURL());
+				
 			}
 		});
 		
@@ -247,10 +265,10 @@ public class AccountManager {
 		return acc;
 	}
 	
-	public static void refreshData(){
+	public static void refreshData(final String url){
 		lUpdating.setText(("Updating data from server..."));
-		final String url=URL.encode(//URL.encode(PFMweb.dataURL));
-				GWT.getModuleBaseURL()+"test?q=ABC+DEF");
+		//final String url=URL.encode(//URL.encode(PFMweb.dataURL));
+				//GWT.getModuleBaseURL()+"test?q=ABC+DEF");
 				//"http://10.0.1.59:8080/PFMWebService/jaxrs/source");
 				//"http://google.ru");
 				

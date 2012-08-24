@@ -67,15 +67,18 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  ExpenseTransactions.init(makerPanel);
 	  Journal.init(transPanel);
 	  Manager.init(editPanel);
-	  */  
+	  */
+	  
+	  mainTabs.getTabBar().getElement().setId("tabBarId");
+	  //mainTabs.getDeckPanel().getElement().setId("mainTabsId");
 	  mainTabs.add(Transactions.init(), "Transactions");
 	  mainTabs.add(Balance.init(), "Balance");
 	  mainTabs.add(Journal.init(), "Journal");
 	  mainTabs.add(Manager.init(), "Manage");
+	  mainTabs.setSize("100%", "100%");
 	  //mainTabs.add(walletPanel, "Wallets");
 	  //mainTabs.add(transPanel, "Transactions");
 	  //mainTabs.add(editPanel, "Manage");	  
-	  
 	  RootPanel.get("mainTabsView").add(mainTabs);
 	  mainTabs.selectTab(0);
 	  /*

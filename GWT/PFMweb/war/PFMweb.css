@@ -1,6 +1,5 @@
 /** Add css rules here for your application. */
 
-
 /** Example rules used by the template application (remove for your app) */
 h1 {
   font-size: 2em;
@@ -8,6 +7,10 @@ h1 {
   color: #777777;
   margin: 40px 0px 70px;
   text-align: center;
+}
+
+body{
+	background: #fff;
 }
 
 .sendButton {
@@ -20,6 +23,56 @@ h1 {
   width: 400px;
 }
 
+.gwt-Button {
+	color: #777;	
+}
+
+.gwt-Button:active {
+  border: 1px inset #000;
+  color: #111;
+}
+.gwt-Button:hover {
+  border: 1px outset #444;
+  color: #111;
+}
+
+.gwt-TabBar {
+  background: #fcfcfc;
+  padding-top: 6px;
+  border-color: #d0d0d0;
+  border-style: solid;
+  border-width: 0px 0px 0px;
+}
+
+.gwt-TabBar .gwt-TabBarItem {
+  background: #f0f0f0;
+  color: #555;
+}
+.gwt-TabBar .gwt-TabBarItem-selected {
+  background: #3399CB;
+  color: #FFF;
+} 
+.gwt-TabBar .gwt-TabBarItem-disabled {
+  color: #999999;
+}
+
+.gwt-TabPanelBottom {
+  border-color: #3399CB;
+  border-style: solid;
+  border-width: 2px 2px 2px 2px;
+}
+
+.gwt-TabPanelBottom-mainTabsId{
+  border-color: #3399CB;
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+}
+
+
+.gwt-TabPanel {
+ background: #fcfcfc;
+}
+
 .dialogVPanel {
   margin: 5px;
 }
@@ -29,6 +82,10 @@ h1 {
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+#tabBarId {
+  background: #ffffff;
+  padding-top: 6px;
+  border-color: #d0d0d0;
+  border-style: solid;
+  border-width: 0px 0px 0px;
 }
