@@ -60,7 +60,14 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `pfmdb`.`Category` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `userId` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Category_User1` (`userId` ASC) ,
+  CONSTRAINT `fk_Category_User1`
+    FOREIGN KEY (`userId` )
+    REFERENCES `pfmdb`.`User` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -95,7 +102,14 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `pfmdb`.`Source` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `userId` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_Source_User1` (`userId` ASC) ,
+  CONSTRAINT `fk_Source_User1`
+    FOREIGN KEY (`userId` )
+    REFERENCES `pfmdb`.`User` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
