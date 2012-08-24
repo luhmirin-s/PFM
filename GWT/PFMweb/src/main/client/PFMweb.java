@@ -56,6 +56,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   //private Label lastUpdatedLabel = new Label(); 
   private static final int REFRESH_INTERVAL = 1000; //ms
   private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
+  public static final String dataURL = "http://10.0.1.59:8080/PFMWebService/jaxrs/source";
 
   /**
    * Entry point method.
@@ -66,15 +67,18 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  ExpenseTransactions.init(makerPanel);
 	  Journal.init(transPanel);
 	  Manager.init(editPanel);
-	  */  
+	  */
+	  
+	  mainTabs.getTabBar().getElement().setId("tabBarId");
+	  //mainTabs.getDeckPanel().getElement().setId("mainTabsId");
 	  mainTabs.add(Transactions.init(), "Transactions");
 	  mainTabs.add(Balance.init(), "Balance");
 	  mainTabs.add(Journal.init(), "Journal");
 	  mainTabs.add(Manager.init(), "Manage");
+	  mainTabs.setSize("100%", "100%");
 	  //mainTabs.add(walletPanel, "Wallets");
 	  //mainTabs.add(transPanel, "Transactions");
 	  //mainTabs.add(editPanel, "Manage");	  
-	  
 	  RootPanel.get("mainTabsView").add(mainTabs);
 	  mainTabs.selectTab(0);
 	  /*

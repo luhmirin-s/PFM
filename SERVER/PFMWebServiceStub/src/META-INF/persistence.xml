@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="PFMWebServiceStub" transaction-type="JTA">
+		<jta-data-source>jdbc/mysql</jta-data-source>
+<!-- 		<class>Account</class> -->
+<!-- 		<class>pfm.model.Category</class> -->
+<!-- 		<class>pfm.model.Expense</class> -->
+<!-- 		<class>pfm.model.Income</class> -->
+<!-- 		<class>pfm.model.Moneyaccount</class> -->
+<!-- 		<class>pfm.model.Source</class> -->
+<!-- 		<class>pfm.model.Transfer</class> -->
+<!-- 		<class>pfm.model.User</class> -->
+		
+<!-- 		<properties> -->
+<!-- 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/> -->
+<!-- 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pfmdb"/> -->
+<!-- 			<property name="javax.persistence.jdbc.user" value="root"/> -->
+<!-- 			<property name="javax.persistence.jdbc.password" value="abcd1234"/> -->
+<!--     	</properties> -->
+	</persistence-unit>
+</persistence>

@@ -38,13 +38,15 @@ public class Balance {
 	  	//set size to 100%!
 	  	
 	  	balanceTable.setText(1, 0, "Sberbank");
-	  	balanceTable.setText(1, 0, "500");
-	  	balanceTable.setText(1, 0, "USD");
-	  	balanceTable.setText(2, 0, "100");
-	  	balanceTable.setText(2, 0, "RUR");
+	  	balanceTable.setText(1, 1, "500");
+	  	balanceTable.setText(1, 2, "USD");
+	  	balanceTable.setText(2, 1, "100");
+	  	balanceTable.setText(2, 2, "RUR");
 	  	
 	  	balanceTabs.add(panel, "Balance");
 	  	balanceTabs.selectTab(0);
+	  	
+	  	refreshData();
 	  	
 	  	return balanceTabs;
 	}
@@ -52,6 +54,17 @@ public class Balance {
 	public static void refreshData(){
 	
 		//get from server
+		calcTotal();
+	}
+	
+	public static void calcTotal(){
+		int total=0, row=1;
+		while(row<balanceTable.getRowCount()){
+			if(balanceTable.getText(row, 1).matches("^[0-9]+$"))
+				total+=Integer.valueOf(balanceTable.getText(row, 1));
+			row++;
+		}
+		totalBalanceTable.setText(0, 0, String.valueOf(total));
 		
 	}
 	/*
