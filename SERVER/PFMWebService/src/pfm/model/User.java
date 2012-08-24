@@ -13,15 +13,16 @@ import java.util.List;
  */
 @Entity
 @XmlRootElement
+@Table(name="User", schema="pfmdb")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String email;
 	private String password;
 	private String username;
-	private List<Account> accounts;
-	private List<Category> categories;
-	private List<Source> sources;
+//	private List<Account> accounts;
+//	private List<Category> categories;
+//	private List<Source> sources;
 
 	public User() {
 	}
@@ -65,36 +66,36 @@ public class User implements Serializable {
 	}
 
 
-	//bi-directional many-to-one association to Account
-	@OneToMany(mappedBy="user")
-	public List<Account> getAccounts() {
-		return this.accounts;
-	}
-
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
-	}
-
-
-	//bi-directional many-to-one association to Category
-	@OneToMany(mappedBy="user")
-	public List<Category> getCategories() {
-		return this.categories;
-	}
-
-	public void setCategories(List<Category> categories) {
-		this.categories = categories;
-	}
-
-
-	//bi-directional many-to-one association to Source
-	@OneToMany(mappedBy="user")
-	public List<Source> getSources() {
-		return this.sources;
-	}
-
-	public void setSources(List<Source> sources) {
-		this.sources = sources;
-	}
+//	//bi-directional many-to-one association to Account
+//	@OneToMany(mappedBy="user")
+//	public List<Account> getAccounts() {
+//		return this.accounts;
+//	}
+//
+//	public void setAccounts(List<Account> accounts) {
+//		this.accounts = accounts;
+//	}
+//
+//
+//	//bi-directional many-to-one association to Category
+//	@OneToMany(mappedBy="user")
+//	public List<Category> getCategories() {
+//		return this.categories;
+//	}
+//
+//	public void setCategories(List<Category> categories) {
+//		this.categories = categories;
+//	}
+//
+//
+//	//bi-directional many-to-one association to Source
+//	@OneToMany(mappedBy="user")
+//	public List<Source> getSources() {
+//		return this.sources;
+//	}
+//
+//	public void setSources(List<Source> sources) {
+//		this.sources = sources;
+//	}
 
 }

@@ -13,11 +13,12 @@ import java.util.List;
  */
 @Entity
 @XmlRootElement
+@Table(name="Source", schema="pfmdb")
 public class Source implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
-	private List<Income> incomes;
+//	private List<Income> incomes;
 	private User user;
 
 	public Source() {
@@ -44,20 +45,20 @@ public class Source implements Serializable {
 	}
 
 
-	//bi-directional many-to-one association to Income
-	@OneToMany(mappedBy="source")
-	public List<Income> getIncomes() {
-		return this.incomes;
-	}
-
-	public void setIncomes(List<Income> incomes) {
-		this.incomes = incomes;
-	}
+//	//bi-directional many-to-one association to Income
+//	@OneToMany(mappedBy="source")
+//	public List<Income> getIncomes() {
+//		return this.incomes;
+//	}
+//
+//	public void setIncomes(List<Income> incomes) {
+//		this.incomes = incomes;
+//	}
 
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="userId")
+	@JoinColumn(name = "userId")
 	public User getUser() {
 		return this.user;
 	}

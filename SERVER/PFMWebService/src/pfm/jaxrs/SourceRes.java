@@ -1,11 +1,13 @@
 package pfm.jaxrs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -36,34 +38,37 @@ public class SourceRes {
     @GET
     @Produces("application/json")
     public Source getJsonTest() {
-    	//User user = em.find(User.class, 1);
+    	User user = em.find(User.class, 4);
 //    	User user = new User();
-//    	user.setUsername("test233");
+//    	user.setUsername("test");
 //    	user.setPassword("test");
-//    	user.setEmail("test233");
+//    	user.setEmail("test");
 //    	em.persist(user);
         Source src = new Source();
         src.setName("asd");
-//        src.setUser(user);
-//        em.persist(src);
+        src.setUser(user);
+        em.persist(src);
         return src;
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/get/{id}")
     @Produces("application/json")
     public Source getJson(@PathParam("id") int id) {
         Source src = em.find(Source.class, id);
         return src;
     }
     
-    @GET
-    @Path("/list/{userId}")
-    @Produces("application/json")
-    public List<Source> getJsonList(@PathParam("userId") int userId) {
-        User user = em.find(User.class, userId);
-        return user.getSources();
-    }
+	@GET
+	@Path("/list/{userId}")
+	@Produces("application/json")
+	public Source getJsonList(@PathParam("userId") int userId) {
+//	    User user = em.find(User.class, userId);
+//	    List<Source> list = user.getSources();
+	    Source src = new Source();
+	    return src;
+	    		
+	}
 
     /**
      * PUT method for updating or creating an instance of SourceRes
@@ -73,6 +78,13 @@ public class SourceRes {
     @PUT
     @Consumes("application/xml")
     public void putXml(String content) {
+    }
+    
+    @DELETE
+    @Path("/delete/{id}")
+    public void deleteJson(@PathParam("id") int id) {
+    	Source src = em.find(Source.class, id);
+    	em.remove(src);
     }
 
 }
