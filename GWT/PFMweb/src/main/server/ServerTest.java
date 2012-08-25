@@ -11,16 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ServerTest extends HttpServlet {
 
-  private static final double MAX_PRICE = 100.0; // $100.00
-  private static final double MAX_PRICE_CHANGE = 0.02; // +/- 2%
+  //private static final double MAX_PRICE = 100.0; // $100.00
+  //private static final double MAX_PRICE_CHANGE = 0.02; // +/- 2%
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-    Random rnd = new Random();
+    //Random rnd = new Random();
 
     PrintWriter out = resp.getWriter();
+    
+	String jsonTestData = "{["
+			+ " { \"firstName\" : \"Jimmy\", \"lastName\" : \"Webber\", money:[{\"value\":111,\"code\":\"LVL\"},{\"value\":222,\"code\":\"RUB\"}] },"
+			+ " { \"firstName\" : \"Alan\",  \"lastName\" : \"Dayal\", money:[{\"value\":333,\"code\":\"USD\"},{\"value\":444,\"code\":\"EUR\"}] },"
+			+ "]}";
+	out.println(jsonTestData);
+	out.flush();
+	/*
     out.println('[');
     String[] stockSymbols = req.getParameter("q").split(" ");
     for (String stockSymbol : stockSymbols) {
@@ -40,7 +48,7 @@ public class ServerTest extends HttpServlet {
       out.println("  },");
     }
     out.println(']');
-    out.flush();
+    */
   }
 
 }
