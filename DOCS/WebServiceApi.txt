@@ -1,0 +1,145 @@
+URL template: 
+	http://{domain}/PFMWebService/jaxrs/{resource}/{parameters}
+
+Available resources:
+	/user 	
+	/account
+	/currency
+	/category
+	/source
+	/expense
+	/income
+	/transfer
+	/balance
+	/journal
+	
+	Available action for /user:
+		Description: creates new user
+		Method: POST
+		Parameters: /
+		Accepts: application/json
+		Accepted body example:
+			{
+				"username": "test",
+				"password": "test",
+				"email": "test"
+			}
+		Sends: 
+		Sent body example:
+		
+		Description: Returns user with given username and password (if such exists in database)
+		Method: POST
+		Parameters: /
+		Accepts: all (preferable - application/x-www-form-urlencodedForm)
+		Accepted body example: username=test&password=test
+		Sends: application/json
+		Sent body example:
+			{
+				"username": "test",
+				"password": "test",
+				"email": "test"
+			}
+		
+	Available action for /account:
+		Description: Returns account by id
+		Method: GET
+		Parameters: /{accountId}
+		Accepts: 
+		Accepted body example:
+		Sends: application/jspn
+		Sent body example:
+			{
+				"id": "1",
+				"name": "Hansabanka",
+				"userId": "1"
+			}
+		
+		Description: Returns list of account for given user
+		Method: GET
+		Parameters: /{userId}
+		Accepts: 
+		Accepted body example:
+		Sends: application/json
+		Sent body example:
+		{
+			"account": [
+			{
+				"id": "1",
+				"name": "Hansabanka",
+				"userId": "1"
+			},
+			{
+				"id": "2",
+				"name": "Wallet",
+				"userId": "1"
+			},
+			{
+				"id": "3",
+				"name": "Alibabank",
+				"userId": "1"
+			}
+			]
+		}
+		
+		Description: Creates new account
+		Method: POST
+		Parameters: /
+		Accepts: application/json
+		Accepted body example:
+			{
+				"id": "3",
+				"name": "Alibabank",
+				"userId": "1"
+			}
+		Sends: 
+		Sent body example:
+			
+		Description: Updates given account
+		Method: PUT
+		Parameters: /
+		Accepts: application/json
+		Accepted body example:
+			{
+				"id": "3",
+				"name": "Blablabank",
+				"userId": "1"
+			}
+		Sends: 
+		Sent body example:
+		
+		Description: Deletes given account
+		Method: DELETE
+		Parameters: /{accountId}
+		Accepts: 
+		Accepted body example:
+		Sends: 
+		Sent body example:
+		
+	Available action for /currency:
+		Description: Returns list of available currencies
+		Method: GET
+		Parameters: /list
+		Accepts: 
+		Accepted body example:
+		Sends: application/json
+		Sent body example: 
+		{
+			"currency": [
+				{
+					"code": "LVL",
+					"id": "1"
+				},
+				{
+					"code": "EUR",
+					"id": "2"
+				},
+				{
+					"code": "USD",
+					"id": "3"
+				}
+			]
+		}
+
+		
+		
+		
