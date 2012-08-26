@@ -2,6 +2,7 @@ package main.client.users;
 
 import main.client.PFMweb;
 import main.client.SystemPanel;
+import main.client.data.LocalData;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -20,8 +22,8 @@ public class LoginForm {
 	 private static DecoratorPanel signUpPanel = new DecoratorPanel();
 	 private static DisclosurePanel signUpDisclosure = new DisclosurePanel("Sign up");
 	 private static TextBox inputUsername = new TextBox();
-	 private static TextBox inputPassword = new TextBox();
-	 private static TextBox inputConfirmPassword = new TextBox();
+	 private static PasswordTextBox inputPassword = new PasswordTextBox();
+	 private static PasswordTextBox inputConfirmPassword = new PasswordTextBox();
 	 private static TextBox inputEmail = new TextBox();
 	 private static Button signIn = new Button("Sign in");
 	 private static Button signUp = new Button("Sign up");
@@ -73,12 +75,17 @@ public class LoginForm {
 	 private static void initHandlers(){
 			signIn.addClickHandler(new ClickHandler() {				
 				@Override
-				public void onClick(ClickEvent event) {									
-					//check login data from server
-					PFMweb.toggleView("loginView", false);
-					SystemPanel.doLogin(inputUsername.getText());
-					PFMweb.toggleView("sysPanelView", true);
-					PFMweb.toggleView("mainTabsView", true);
+				public void onClick(ClickEvent event) {														
+					int id=0;
+					String username=inputUsername.getText(),
+						password=inputPassword.getText(),
+						email="example@host.com";
+					//check login data from server, if ok - rewrite above variables
+					LocalData.initLogin(id, username, password, email);
+		 	PFMweb.toggleView("loginView", false);
+			SystemPanel.doLogin(username);
+			PFMweb.toggleView("sysPanelView", true);
+			PFMweb.toggleView("mainTabsView", true);
 				}
 			});
 	 }

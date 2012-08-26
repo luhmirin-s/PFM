@@ -1,23 +1,21 @@
 package main.client.manager;
 
-import main.client.PFMweb;
-import main.client.TestDBData;
-import main.client.data.Account;
+import java.util.ArrayList;
+
+import main.client.SystemPanel;
+import main.client.data.Customer;
+import main.client.data.CustomerJS;
+import main.client.data.Money;
+import main.client.data.MoneyJS;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -25,11 +23,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-/*
-import org.fusesource.restygwt.client.JsonCallback;
-import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.Resource;
-*/
 
 																	//toDo: get url from txt/html; rb.setHeader("Content-Type", "application/json");
 
@@ -71,7 +64,7 @@ public class AccountManager {
 	private static Button createNewButton = new Button("Create new account");	
 	private static int editedRow;
 	
-	private static Label lUpdating = new Label("Updating data from server...");
+	//private static Label lUpdating = new Label("Updating data from server...");
 	private static HorizontalPanel updatingPanel = new HorizontalPanel();
 	
 	/*					For testing purposes									*/
@@ -79,15 +72,20 @@ public class AccountManager {
 	private static Button setHostButton = new Button("Set server host");
 	private static TextBox inputServer = new TextBox();
 	
+	private static ArrayList<Customer> customers;
+	
+	private static String jsonData;
+	
 	public static VerticalPanel init(){
 		
 		tablePanel.add(accTable);
 		tablePanel.add(createNewButton);	
-		updatingPanel.add(lUpdating);
+		//updatingPanel.add(lUpdating);
 		updatingPanel.setVisible(true);
-		lUpdating.setText(("Ready to update!"));
+		//lUpdating.setText(("Ready to update!"));
 		updatingPanel.add(inputServer);
 		inputServer.setText(GWT.getModuleBaseURL()+"test?q=ABC+DEF");
+		inputServer.setWidth("640px");
 		updatingPanel.add(refreshButton);	
 		updatingPanel.add(setHostButton);
 		tablePanel.add(updatingPanel);
@@ -239,8 +237,70 @@ public class AccountManager {
 		return b;
 	}
 	
+	 private final native static JsArray<CustomerJS> parseJson(String json) /*-{
+		return eval(json);
+	}-*/;
+
+	public static void loadJS() {
+
+
+		//globaljnij spisok
+		customers = new ArrayList<Customer>();
+
+		try {
+			//parsim JSON
+			JsArray<CustomerJS> jsobj = parseJson(jsonData);
+
+			//Kazdij osnovnoj elemnent peredelivaem v nuznij nam objekt
+			for (int i = 0; i < jsobj.length(); i++) {
+
+				//vremennie peremennie:
+				ArrayList<Money> tempArr = new ArrayList<Money>();
+				Customer tempCust = new Customer("a", "b", tempArr);
+
+				//kazdoe pole elementa peredajom vremennomu objektu
+				tempCust.setFirstName(((CustomerJS) jsobj.get(i)).getFirstName());
+				tempCust.setLastName(((CustomerJS) jsobj.get(i)).getLastName());
+
+				//vremennomu massivu JS peredajom vlozennij spisok
+				JsArray<MoneyJS> jsMoney = ((CustomerJS) jsobj.get(i)).getMoney();
+				//kazdij element spiska perevodiv v vremennuju peremennuju 
+				for (int j = 0; j < jsMoney.length(); j++) {
+					//vremennaja peremennaja
+					Money tempMoney = new Money("as", 43);
+					//kazdoe pole spiska peredajom peremennoj
+					tempMoney.setValue((int) ((MoneyJS) jsMoney.get(j)).getValue());
+					tempMoney.setCode(((MoneyJS) jsMoney.get(j)).getCode());
+					//dobavljaem kazduju peremennuju k vremennomu spisku
+					tempArr.add(tempMoney);
+				}
+
+				//vremennomu objektu peredajom vremennij vlozennij spisok
+				tempCust.setMoney(tempArr);
+				//dobavljaem vremennuju peremennuju v globaljnij spisok
+				customers.add(tempCust);
+			}
+
+			//vivodim klass:
+			String line = "Class output: \n";
+			for (Customer c : customers) {
+				line += c.getFirstName() + " " + c.getLastName() + "\n#";
+				for (Money m : c.getMoney()) {
+					line += m.getCode() + " " + m.getValue() + "\n#";
+				}
+				line += "\n";
+			}
+			SystemPanel.out(line);
+
+		} catch (Exception e) {
+			//errorLabel.setText(e.toString());
+		}
+
+
+	}
+	
 	public static void refreshData(final String url){
-		lUpdating.setText(("Updating data from server..."));
+		//lUpdating.setText(("Updating data from server..."));
 				//GWT.getModuleBaseURL()+"test?q=ABC+DEF");
 				//"http://10.0.1.59:8080/PFMWebService/jaxrs/source");
 				
@@ -250,18 +310,21 @@ public class AccountManager {
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				lUpdating.setText("Connecting to "+url+"...");
+				//lUpdating.setText("Connecting to "+url+"...");
+				SystemPanel.out("Connecting to "+url+"...");
 				if (200 == response.getStatusCode()) {
-					Window.alert("Received message: \n "+response.getText());
-		          } else {
-		            Window.alert("Couldn't retrieve message: (" + response.getStatusText()
-		                + ") code "+response.getStatusCode());
+					SystemPanel.out("Received message: \n "+response.getText());
+					jsonData=response.getText();
+					loadJS();
+            	} else {
+            		SystemPanel.out("Couldn't retrieve message: (" + response.getStatusText()
+        				+ ") code "+response.getStatusCode());
 		          }			
 			}
 			
 			@Override
 			public void onError(Request request, Throwable exception) {
-				Window.alert(exception.getMessage());
+				SystemPanel.out(exception.getMessage());
 			}
 		});
 	    rb.setRequestData("HelloFromClient!");
@@ -269,12 +332,13 @@ public class AccountManager {
         try {
 			rb.send();
 		} catch (com.google.gwt.http.client.RequestException e) {
-			Window.alert(e.toString());
+			SystemPanel.out(e.toString());
 		}
 		
-		lUpdating.setText("Data updated successfully");
+        SystemPanel.out("Data updated successfully");
 	}		    
-	    
+	
+	/*    
     public void executeQuery(String query, final AsyncCallback<JavaScriptObject> callback){
 
     	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
@@ -288,7 +352,7 @@ public class AccountManager {
 		
     			public void onResponseReceived(Request request, Response response) {
     				if(Response.SC_OK == response.getStatusCode()) {
-						 try {
+						 try {send
 						   callback.onSuccess(JsonUtils.safeEval(response.getText()));
 						 } catch (IllegalArgumentException iax) {
 						   callback.onFailure(iax);
@@ -303,7 +367,8 @@ public class AccountManager {
     	} catch (RequestException e) {
     		callback.onFailure(e);
     	}
-	}	
+	}
+	*/	
 	
 	public static void uploadData(){
 		
