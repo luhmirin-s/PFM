@@ -2,6 +2,10 @@ package main.pfmandroid;
 
 import java.util.ArrayList;
 
+/*
+ * Internal data storage class, to keep all the data in one place, made static, because it is used more or less globally.
+ */
+
 public class DataStorage {
 	static ArrayList<Wallet> listOfWallets = new ArrayList<Wallet>();
     static ArrayList<String> listOfSources = new ArrayList<String>();
@@ -9,6 +13,9 @@ public class DataStorage {
     static ArrayList<Transaction> listOfTransactions = new ArrayList<Transaction>();
     static String[] typesOfCurrency = {"USD", "RUB", "LVL"};
     
+    /*
+     * Method for populating all the tables with various data to test the presentation of the data in the application.
+     */
     static public void populate(){
     	Wallet p = new Wallet("My account");
     	int i = 100;

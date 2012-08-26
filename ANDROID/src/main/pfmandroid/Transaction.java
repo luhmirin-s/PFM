@@ -1,7 +1,15 @@
 package main.pfmandroid;
-import java.util.Calendar;
 import java.util.Date;
 
+/*
+ * Class is the internal representation of a transaction within the application.
+ * Transaction contains:
+ * 1. Wallet which was used for transaction;
+ * 2. Currency code;
+ * 3. Currency amount that was expended/added/transfered;
+ * 4. Date of transaction.
+ * 
+ */
 
 public class Transaction {
 	

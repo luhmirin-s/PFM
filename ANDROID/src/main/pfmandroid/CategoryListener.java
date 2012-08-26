@@ -4,6 +4,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+/*
+ * Class performs listening to the category spinner change, allows us to track which option is chosen.
+ */
+
 public class CategoryListener implements OnItemSelectedListener{
 	
 	private String category;

@@ -10,6 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+/*
+ * Class represents the Expenses option of the Main Menu. Responsible for allowing the user to make a "purchase"
+ * Very similar to EarnActivity, hence, less comments, because implementation is mostly the same.
+ */
+
 public class ExpendActivity extends Activity {
 	Wallet[] wallets;
 	String[] categories;
@@ -32,7 +37,7 @@ public class ExpendActivity extends Activity {
         	wallets[i] = DataStorage.listOfWallets.get(i);
         }
         
-        for(int i = 0; i<DataStorage.listOfCategories.size(); i++){
+        for(int i = 0; i < DataStorage.listOfCategories.size(); i++){
         	categories[i] = DataStorage.listOfCategories.get(i);
         }
         
@@ -42,31 +47,22 @@ public class ExpendActivity extends Activity {
         PositionContainer poscon = new PositionContainer();
         
         Spinner spinner = (Spinner) findViewById(R.id.spinnerEx1);
-        // Create an ArrayAdapter using the Wallet array and a default spinner layout
         ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, R.layout.spinneritem, R.id.spinneritem, wallets);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner.setAdapter(adapter);
 	    walletlistener = new WalletListener(changable, poscon);
 	    spinner.setOnItemSelectedListener(walletlistener);
 	    
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerEx2);
-        // Create an ArrayAdapter using the String array and a default spinner layout
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, categories);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner2.setAdapter(adapter2);
 	    categorylistener = new CategoryListener();
 	    spinner2.setOnItemSelectedListener(categorylistener);
 	    
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerEx3);
-        // Create an ArrayAdapter using the String array and a default spinner layout
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner3.setAdapter(adapter3);
 	    moneylistener = new MoneyListener(changable, poscon);
 	    spinner3.setOnItemSelectedListener(moneylistener);

@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-public class MainActivity extends Activity {
+/*
+ * Main menu, does exactly what it says on the tin, several buttons for several options, doesn't perform computation.
+ */
 
-	public final static String EXTRA_MESSAGE = "main.pfmandroid.Test Message";
-	public final static String SUM = "main.pfmandroid.Test Sum";
+public class MainActivity extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -16,6 +16,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/*
+ * Class represents the Transaction Journal option from the Main Menu. Class responsible for displaying the transaction
+ * history of the user, depending on the chosen timeframe.
+ */
+
 public class JournalActivity extends Activity implements OnItemSelectedListener{
 	Transaction[] transactions;
 	String[] timeFrames = {"Today", "One week", "One month", "One year"};
@@ -37,12 +42,10 @@ public class JournalActivity extends Activity implements OnItemSelectedListener{
         
         journal = (TableLayout) findViewById(R.id.tablejournal);
         Spinner spinner = (Spinner) findViewById(R.id.spinnerJo1);
-        // Create an ArrayAdapter using the Wallet array and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, timeFrames);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner.setAdapter(adapter);
+	    //Add listener to redisplay the transactions on change of the spinner
 	    spinner.setOnItemSelectedListener(this);
     }
 
@@ -67,7 +70,8 @@ public class JournalActivity extends Activity implements OnItemSelectedListener{
 	public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
 			long arg3) {
 		populateTable();
-		/*Date today = new Date();
+		/* Right now, not implemented (different timeframes and selective displaying)
+		Date today = new Date();
 		
 		for(Transaction tr : DataStorage.listOfTransactions){
 			Date trdate = tr.getDate();
@@ -107,16 +111,17 @@ public class JournalActivity extends Activity implements OnItemSelectedListener{
 	}
 
 	public void populateTable(){
+		//Remove all that was in the table before and repopulate it
 		journal.removeAllViews();
         for (Transaction x : DataStorage.listOfTransactions){           
         	LayoutInflater inflater = getLayoutInflater();
         	
+        	//Display wallet name, currency code, amount and the date of transaction
             TableRow tr = (TableRow)inflater.inflate(R.layout.journalrow, journal, false);
 
             TextView trWallet = (TextView)tr.findViewById(R.id.trWallet);
             trWallet.setText(x.getName());
 
-            // Add the 3rd Column
             TextView trCode = (TextView)tr.findViewById(R.id.trCode);
             trCode.setText(x.getCode());
             

@@ -3,29 +3,33 @@ package main.pfmandroid;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.format.DateFormat;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
-import android.widget.TableLayout.LayoutParams;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class BalanceActivity extends Activity {
+/*
+ * Class is responsible for displaying the current Balance (funds on all of the user wallets)
+ */
 
+public class BalanceActivity extends Activity {
+	
+	//The table variable that we will use to manually populate the table
 	TableLayout balanceTable;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance);
         
+        //Find table to reference it later
         balanceTable = (TableLayout) findViewById(R.id.balance_table);
         fillBalanceTable();
     }
-
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_balance, menu);
@@ -44,21 +48,24 @@ public class BalanceActivity extends Activity {
     }
     
     public void fillBalanceTable(){
+    	//Iterate through all of the user wallets and all of the currencies inside each wallet.
         for (Wallet x : DataStorage.listOfWallets){
         	boolean addedname = false;
         	for(Money y : x.getMoney()){
-	            
+
         		LayoutInflater inflater = getLayoutInflater();
             	
+        		//Create new table row, using our own created balancerow layout (defined in res/layout)
                 TableRow tr = (TableRow)inflater.inflate(R.layout.balancerow, balanceTable, false);
-
+                
+                //Fill in the name, if it has not yet been added, otherwise, make it empty.
                 TextView trWallet = (TextView)tr.findViewById(R.id.trBalanceWallet);
                 if(!addedname){
                 	trWallet.setText(x.getName());
                 	addedname = true;
                 }else
                 	trWallet.setText("");
-
+                
                 TextView trCode = (TextView)tr.findViewById(R.id.trBalanceCode);
                 trCode.setText(y.getCode());
                 
@@ -69,6 +76,7 @@ public class BalanceActivity extends Activity {
 	        }
         	LayoutInflater inflater = getLayoutInflater();
         	
+        	//Add empty row, for separation purposes.
             TableRow tr = (TableRow)inflater.inflate(R.layout.balancerow, balanceTable, false);
             balanceTable.addView(tr);
         }

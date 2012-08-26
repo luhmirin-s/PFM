@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+/*
+ * Login action. Class responsible for accepting username/password and checking it using the web service.
+ */
+
 public class LoginActivity extends Activity {
 
     @Override

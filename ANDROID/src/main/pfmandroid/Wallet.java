@@ -2,6 +2,12 @@ package main.pfmandroid;
 
 import java.util.ArrayList;
 
+/*
+ * Internal representation of a Wallet, contains the following:
+ * 1. Name of wallet
+ * 2. Array of types of currency (Using Money array) that the user has.
+ */
+
 public class Wallet {
 	private String name;
 	private ArrayList<Money> type;
@@ -36,6 +42,7 @@ public class Wallet {
 		return type;
 	}
 	
+	//Not used right now
 	public void editCurrency(String code, double amount){
 		for(int i=0; i < type.size(); i++){
 			if(code.equals(type.get(i).getCode())){
@@ -45,6 +52,7 @@ public class Wallet {
 		}
 	}
 	
+	//Search for the currency by the given parameter (string).
 	public Money findCurrency(String code){
 		for(int i=0; i < type.size(); i++){
 			if(code.equals(type.get(i).getCode()))

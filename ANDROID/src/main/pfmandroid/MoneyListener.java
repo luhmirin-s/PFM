@@ -1,10 +1,13 @@
 package main.pfmandroid;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
+
+/*
+ * Class performs listening to the currency spinner change, allows us to track which currency user chose.
+ */
 
 public class MoneyListener implements OnItemSelectedListener{
 	

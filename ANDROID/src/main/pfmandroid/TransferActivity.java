@@ -10,6 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+/*
+ * Class represents transfer activity (Transfers option). Allows the user to transfer currency from one wallet to another.
+ */
+
 public class TransferActivity extends Activity {
 	Wallet[] wallets;
 	
@@ -35,30 +39,25 @@ public class TransferActivity extends Activity {
         TextView changable = (TextView) findViewById(R.id.textViewTr3);
         PositionContainer poscon = new PositionContainer();
         
+        //First spinner will update the remaining amount of money (sender).
         Spinner spinner = (Spinner) findViewById(R.id.spinnerTr1);
-        // Create an ArrayAdapter using the Wallet array and a default spinner layout
         ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, R.layout.spinneritem, R.id.spinneritem, wallets);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner.setAdapter(adapter);
 	    walletlistener = new WalletListener(changable, poscon);
 	    spinner.setOnItemSelectedListener(walletlistener);
 	    
+	    //Second spinner only tracks which wallet to transfer to, hence, doesn't need to synchronise.
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerTr2);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner2.setAdapter(adapter);
 	    walletlistenerto = new WalletListener();
 	    spinner2.setOnItemSelectedListener(walletlistenerto);
 	    
+	    //Money spinner listener.
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerTr3);
-        // Create an ArrayAdapter using the String array and a default spinner layout
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
-	    // Specify the layout to use when the list of choices appears
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    // Apply the adapter to the spinner
 	    spinner3.setAdapter(adapter3);
 	    moneylistener = new MoneyListener(changable, poscon);
 	    spinner3.setOnItemSelectedListener(moneylistener);

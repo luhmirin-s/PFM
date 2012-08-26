@@ -21,6 +21,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
 
+/*
+ * Class implements several HTTP requests methods (GET, POST, DELETE, PUT), tests sending JSON object to the server,
+ * also contains JSON parsing (manual) methods in the onPostExecute() method. 
+ */
+
 public class ConnectionTest extends Activity {
 	
 	TextView changable;
