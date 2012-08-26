@@ -6,9 +6,9 @@
 		<class>pfm.model.Category</class>
 		<class>pfm.model.Expense</class>
 		<class>pfm.model.Income</class>
-		<class>pfm.model.MoneyAccount</class>
 		<class>pfm.model.Source</class>
 		<class>pfm.model.Transfer</class>
 		<class>pfm.model.User</class>
+		<class>pfm.model.Currency</class>
 	</persistence-unit>
 </persistence>

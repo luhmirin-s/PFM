@@ -8,25 +8,48 @@ import java.util.Date;
 
 
 /**
- * The persistent class for the Transfer database table.
+ * The persistent class for the transfer database table.
  * 
  */
 @Entity
 @XmlRootElement
-@Table(name="Transfer")
+@Table(name = "Transfer")
 public class Transfer implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+	
+	private int amount;
+	
+	@Transient
+	private int fromAccountId;
+	
+	@Transient
+	private int toAccountId;
+	
+	@Transient
+	private int currencyId;
+
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
-	private MoneyAccount moneyAccount1;
-	private MoneyAccount moneyAccount2;
+
+	@ManyToOne
+	@JoinColumn(name="fromAccountId")
+	private Account fromAccount;
+
+	@ManyToOne
+	@JoinColumn(name="toAccountId")
+	private Account toAccount;
+	
+	@ManyToOne
+	@JoinColumn(name="currencyId")
+	private Currency currency;
 
 	public Transfer() {
 	}
 
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
 		return this.id;
 	}
@@ -35,8 +58,38 @@ public class Transfer implements Serializable {
 		this.id = id;
 	}
 
+	public int getAmount() {
+		return amount;
+	}
 
-	@Temporal(TemporalType.TIMESTAMP)
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public int getFromAccountId() {
+		return fromAccountId;
+	}
+
+	public void setFromAccountId(int fromAccountId) {
+		this.fromAccountId = fromAccountId;
+	}
+
+	public int getToAccountId() {
+		return toAccountId;
+	}
+
+	public void setToAccountId(int toAccountId) {
+		this.toAccountId = toAccountId;
+	}
+
+	public int getCurrencyId() {
+		return currencyId;
+	}
+
+	public void setCurrencyId(int currencyId) {
+		this.currencyId = currencyId;
+	}
+
 	public Date getDate() {
 		return this.date;
 	}
@@ -45,28 +98,34 @@ public class Transfer implements Serializable {
 		this.date = date;
 	}
 
-
-	//bi-directional many-to-one association to MoneyAccount
-	@ManyToOne
-	@JoinColumn(name="fromId")
-	public MoneyAccount getMoneyAccount1() {
-		return this.moneyAccount1;
+	public Account getFromAccount() {
+		return this.fromAccount;
 	}
 
-	public void setMoneyAccount1(MoneyAccount moneyAccount1) {
-		this.moneyAccount1 = moneyAccount1;
+	public void setFromAccount(Account fromAccount) {
+		this.fromAccount = fromAccount;
 	}
 
-
-	//bi-directional many-to-one association to MoneyAccount
-	@ManyToOne
-	@JoinColumn(name="toId")
-	public MoneyAccount getMoneyAccount2() {
-		return this.moneyAccount2;
+	public Account getToAccount() {
+		return this.toAccount;
 	}
 
-	public void setMoneyAccount2(MoneyAccount moneyAccount2) {
-		this.moneyAccount2 = moneyAccount2;
+	public void setToAccount(Account toAccount) {
+		this.toAccount = toAccount;
 	}
 
+	public Currency getCurrency() {
+		return this.currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+	
+	@PostLoad
+	private void setupUserId() {
+		setFromAccountId(getFromAccount().getId());
+		setToAccountId(getToAccount().getId());
+		setCurrencyId(getCurrency().getId());
+	}
 }

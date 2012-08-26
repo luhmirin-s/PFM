@@ -3,30 +3,40 @@ package pfm.model;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.List;
 
 
 /**
- * The persistent class for the Source database table.
+ * The persistent class for the source database table.
  * 
  */
 @Entity
 @XmlRootElement
-@Table(name="Source", schema="pfmdb")
+@Table(name = "Source")
 public class Source implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+
 	private String name;
-//	private List<Income> incomes;
+	
+	@Transient
+	private int userId;
+
+	@OneToMany(mappedBy="source")
+	private List<Income> incomes;
+
+	@ManyToOne
+	@JoinColumn(name="userId")
 	private User user;
 
 	public Source() {
 	}
 
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
 		return this.id;
 	}
@@ -34,7 +44,6 @@ public class Source implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public String getName() {
 		return this.name;
@@ -44,27 +53,35 @@ public class Source implements Serializable {
 		this.name = name;
 	}
 
+	public int getUserId() {
+		return userId;
+	}
 
-//	//bi-directional many-to-one association to Income
-//	@OneToMany(mappedBy="source")
-//	public List<Income> getIncomes() {
-//		return this.incomes;
-//	}
-//
-//	public void setIncomes(List<Income> incomes) {
-//		this.incomes = incomes;
-//	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
+	@XmlTransient
+	public List<Income> getIncomes() {
+		return this.incomes;
+	}
 
-	//bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name = "userId")
+	public void setIncomes(List<Income> incomes) {
+		this.incomes = incomes;
+	}
+
+	@XmlTransient
 	public User getUser() {
 		return this.user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@PostLoad
+	private void setupUserId() {
+		setUserId(getUser().getId());
 	}
 
 }

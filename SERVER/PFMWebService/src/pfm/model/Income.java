@@ -3,31 +3,54 @@ package pfm.model;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.Date;
 
 
 /**
- * The persistent class for the Income database table.
+ * The persistent class for the income database table.
  * 
  */
 @Entity
 @XmlRootElement
-@Table(name="Income")
+@Table(name = "Income")
 public class Income implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
+
 	private int amount;
+	
+	@Transient
+	private int sourceId;
+	
+	@Transient
+	private int accountId;
+	
+	@Transient
+	private int currencyId;
+
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
-	private MoneyAccount moneyAccount;
+
+	@ManyToOne
+	@JoinColumn(name="sourceId")
 	private Source source;
+
+	@ManyToOne
+	@JoinColumn(name="accountId")
+	private Account account;
+	
+	@ManyToOne
+	@JoinColumn(name="currencyId")
+	private Currency currency;
 
 	public Income() {
 	}
 
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
 		return this.id;
 	}
@@ -36,7 +59,6 @@ public class Income implements Serializable {
 		this.id = id;
 	}
 
-
 	public int getAmount() {
 		return this.amount;
 	}
@@ -44,9 +66,31 @@ public class Income implements Serializable {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+	
+	public int getSourceId() {
+		return sourceId;
+	}
 
+	public void setSourceId(int sourceId) {
+		this.sourceId = sourceId;
+	}
 
-	@Temporal(TemporalType.TIMESTAMP)
+	public int getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
+
+	public int getCurrencyId() {
+		return currencyId;
+	}
+
+	public void setCurrencyId(int currencyId) {
+		this.currencyId = currencyId;
+	}
+
 	public Date getDate() {
 		return this.date;
 	}
@@ -54,23 +98,8 @@ public class Income implements Serializable {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-
-	//bi-directional many-to-one association to MoneyAccount
-	@ManyToOne
-	@JoinColumn(name="moneyAccountId")
-	public MoneyAccount getMoneyAccount() {
-		return this.moneyAccount;
-	}
-
-	public void setMoneyAccount(MoneyAccount moneyAccount) {
-		this.moneyAccount = moneyAccount;
-	}
-
-
-	//bi-directional many-to-one association to Source
-	@ManyToOne
-	@JoinColumn(name="sourceId")
+	
+	@XmlTransient
 	public Source getSource() {
 		return this.source;
 	}
@@ -79,4 +108,28 @@ public class Income implements Serializable {
 		this.source = source;
 	}
 
+	@XmlTransient
+	public Account getAccount() {
+		return this.account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	@XmlTransient
+	public Currency getCurrency() {
+		return this.currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	@PostLoad
+	private void setupUserId() {
+		setAccountId(getAccount().getId());
+		setSourceId(getSource().getId());
+		setCurrencyId(getCurrency().getId());
+	}
 }
