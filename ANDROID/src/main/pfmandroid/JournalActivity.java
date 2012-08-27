@@ -29,9 +29,6 @@ public class JournalActivity extends Activity implements OnItemSelectedListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        if(DataStorage.listOfWallets.size()==0)
-        	DataStorage.populate();
  
         transactions = new Transaction[DataStorage.listOfTransactions.size()];
         for(int i = 0; i < DataStorage.listOfTransactions.size(); i++){

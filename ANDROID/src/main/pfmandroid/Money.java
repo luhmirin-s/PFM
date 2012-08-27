@@ -13,6 +13,11 @@ public class Money {
 		amount = cash;
 	}
 	
+	Money(String code){
+		cashCode = code;
+		amount = 0;
+	}
+	
 	public void editMoney(double newcash){
 		amount = newcash;
 	}

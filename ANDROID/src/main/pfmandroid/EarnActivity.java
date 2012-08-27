@@ -28,8 +28,6 @@ public class EarnActivity extends Activity{
         super.onCreate(savedInstanceState);
         
         //If we have no data, populate the tables so we can test this thing.
-        if(DataStorage.listOfWallets.size()==0)
-        	DataStorage.populate();
         
         wallets = new Wallet[DataStorage.listOfWallets.size()];
         sources = new String[DataStorage.listOfSources.size()];
@@ -56,24 +54,30 @@ public class EarnActivity extends Activity{
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    // Apply the adapter to the spinner and add a listener so that we can track changes
 	    spinner.setAdapter(adapter);
-	    walletlistener = new WalletListener(changable, poscon);
-	    spinner.setOnItemSelectedListener(walletlistener);
+	    if(wallets.length > 0){
+		    walletlistener = new WalletListener(changable, poscon);
+		    spinner.setOnItemSelectedListener(walletlistener);
+	    }
 	    
 	    //Same as previous, only different spinner and different listener (category this time)
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerEa2);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, sources);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner2.setAdapter(adapter2);
-	    categorylistener = new CategoryListener();
-	    spinner2.setOnItemSelectedListener(categorylistener);
+	    if(sources.length > 0){
+		    categorylistener = new CategoryListener();
+		    spinner2.setOnItemSelectedListener(categorylistener);
+	    }
 	    
 	    //Same thing with currency type spinner, assign a money listener.
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerEa3);
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
-	    moneylistener = new MoneyListener(changable, poscon);
-	    spinner3.setOnItemSelectedListener(moneylistener);
+	    if(DataStorage.typesOfCurrency.size() > 0){
+	    	moneylistener = new MoneyListener(changable, poscon);
+	    	spinner3.setOnItemSelectedListener(moneylistener);
+	    }
     }
 
     @Override

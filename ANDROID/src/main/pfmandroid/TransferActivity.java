@@ -25,9 +25,6 @@ public class TransferActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if(DataStorage.listOfWallets.size()==0)
-        	DataStorage.populate();
-        
         wallets = new Wallet[DataStorage.listOfWallets.size()];
         
         for(int i = 0; i<DataStorage.listOfWallets.size(); i++){
@@ -59,8 +56,10 @@ public class TransferActivity extends Activity {
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
-	    moneylistener = new MoneyListener(changable, poscon);
-	    spinner3.setOnItemSelectedListener(moneylistener);
+	    if(DataStorage.typesOfCurrency.size() > 0){
+		    moneylistener = new MoneyListener(changable, poscon);
+		    spinner3.setOnItemSelectedListener(moneylistener);
+	    }
     }
 
     @Override

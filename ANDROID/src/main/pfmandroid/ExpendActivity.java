@@ -22,50 +22,53 @@ public class ExpendActivity extends Activity {
     CategoryListener categorylistener;
     MoneyListener moneylistener;
     WalletListener walletlistener;
+    DataStorage GlobalData = new DataStorage();
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        if(DataStorage.listOfWallets.size()==0)
-        	DataStorage.populate();
-        
-        wallets = new Wallet[DataStorage.listOfWallets.size()];
-        categories = new String[DataStorage.listOfCategories.size()];
-        
-        for(int i = 0; i < DataStorage.listOfWallets.size(); i++){
-        	wallets[i] = DataStorage.listOfWallets.get(i);
-        }
-        
-        for(int i = 0; i < DataStorage.listOfCategories.size(); i++){
-        	categories[i] = DataStorage.listOfCategories.get(i);
-        }
         
         setContentView(R.layout.activity_expend);
         
         TextView changable = (TextView) findViewById(R.id.textViewEx3);
         PositionContainer poscon = new PositionContainer();
         
+        wallets = new Wallet[DataStorage.listOfWallets.size()];
+        for(int i = 0; i < DataStorage.listOfWallets.size(); i++){
+        	wallets[i] = DataStorage.listOfWallets.get(i);
+        }
+        
+        categories = new String[DataStorage.listOfCategories.size()];
+        for(int i = 0; i < DataStorage.listOfCategories.size(); i++){
+        	categories[i] = DataStorage.listOfCategories.get(i);
+        }
+        
         Spinner spinner = (Spinner) findViewById(R.id.spinnerEx1);
         ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, R.layout.spinneritem, R.id.spinneritem, wallets);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner.setAdapter(adapter);
-	    walletlistener = new WalletListener(changable, poscon);
-	    spinner.setOnItemSelectedListener(walletlistener);
+	    if(wallets.length > 0){
+	    	walletlistener = new WalletListener(changable, poscon);
+	    	spinner.setOnItemSelectedListener(walletlistener);
+	    }
 	    
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerEx2);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, categories);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner2.setAdapter(adapter2);
-	    categorylistener = new CategoryListener();
-	    spinner2.setOnItemSelectedListener(categorylistener);
+	    if(categories.length > 0){
+		    categorylistener = new CategoryListener();
+		    spinner2.setOnItemSelectedListener(categorylistener);
+	    }
 	    
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerEx3);
         ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
-	    moneylistener = new MoneyListener(changable, poscon);
-	    spinner3.setOnItemSelectedListener(moneylistener);
+	    if(DataStorage.typesOfCurrency.size() > 0){
+	    	moneylistener = new MoneyListener(changable, poscon);
+	    	spinner3.setOnItemSelectedListener(moneylistener);
+	    }
     }
 
     @Override
