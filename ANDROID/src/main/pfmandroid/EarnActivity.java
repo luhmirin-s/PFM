@@ -16,29 +16,29 @@ import android.widget.TextView;
  */
 
 public class EarnActivity extends Activity{
-    Wallet[] wallets;
-    String[] sources;
-	
     CategoryListener categorylistener;
     MoneyListener moneylistener;
     WalletListener walletlistener;
+    
+    Wallet[] wallets;
+    Source[] sources;
+    Currency[] currencies;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        //If we have no data, populate the tables so we can test this thing.
-        
         wallets = new Wallet[DataStorage.listOfWallets.size()];
-        sources = new String[DataStorage.listOfSources.size()];
-        
-        for(int i = 0; i<DataStorage.listOfWallets.size(); i++){
+        for(int i = 0; i < wallets.length; i++)
         	wallets[i] = DataStorage.listOfWallets.get(i);
-        }
         
-        for(int i = 0; i<DataStorage.listOfSources.size(); i++){
+        sources = new Source[DataStorage.listOfSources.size()];
+        for(int i = 0; i < sources.length; i++)
         	sources[i] = DataStorage.listOfSources.get(i);
-        }
+        
+        currencies = new Currency[DataStorage.typesOfCurrency.size()];
+        for(int i = 0; i < wallets.length; i++)
+        	currencies[i] = DataStorage.typesOfCurrency.get(i);
         
         setContentView(R.layout.activity_earn);
         
@@ -54,24 +54,24 @@ public class EarnActivity extends Activity{
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    // Apply the adapter to the spinner and add a listener so that we can track changes
 	    spinner.setAdapter(adapter);
-	    if(wallets.length > 0){
+	    if(DataStorage.listOfWallets.size() > 0){
 		    walletlistener = new WalletListener(changable, poscon);
 		    spinner.setOnItemSelectedListener(walletlistener);
 	    }
 	    
 	    //Same as previous, only different spinner and different listener (category this time)
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerEa2);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, sources);
+        ArrayAdapter<Source> adapter2 = new ArrayAdapter<Source>(this, R.layout.spinneritem, R.id.spinneritem, sources);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner2.setAdapter(adapter2);
-	    if(sources.length > 0){
-		    categorylistener = new CategoryListener();
-		    spinner2.setOnItemSelectedListener(categorylistener);
+	    if(DataStorage.listOfSources.size() > 0){
+		    SourceListener sourcelistener = new SourceListener();
+		    spinner2.setOnItemSelectedListener(sourcelistener);
 	    }
 	    
 	    //Same thing with currency type spinner, assign a money listener.
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerEa3);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
+        ArrayAdapter<Currency> adapter3 = new ArrayAdapter<Currency>(this, R.layout.spinneritem, R.id.spinneritem, currencies);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
 	    if(DataStorage.typesOfCurrency.size() > 0){
@@ -100,8 +100,6 @@ public class EarnActivity extends Activity{
     @Override
     protected void onStop(){
     	super.onStop();
-    	wallets = null;
-    	sources = null;
     }
     
     public void returnBack(View view){

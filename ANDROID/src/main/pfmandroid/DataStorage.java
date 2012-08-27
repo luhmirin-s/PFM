@@ -23,15 +23,20 @@ public class DataStorage {
 	static int userId;
 	static String currentUsername;
 	static ArrayList<Wallet> listOfWallets = new ArrayList<Wallet>();
-    static ArrayList<String> listOfSources = new ArrayList<String>();
-    static ArrayList<String> listOfCategories = new ArrayList<String>();
+    static ArrayList<Source> listOfSources = new ArrayList<Source>();
+    static ArrayList<Category> listOfCategories = new ArrayList<Category>();
     static ArrayList<Transaction> listOfTransactions = new ArrayList<Transaction>();
-    static ArrayList<String> typesOfCurrency = new ArrayList<String>();
+    static ArrayList<Currency> typesOfCurrency = new ArrayList<Currency>();
     
     /*
-     * Method for populating all the tables with various data to test the presentation of the data in the application.
+     * Retrieve data from the web service.
      */
     public void getData(){
+    	listOfWallets.clear();
+    	listOfSources.clear();
+    	listOfCategories.clear();
+    	listOfTransactions.clear();
+    	typesOfCurrency.clear();
     	RetrieveData task = new RetrieveData();
     	task.execute();
     }
@@ -41,16 +46,20 @@ public class DataStorage {
     	String currency = "";
 		String wallets = "";
 		String categories = "";
+		String sources = "";
 		
 		@Override
 		protected String doInBackground(String... arg0) {
 
 		    HttpGet getCurrency = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/currency/list");
 		    HttpGet getWallets = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/account/list/" + userId);
-		    HttpGet getCategory = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/category/list/1");
+		    HttpGet getCategory = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/category/list/" + userId);
+		    HttpGet getSource = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/source/list/" + userId);
+		    
 		    getCurrency.addHeader("Accepts", "application/json");
 	        getWallets.addHeader("Accepts", "application/json");
 	        getCategory.addHeader("Accepts", "application/json");
+	        getSource.addHeader("Accepts", "application/json");
 	        
 	        try {
 	        	AndroidHttpClient client1 = AndroidHttpClient.newInstance("Android");
@@ -106,6 +115,24 @@ public class DataStorage {
 		          e.printStackTrace();
 		    }
 	        
+	        try {
+	        	AndroidHttpClient client4 = AndroidHttpClient.newInstance("Android");
+	        	HttpResponse executeSource = client4.execute(getSource);
+	        	
+	        	if(executeSource.getStatusLine().getStatusCode() == 200){
+		        	InputStream sourceContent = executeSource.getEntity().getContent();
+		        	BufferedReader sourceBuffer = new BufferedReader(new InputStreamReader(sourceContent));
+		        	
+		        	String s = "";
+		            while ((s = sourceBuffer.readLine()) != null) {
+		        	  sources += s;
+		            }
+	        	}
+	            client4.close();
+	        } catch (Exception e) {
+		          e.printStackTrace();
+		    }	        
+	        
 	        return "";
 		}
 		
@@ -114,22 +141,25 @@ public class DataStorage {
 			Log.d("Received currency", currency);
 			Log.d("Received wallets", wallets);
 			Log.d("Received category", categories);
+			Log.d("Recieved sources", sources);
 			
 			//Attempt to extract an array of currencies (more than one in database)
 			try {
 				JSONArray getArray = new JSONObject(currency).getJSONArray("currency");
 				
 				for(int i = 0; i < getArray.length(); i++){
+					int id = ((JSONObject) getArray.get(i)).getInt("id");
 					String code = ((JSONObject) getArray.get(i)).getString("code");
-					typesOfCurrency.add(new String(code));
+					typesOfCurrency.add(new Currency(id, code));
 				}
 			} catch (JSONException e) {
 				//If we reach here, it means we couldn't find currency array (only one in database)					
 				//Create a single currency, extracted from database.
 				try {
 					JSONObject getObject = new JSONObject(currency);
+					int id = getObject.getInt("id");
 					String code = getObject.getString("code");
-					typesOfCurrency.add(new String(code));
+					typesOfCurrency.add(new Currency(id, code));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -143,19 +173,21 @@ public class DataStorage {
 				
 				//Add all wallets and for each wallet, every currency without any amount.
 				for(int i = 0; i < getArray.length(); i++){
+					int id = ((JSONObject) getArray.get(i)).getInt("id");
 					String name = ((JSONObject) getArray.get(i)).getString("name");
-					listOfWallets.add(new Wallet(name));
+					listOfWallets.add(new Wallet(id, name));
 					for(int j = 0; j < typesOfCurrency.size(); j++)
-						listOfWallets.get(i).addMoney(new Money(typesOfCurrency.get(j)));
+						listOfWallets.get(i).addMoney(new Money(typesOfCurrency.get(j).getId(), typesOfCurrency.get(j).getCode()));
 				}
 			} catch (JSONException e) {					
 				//If we are here, there is no array -> Only one wallet for the user, extract it.
 				try {
 					JSONObject getObject = new JSONObject(wallets);
+					int id = getObject.getInt("id");
 					String name = getObject.getString("name");
-					listOfWallets.add(new Wallet(name));
+					listOfWallets.add(new Wallet(id, name));
 					for(int j = 0; j < typesOfCurrency.size(); j++)
-						listOfWallets.get(listOfWallets.size()-1).addMoney(new Money(typesOfCurrency.get(j)));
+						listOfWallets.get(listOfWallets.size()-1).addMoney(new Money(typesOfCurrency.get(j).getId(), typesOfCurrency.get(j).getCode()));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -168,15 +200,38 @@ public class DataStorage {
 				JSONArray getArray = new JSONObject(categories).getJSONArray("category");
 				
 				for(int i = 0; i < getArray.length(); i++){
+					int id = ((JSONObject) getArray.get(i)).getInt("id");
 					String name = ((JSONObject) getArray.get(i)).getString("name");
-					listOfCategories.add(new String(name));
+					listOfCategories.add(new Category(id, name));
 				}
 			} catch (JSONException e) {				
 				//Only one category defined (no array)
 				try {
 					JSONObject getObject = new JSONObject(categories);
+					int id = getObject.getInt("id");
 					String name = getObject.getString("name");
-					listOfCategories.add(new String(name));
+					listOfCategories.add(new Category(id, name));
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+			try {
+				JSONArray getArray = new JSONObject(sources).getJSONArray("source");
+				
+				for(int i = 0; i < getArray.length(); i++){
+					int id = ((JSONObject) getArray.get(i)).getInt("id");
+					String name = ((JSONObject) getArray.get(i)).getString("name");
+					listOfSources.add(new Source(id, name));
+				}
+			} catch (JSONException e) {				
+				//Only one category defined (no array)
+				try {
+					JSONObject getObject = new JSONObject(categories);
+					int id = getObject.getInt("id");
+					String name = getObject.getString("name");
+					listOfSources.add(new Source(id, name));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

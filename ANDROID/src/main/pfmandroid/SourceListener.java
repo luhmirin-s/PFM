@@ -1,23 +1,21 @@
 package main.pfmandroid;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-/*
- * Class performs listening to the category spinner change, allows us to track which option is chosen.
- */
-
-public class CategoryListener implements OnItemSelectedListener{
+public class SourceListener implements OnItemSelectedListener{
 	
-	private Category category;
+	private Source source;
 	private int pos;
+	
 	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, 
             int pos, long id) {
-		//Get the category name
-		category = (Category) parent.getItemAtPosition(pos);
+		
+		source = (Source) parent.getItemAtPosition(pos);
 		this.pos = pos;
     }
 
@@ -26,11 +24,11 @@ public class CategoryListener implements OnItemSelectedListener{
         
     }
 	
-	public Category returnCategory(){
-		return category;
+	public Source returnObject(){
+		return source;
 	}
 	
-	public int returnPos(){
+	public int returnPosition(){
 		return pos;
 	}
 }

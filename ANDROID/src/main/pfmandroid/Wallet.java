@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 
 public class Wallet {
+	private int id;
 	private String name;
 	private ArrayList<Money> type;
 	
@@ -17,7 +18,8 @@ public class Wallet {
 		type = new ArrayList<Money>();
 	}
 	
-	Wallet(String name){
+	Wallet(int id, String name){
+		this.id = id;
 		this.name = name;
 		type = new ArrayList<Money>();
 	}
@@ -34,8 +36,8 @@ public class Wallet {
 		type.add(mon);
 	}
 	
-	public void addMoney(String name, double currency){
-		type.add(new Money(name, currency));
+	public void addMoney(int id, String name, double currency){
+		type.add(new Money(id, name, currency));
 	}
 	
 	public ArrayList<Money> getMoney(){

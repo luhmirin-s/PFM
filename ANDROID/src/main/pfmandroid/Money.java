@@ -5,15 +5,18 @@ package main.pfmandroid;
  */
 
 public class Money {
+	private int id;
 	private String cashCode;
 	private double amount;
 	
-	Money(String code, double cash){
+	Money(int id, String code, double cash){
+		this.id = id;
 		cashCode = code;
 		amount = cash;
 	}
 	
-	Money(String code){
+	Money(int id, String code){
+		this.id = id;
 		cashCode = code;
 		amount = 0;
 	}

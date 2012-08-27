@@ -15,21 +15,25 @@ import android.widget.TextView;
  */
 
 public class TransferActivity extends Activity {
-	Wallet[] wallets;
 	
     MoneyListener moneylistener;
     WalletListener walletlistener;
     WalletListener walletlistenerto;
 	
+    Wallet[] wallets;
+    Currency[] currencies;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         wallets = new Wallet[DataStorage.listOfWallets.size()];
-        
-        for(int i = 0; i<DataStorage.listOfWallets.size(); i++){
+        for(int i = 0; i < wallets.length; i++)
         	wallets[i] = DataStorage.listOfWallets.get(i);
-        }
+        
+        currencies = new Currency[DataStorage.typesOfCurrency.size()];
+        for(int i = 0; i < wallets.length; i++)
+        	currencies[i] = DataStorage.typesOfCurrency.get(i);
         
         setContentView(R.layout.activity_transfer);
         
@@ -53,7 +57,7 @@ public class TransferActivity extends Activity {
 	    
 	    //Money spinner listener.
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerTr3);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, R.layout.spinneritem, R.id.spinneritem, DataStorage.typesOfCurrency);
+	    ArrayAdapter<Currency> adapter3 = new ArrayAdapter<Currency>(this, R.layout.spinneritem, R.id.spinneritem, currencies);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
 	    if(DataStorage.typesOfCurrency.size() > 0){
@@ -81,7 +85,6 @@ public class TransferActivity extends Activity {
 
     protected void onStop(){
     	super.onStop();
-    	wallets = null;
     }
     
     public void returnBack(View view){

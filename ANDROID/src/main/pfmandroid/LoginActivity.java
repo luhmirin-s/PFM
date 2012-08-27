@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*
  * Login action. Class responsible for accepting username/password and checking it using the web service.
@@ -46,6 +48,16 @@ public class LoginActivity extends Activity {
     	
     	TextView passinput = (TextView) findViewById(R.id.passwordentry);
     	String password = passinput.getText().toString();
+    	
+    	if(password.length() == 0 || username.length() == 0){
+    		Context context = getApplicationContext();
+			CharSequence text = "Please enter both username and password.";
+			int duration = Toast.LENGTH_LONG;
+
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.show();
+			return;
+    	}
     	
     	tryLogin task = new tryLogin(username, password);
     	task.execute();
@@ -78,9 +90,11 @@ public class LoginActivity extends Activity {
 	          httpGet.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 	          HttpResponse execute = client.execute(httpGet);
-	          if( execute.getStatusLine().getStatusCode() == 404 )
+	          if( execute.getStatusLine().getStatusCode() == 404 ){
+	        	  client.close();
 	        	  return "";
-	          
+	          }
+
 	          InputStream content = execute.getEntity().getContent();
 
 	          BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
@@ -110,9 +124,16 @@ public class LoginActivity extends Activity {
 				    	startActivity(intent);
 					}
 				}
+				else{
+					Context context = getApplicationContext();
+					CharSequence text = "You have entered incorrect username/password combination.";
+					int duration = Toast.LENGTH_LONG;
+
+					Toast toast = Toast.makeText(context, text, duration);
+					toast.show();
+				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
     }
