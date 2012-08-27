@@ -2,6 +2,7 @@ package main.client.manager;
 
 import java.util.ArrayList;
 
+import main.client.PFMweb;
 import main.client.SystemPanel;
 import main.client.data.Customer;
 import main.client.data.CustomerJS;
@@ -138,14 +139,16 @@ public class AccountManager {
 			@Override
 			public void onClick(ClickEvent event) {				
 					refreshButton.setText("Refresh");
-					refreshData(inputServer.getText());				
+					//refreshData(inputServer.getText());				
+					SystemPanel.out(PFMweb.download(inputServer.getText(), RequestBuilder.GET));
+					SystemPanel.out("downloaded");
 			}
 		});	
 		
 		setHostButton.addClickHandler(new ClickHandler() {			
 			@Override
 			public void onClick(ClickEvent event) {				
-					inputServer.setText(GWT.getModuleBaseURL());			
+					inputServer.setText("127.0.0.1:8080/PFMWebService/jaxrs/");			
 			}
 		});
 		
@@ -299,6 +302,8 @@ public class AccountManager {
 
 	}
 	
+	/* deprecated */
+	
 	public static void refreshData(final String url){
 		//lUpdating.setText(("Updating data from server..."));
 				//GWT.getModuleBaseURL()+"test?q=ABC+DEF");
@@ -327,7 +332,6 @@ public class AccountManager {
 				SystemPanel.out(exception.getMessage());
 			}
 		});
-	    rb.setRequestData("HelloFromClient!");
         
         try {
 			rb.send();
