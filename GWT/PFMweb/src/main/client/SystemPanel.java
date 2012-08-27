@@ -26,7 +26,7 @@ public class SystemPanel {
 		 //lLoggedAs.setSize("300px", "100%");
 		 sysPanel.setHorizontalAlignment(DockPanel.ALIGN_RIGHT);
 		 sysPanel.setSpacing(32);
-		 sysPanel.add(console, DockPanel.WEST);
+		 //sysPanel.add(console, DockPanel.WEST);
 		 sysPanel.add(lLoggedAs, DockPanel.CENTER);
 		 sysPanel.add(signOut, DockPanel.EAST);
 		 

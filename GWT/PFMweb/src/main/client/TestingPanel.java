@@ -21,6 +21,7 @@ public class TestingPanel {
 	private static HorizontalPanel consolePanel = new HorizontalPanel();
 	private static HorizontalPanel horPanel = new HorizontalPanel();
 	private static HorizontalPanel buttonPanel = new HorizontalPanel();
+	private static Button toggleButton = new Button("Show test stuff");
 	/*					For testing purposes					*/
 	private static Button getDownButton = new Button("Download(GET)");
 	private static Button postDownButton = new Button("Download(POST)");
@@ -57,9 +58,15 @@ public class TestingPanel {
 		 buttonPanel.add(getUpButton);
 		 buttonPanel.add(postUpButton);
 		 
+		 vertPanel.add(toggleButton);
 		 vertPanel.add(consolePanel);
 		 vertPanel.add(horPanel);
 		 vertPanel.add(buttonPanel);
+		 
+		 consolePanel.setVisible(false);
+		 horPanel.setVisible(false);
+		 buttonPanel.setVisible(false);
+		 toggleButton.setText("Show test stuff");
 		 
 		 initHandlers();
 		 
@@ -67,6 +74,24 @@ public class TestingPanel {
 	 }
 	
 	private static void initHandlers(){
+		
+		toggleButton.addClickHandler(new ClickHandler() {				
+			@Override
+			public void onClick(ClickEvent event) {									
+				if(toggleButton.getText().equals("Show test stuff")){
+					consolePanel.setVisible(true);
+					horPanel.setVisible(true);
+					buttonPanel.setVisible(true);
+					toggleButton.setText("Hide test stuff");
+				} else {
+					consolePanel.setVisible(false);
+					horPanel.setVisible(false);
+					buttonPanel.setVisible(false);
+					toggleButton.setText("Show test stuff");
+				}
+			}
+		});
+		
 		getDownButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
@@ -84,7 +109,7 @@ public class TestingPanel {
 		getUpButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				if(PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.GET));
+				if(PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.GET))
 					out("Uploading successful");
 			}
 		});
@@ -92,7 +117,7 @@ public class TestingPanel {
 		postUpButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				if(PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.POST));
+				if(PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.POST))
 					out("Uploading successful");
 			}
 		});

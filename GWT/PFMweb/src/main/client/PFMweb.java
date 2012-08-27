@@ -89,15 +89,15 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   
   	public static String download(String url, String resource, RequestBuilder.Method method) {
 
-		jsonData=null;
+		jsonData=null; //returns null before Callback
+		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(RequestBuilder.GET, url + resource);
-		SystemPanel.out(rb.getHTTPMethod()+" to "+rb.getUrl());
 		rb.setHeader("Content-Type", "application/json");
 		SystemPanel.out("Setting callback...");
 		rb.setCallback(new RequestCallback() {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				SystemPanel.out(String.valueOf(response.getStatusCode()));
+				SystemPanel.out("Status: "+String.valueOf(response.getStatusCode()));
 				if (200 == response.getStatusCode()) {
 					SystemPanel.out("Received message: \n "
 							+ response.getText());
@@ -134,16 +134,15 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 			return false;
 		}
 		uploaded=false;
-		SystemPanel.out("Initializing requestbuilder...");
+		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(method, url + resource);
 		rb.setHeader("Content-Type", "application/json");
-		SystemPanel.out("Setting request data...");
 		rb.setRequestData(req);
 		SystemPanel.out("Setting callback...");
 		rb.setCallback(new RequestCallback() {
 			@Override
 			public void onResponseReceived(Request request, Response response) {				
-				SystemPanel.out(String.valueOf(response.getStatusCode()));
+				SystemPanel.out("Status: "+String.valueOf(response.getStatusCode()));
 				if (200 == response.getStatusCode()) {
 					SystemPanel.out("Received message: \n "
 							+ response.getText());

@@ -2,6 +2,7 @@ package main.client.manager;
 
 import main.client.PFMweb;
 import main.client.SystemPanel;
+import main.client.data.ParseJson;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -201,7 +202,10 @@ public class AccountManager {
 	
 	
 	
-	public static void uploadData(){
+	public static void refresh(){
+		
+		String data=PFMweb.download(PFMweb.dataURL, "/account", RequestBuilder.GET);
+		if(data!=null) ParseJson.parseAccount(data);
 		
 	}
 
