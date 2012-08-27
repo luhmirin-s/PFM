@@ -14,14 +14,11 @@ import javax.ws.rs.core.UriInfo;
 
 import pfm.model.Account;
 import pfm.model.Currency;
-import pfm.model.Income;
-import pfm.model.Source;
 import pfm.model.Transfer;
 
 @Path("transfer")
 @Stateless
 public class TransferRes {
-    @SuppressWarnings("unused")
     @Context
     private UriInfo context;
 

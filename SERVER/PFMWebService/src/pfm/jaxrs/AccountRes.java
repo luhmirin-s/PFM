@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import pfm.model.Account;
-import pfm.model.Category;
 import pfm.model.User;
 
 @Path("account")

@@ -13,7 +13,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import pfm.model.Category;
 import pfm.model.Currency;
 
 @Path("currency")

@@ -1,6 +1,5 @@
 package pfm.jaxrs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -19,14 +18,12 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import pfm.model.Account;
 import pfm.model.Source;
 import pfm.model.User;
 
 @Path("/source")
 @Stateless
 public class SourceRes {
-    @SuppressWarnings("unused")
     @Context
     private UriInfo context;
 
