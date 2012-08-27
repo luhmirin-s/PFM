@@ -88,7 +88,6 @@ Available resources:
 		Accepts: application/json
 		Accepted body example:
 			{
-				"id": "3",
 				"name": "Alibabank",
 				"userId": "1"
 			}
@@ -299,7 +298,7 @@ Available resources:
 			"amount": "500",
 			"accountId": "1",
 			"categoryId": "1",
-			"currencyId": "1",
+			"currencyId": "1"
 		}
 		Sends: 
 		Sent body example:	
@@ -322,7 +321,7 @@ Available resources:
 			"amount": "500",
 			"accountId": "1",
 			"sourceId": "1",
-			"currencyId": "1",
+			"currencyId": "1"
 		}
 		Sends: 
 		Sent body example:	
@@ -345,7 +344,7 @@ Available resources:
 			"amount": "500",
 			"fromAccountId": "1",
 			"toAccountId": "2",
-			"currencyId": "1",
+			"currencyId": "1"
 		}
 		Sends: 
 		Sent body example:	

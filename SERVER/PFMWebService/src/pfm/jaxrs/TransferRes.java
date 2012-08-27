@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import pfm.model.Account;
@@ -32,7 +33,7 @@ public class TransferRes {
     
     @POST
 	@Consumes("application/json")
-	public void postJson(Transfer trs) {
+	public Response postJson(Transfer trs) {
 		try {
 			Account fromAcc = em.find(Account.class, trs.getFromAccountId());
 			Account toAcc = em.find(Account.class, trs.getToAccountId());
@@ -43,19 +44,23 @@ public class TransferRes {
 			trs.setCurrency(cur);
 			
 			em.persist(trs);
+			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Response.serverError().build();
 		}
 	}
     
     @DELETE
     @Path("/{transferId}")
-    public void deleteJson(@PathParam("transferId") int id) {
+    public Response deleteJson(@PathParam("transferId") int id) {
     	try {
     		Transfer trs = em.find(Transfer.class, id);
         	em.remove(trs);
+        	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Response.serverError().build();
 		}
     }
 }

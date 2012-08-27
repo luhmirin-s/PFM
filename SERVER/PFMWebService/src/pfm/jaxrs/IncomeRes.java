@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import pfm.model.Account;
@@ -30,7 +31,7 @@ public class IncomeRes {
     
     @POST
 	@Consumes("application/json")
-	public void postJson(Income inc) {
+	public Response postJson(Income inc) {
 		try {
 			Account acc = em.find(Account.class, inc.getAccountId());
 			Source src = em.find(Source.class, inc.getSourceId());
@@ -41,19 +42,23 @@ public class IncomeRes {
 			inc.setCurrency(cur);
 			
 			em.persist(inc);
+			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Response.serverError().build();
 		}
 	}
     
     @DELETE
     @Path("/{incomeId}")
-    public void deleteJson(@PathParam("incomeId") int id) {
+    public Response deleteJson(@PathParam("incomeId") int id) {
     	try {
     		Income inc = em.find(Income.class, id);
         	em.remove(inc);
+        	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Response.serverError().build();
 		}
     }
 }
