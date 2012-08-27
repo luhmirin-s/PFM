@@ -86,7 +86,7 @@ public class LoginForm {
 					LocalData.initLogin(id, username, password, email);
 		 	PFMweb.toggleView("loginView", false);
 			SystemPanel.doLogin(username);
-			//PFMweb.toggleView("sysPanelView", true);
+			PFMweb.toggleView("sysPanelView", true);
 			PFMweb.toggleView("mainTabsView", true);
 				}
 			});
@@ -107,7 +107,7 @@ public class LoginForm {
 						password.equals(confPassword)
 						//email.matches("^[0-9A-Za-z\\.]{3,16}$")
 					){
-						if(PFMweb.upload("user", "{\"username\": \""+username+"\",\"password\": \""+password
+						if(PFMweb.upload(PFMweb.dataURL, "user", "{\"username\": \""+username+"\",\"password\": \""+password
 								+"\", \"email\": \""+email+"\"}", RequestBuilder.POST)){
 							SystemPanel.out("Signup successful");
 							cleanup();

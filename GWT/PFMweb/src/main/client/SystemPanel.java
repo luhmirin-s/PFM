@@ -40,13 +40,6 @@ public class SystemPanel {
 		 lLoggedAs.setText("Logged in as "+username);
 	 }
 	 
-	 public static void out(String txt){
-		 if(console.getText().length()>5000) 
-			 console.setText(console.getText().substring(console.getText().length()-1000, console.getText().length()-1));
-		 console.setText(console.getText()+"\n"+txt);
-		 console.getElement().setScrollTop(console.getElement().getScrollHeight());
-	 }
-	 
 	 private static void initHandlers(){
 			signOut.addClickHandler(new ClickHandler() {				
 				@Override
@@ -59,5 +52,9 @@ public class SystemPanel {
 					PFMweb.toggleView("loginView", true);
 				}
 			});
+	 }
+	 
+	 public static void out(String msg){
+		 TestingPanel.out(msg);
 	 }
 }

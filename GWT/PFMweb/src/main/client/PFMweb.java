@@ -60,12 +60,13 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  RootPanel.get("loginView").add(LoginForm.init());
 	  RootPanel.get("sysPanelView").add(SystemPanel.init());
 	  RootPanel.get("mainTabsView").add(mainTabs);
+	  RootPanel.get("testView").add(TestingPanel.init());
 	  mainTabs.selectTab(0);
 	  ExpenseTransactions.focus();
 	  
 	  toggleView("loadingView", false);
 	  toggleView("loginView", true);
-	  toggleView("sysPanelView", true);
+	  toggleView("sysPanelView", false);
 	  
 	  //TestDBData.initData();
 	  
@@ -86,10 +87,10 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 		  DOM.getElementById(viewId).getStyle().setDisplay(Display.NONE);
   }
   
-  	public static String download(String resource, RequestBuilder.Method method) {
+  	public static String download(String url, String resource, RequestBuilder.Method method) {
 
 		jsonData=null;
-		rb = new RequestBuilder(RequestBuilder.GET, dataURL + resource);
+		rb = new RequestBuilder(RequestBuilder.GET, url + resource);
 		SystemPanel.out(rb.getHTTPMethod()+" to "+rb.getUrl());
 		rb.setHeader("Content-Type", "application/json");
 		SystemPanel.out("Setting callback...");
@@ -97,7 +98,6 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				SystemPanel.out(String.valueOf(response.getStatusCode()));
-				SystemPanel.out("Getting data from " + dataURL + "...");
 				if (200 == response.getStatusCode()) {
 					SystemPanel.out("Received message: \n "
 							+ response.getText());
@@ -122,18 +122,20 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 			SystemPanel.out(e.toString());
 		}
 
-		SystemPanel.out("Data request successfully sent");
+		SystemPanel.out("Request sent...");
 
 		return jsonData;
 	}
   	
-  	public static boolean upload(final String resource, final String req, RequestBuilder.Method method) {
+  	public static boolean upload(String url, final String resource, final String req, RequestBuilder.Method method) {
 
-		if (req.isEmpty())
+		if (req.isEmpty()){
+			SystemPanel.out("Won't send empty request");
 			return false;
+		}
 		uploaded=false;
 		SystemPanel.out("Initializing requestbuilder...");
-		rb = new RequestBuilder(RequestBuilder.POST, dataURL + resource);
+		rb = new RequestBuilder(method, url + resource);
 		rb.setHeader("Content-Type", "application/json");
 		SystemPanel.out("Setting request data...");
 		rb.setRequestData(req);
@@ -166,7 +168,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 			SystemPanel.out(e.toString());
 		}
 
-		SystemPanel.out("Data uploaded successfully");
+		SystemPanel.out("Data sent...");
 
 		return uploaded;
 	}

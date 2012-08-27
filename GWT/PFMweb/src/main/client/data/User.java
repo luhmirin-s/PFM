@@ -2,47 +2,66 @@ package main.client.data;
 
 public class User {
 
+	
 	private int id;
-	private String email;
-	private String password;
 	private String username;
+	private String password;
+	private String email;
 	
-	public User(int id, String username, String password, String email){
-		this.id=id;
-		this.username=username;
-		this.password=password;
-		this.email=email;
+
+	public User() {}
+
+	
+	public User(int id, String username, String password, String email) {
+		setId(id);
+		setEmail(email);
+		setUsername(username);
+		setPassword(password);
 	}
-	
+
 	public int getId() {
-		return this.id;
+		return id;
 	}
+
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return this.email;
+
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
+
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getUsername() {
-		return this.username;
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+	
+	
+
+	
+	
+	
+	
 }
