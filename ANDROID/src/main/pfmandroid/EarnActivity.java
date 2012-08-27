@@ -37,7 +37,7 @@ public class EarnActivity extends Activity{
         	sources[i] = DataStorage.listOfSources.get(i);
         
         currencies = new Currency[DataStorage.typesOfCurrency.size()];
-        for(int i = 0; i < wallets.length; i++)
+        for(int i = 0; i < currencies.length; i++)
         	currencies[i] = DataStorage.typesOfCurrency.get(i);
         
         setContentView(R.layout.activity_earn);

@@ -39,7 +39,7 @@ public class ExpendActivity extends Activity {
         	categories[i] = DataStorage.listOfCategories.get(i);
         
         currencies = new Currency[DataStorage.typesOfCurrency.size()];
-        for(int i = 0; i < wallets.length; i++)
+        for(int i = 0; i < currencies.length; i++)
         	currencies[i] = DataStorage.typesOfCurrency.get(i);
         
         setContentView(R.layout.activity_expend);
