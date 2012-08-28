@@ -1,5 +1,12 @@
-package main.pfmandroid;
+package main.pfmandroid.activities;
 
+import main.pfmandroid.R;
+import main.pfmandroid.R.id;
+import main.pfmandroid.R.layout;
+import main.pfmandroid.R.menu;
+import main.pfmandroid.data.DataStorage;
+import main.pfmandroid.data.Money;
+import main.pfmandroid.data.Wallet;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;

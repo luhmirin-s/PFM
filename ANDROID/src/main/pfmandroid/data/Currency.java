@@ -1,10 +1,10 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 
 public class Currency {
 	private int id;
 	private String code;
 	
-	Currency(int id, String name) {
+	public Currency(int id, String name) {
 		this.id = id;
 		code = name;
 	}

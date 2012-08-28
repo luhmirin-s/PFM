@@ -16,78 +16,77 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_main" >
+            android:name=".activities.MainActivity"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.LoginActivity" />
         </activity>
         <activity
-            android:name=".ExpendActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_expend" >
+            android:name=".activities.ExpendActivity"
+            android:label="@string/title_activity_expend"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
         </activity>
         <activity
-            android:name=".EarnActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_earn" >
+            android:name=".activities.EarnActivity"
+            android:label="@string/title_activity_earn"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
         </activity>
         <activity
-            android:name=".TransferActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_transfer" >
+            android:name=".activities.TransferActivity"
+            android:label="@string/title_activity_transfer"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
         </activity>
         <activity
-            android:name=".BalanceActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_balance" >
+            android:name=".activities.BalanceActivity"
+            android:label="@string/title_activity_balance"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
         </activity>
         <activity
-            android:name=".JournalActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_journal" >
+            android:name=".activities.JournalActivity"
+            android:label="@string/title_activity_journal"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
         </activity>
         <activity
             android:name=".ConnectionActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_connection" >
+            android:label="@string/title_activity_connection"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
         </activity>
         <activity
             android:name=".ConnectionTest"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_connection_test" >
+            android:label="@string/title_activity_connection_test"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="main.pfmandroid.MainActivity" />
-        </activity> 
+        </activity>
     </application>
-
 </manifest>

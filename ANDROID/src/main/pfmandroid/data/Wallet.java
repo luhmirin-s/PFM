@@ -1,4 +1,4 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 
 import java.util.ArrayList;
 
@@ -13,12 +13,12 @@ public class Wallet {
 	private String name;
 	private ArrayList<Money> type;
 	
-	Wallet(){
+	public Wallet(){
 		name = "default";
 		type = new ArrayList<Money>();
 	}
 	
-	Wallet(int id, String name){
+	public Wallet(int id, String name){
 		this.id = id;
 		this.name = name;
 		type = new ArrayList<Money>();
@@ -26,6 +26,10 @@ public class Wallet {
 		
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	public int getId(){
+		return id;
 	}
 	
 	public String getName(){

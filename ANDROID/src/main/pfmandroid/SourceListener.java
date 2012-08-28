@@ -1,5 +1,6 @@
 package main.pfmandroid;
 
+import main.pfmandroid.data.Source;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,7 +9,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class SourceListener implements OnItemSelectedListener{
 	
 	private Source source;
-	private int pos;
+	private int id;
 	
 	
 	@Override
@@ -16,7 +17,8 @@ public class SourceListener implements OnItemSelectedListener{
             int pos, long id) {
 		
 		source = (Source) parent.getItemAtPosition(pos);
-		this.pos = pos;
+		this.id = source.getId();
+		Log.d("Source", String.valueOf(this.id));
     }
 
 	@Override
@@ -28,7 +30,7 @@ public class SourceListener implements OnItemSelectedListener{
 		return source;
 	}
 	
-	public int returnPosition(){
-		return pos;
+	public int returnId(){
+		return id;
 	}
 }

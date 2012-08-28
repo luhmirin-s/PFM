@@ -1,4 +1,4 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 import java.util.Date;
 
 /*

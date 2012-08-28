@@ -23,8 +23,6 @@
         android:layout_marginTop="59dp"
         android:ems="10"
         android:inputType="textPassword" >
-
-        <requestFocus />
     </EditText>
 
     <TextView
@@ -33,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/passwordentry"
         android:layout_alignLeft="@+id/usernameentry"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:text="Password"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -43,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/usernameentry"
         android:layout_alignLeft="@+id/passwordentry"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:text="Username"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

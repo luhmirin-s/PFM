@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.pfmandroid.activities.MainActivity;
+import main.pfmandroid.data.DataStorage;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.http.AndroidHttpClient;
@@ -59,18 +63,28 @@ public class LoginActivity extends Activity {
 			return;
     	}
     	
-    	tryLogin task = new tryLogin(username, password);
+    	tryLogin task = new tryLogin(username, password, this);
     	task.execute();
     }
     
     private class tryLogin extends AsyncTask<String, Void, String>{
     	private String username;
     	private String password;
+    	private LoginActivity context;
+    	private ProgressDialog dialog;
     	
-    	tryLogin(String user, String pass){
+    	tryLogin(String user, String pass, LoginActivity ref){
     		username = user;
     		password = pass;
+    		context = ref;
+    		dialog = new ProgressDialog(context);
     	}
+    	
+    	@Override
+    	protected void onPreExecute() {
+            this.dialog.setMessage("Logging in...");
+            this.dialog.show();
+        }
     	
 		@Override
 		protected String doInBackground(String... arg0) {
@@ -135,6 +149,10 @@ public class LoginActivity extends Activity {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 			}
+			
+			if (dialog.isShowing()) {
+	            dialog.dismiss();
+	        }
 		}
     }
 }
