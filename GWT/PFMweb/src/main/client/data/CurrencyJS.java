@@ -4,7 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
 //An overlay type
-class CurrencyJS extends JavaScriptObject {
+public class CurrencyJS extends JavaScriptObject {
 
 //Overlay types always have protected, zero-arg ctors
 protected CurrencyJS() { }

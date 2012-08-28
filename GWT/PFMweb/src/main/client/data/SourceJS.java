@@ -4,7 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
 //An overlay type
-class SourceJS extends JavaScriptObject {
+public class SourceJS extends JavaScriptObject {
 
 //Overlay types always have protected, zero-arg ctors
 protected SourceJS() { }

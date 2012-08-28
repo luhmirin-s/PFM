@@ -15,6 +15,7 @@ public class SystemPanel {
 	 private static DockPanel sysPanel = new DockPanel();
 	 private static Button signOut = new Button("Sign out");
 	 private static Label lLoggedAs = new Label("Logged in as ...");
+	 private static Label lStatus = new Label("Status: no changes done yet");
 	 /* for development purposes only */
 	 private static TextArea console = new TextArea();
 	
@@ -27,6 +28,8 @@ public class SystemPanel {
 		 sysPanel.setHorizontalAlignment(DockPanel.ALIGN_RIGHT);
 		 sysPanel.setSpacing(32);
 		 //sysPanel.add(console, DockPanel.WEST);
+		 lStatus.setText("Status: no changes made yet");
+		 sysPanel.add(lStatus, DockPanel.WEST);
 		 sysPanel.add(lLoggedAs, DockPanel.CENTER);
 		 sysPanel.add(signOut, DockPanel.EAST);
 		 

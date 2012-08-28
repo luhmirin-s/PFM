@@ -13,9 +13,9 @@ public class LocalData {
 		
 		user= new User(id, username, password, email);
 		
-		accountList=new ArrayList<Account>();
-		categoryList=new ArrayList<Category>();
-		sourceList=new ArrayList<Source>();
+		//accountList=new ArrayList<Account>();
+		//categoryList=new ArrayList<Category>();
+		//sourceList=new ArrayList<Source>();
 		
 	}
 	
