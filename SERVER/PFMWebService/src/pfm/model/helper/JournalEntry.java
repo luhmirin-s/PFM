@@ -2,11 +2,22 @@ package pfm.model.helper;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
+//@Entity
+@NamedNativeQuery(
+		  name="findJournalEntries",
+		  query="CALL findJournalEntries(?)",
+		  resultClass=JournalEntry.class
+		)
 public class JournalEntry {
+	//@Id
 	private int id;
+	//@Id
 	private JournalEntryType type;
 	private String text;
 	private String amount;
