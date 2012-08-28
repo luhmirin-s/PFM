@@ -1,5 +1,7 @@
 package pfm.model.helper;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
@@ -12,7 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 		  query="CALL findAccountBalance(?)",
 		  resultClass=Balance.class
 		)
-public class Balance {
+public class Balance implements Serializable  {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	private int currencyId;
 	private double sum;
