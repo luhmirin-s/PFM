@@ -67,6 +67,7 @@ public class TestingPanel {
 		 horPanel.setVisible(false);
 		 buttonPanel.setVisible(false);
 		 toggleButton.setText("Show test stuff");
+		 console.setText(PFMweb.dataURL+"\n Ready");
 		 
 		 initHandlers();
 		 
@@ -96,28 +97,28 @@ public class TestingPanel {
 			@Override
 			public void onClick(ClickEvent event) {									
 				//PFMweb.newDownload();
-				PFMweb.download(inputServer.getText(), inputResource.getText(), RequestBuilder.GET);
+				PFMweb.download(inputServer.getText(), inputResource.getText(), "Accepts", RequestBuilder.GET);
 			}
 		});
 		
 		postDownButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				PFMweb.download(inputServer.getText(), inputResource.getText(), RequestBuilder.POST);
+				PFMweb.download(inputServer.getText(), inputResource.getText(), "Accepts", RequestBuilder.POST);
 			}
 		});
 		
 		getUpButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.GET);
+				PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), "Content-Type", RequestBuilder.GET);
 			}
 		});
 		
 		postUpButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.POST);
+				PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), "Content-Type", RequestBuilder.POST);
 			}
 		});
 		

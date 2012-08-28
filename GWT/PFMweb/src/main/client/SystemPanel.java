@@ -1,5 +1,6 @@
 package main.client;
 
+import main.client.data.LocalData;
 import main.client.users.LoginForm;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -47,16 +48,18 @@ public class SystemPanel {
 			signOut.addClickHandler(new ClickHandler() {				
 				@Override
 				public void onClick(ClickEvent event) {									
-					//check login data from server
+					
 					PFMweb.toggleView("sysPanelView", false);
 					PFMweb.toggleView("mainTabsView", false);
-					//clear data in mainTabsView
+					LocalData.initLogout();
 					LoginForm.reloadForm();
 					PFMweb.toggleView("loginView", true);
+					
 				}
 			});
 	 }
 	 
+	 /* redirect */
 	 public static void out(String msg){
 		 TestingPanel.out(msg);
 	 }

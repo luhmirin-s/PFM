@@ -204,8 +204,8 @@ public class AccountManager {
 	
 	public static void refresh(){
 		
-		String data=PFMweb.download(PFMweb.dataURL, "/account", RequestBuilder.GET);
-		if(data!=null) ParseJson.parseAccount(data);
+		PFMweb.download(PFMweb.dataURL, "/account", "Accepts", RequestBuilder.GET);
+		//if(data!=null) ParseJson.parseAccount(data);
 		
 	}
 

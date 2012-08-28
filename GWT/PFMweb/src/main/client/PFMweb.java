@@ -9,6 +9,7 @@ import main.client.transactions.Transactions;
 import main.client.users.LoginForm;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -39,8 +40,8 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   
   //private Label lastUpdatedLabel = new Label(); 
   private static final int SERVER_TIMEOUT = 500; //ms
-  //private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
-  public static final String dataURL = "http://localhost:8080/PFMWebService/jaxrs";
+  //http://localhost:8080/PFMWebService/jaxrs
+  public static final String dataURL = getAddress();
   private static RequestBuilder rb;
   private static String jsonData;
   public static boolean uploaded;
@@ -81,6 +82,13 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  
   }
   
+  public static String getAddress(){
+	  String u = GWT.getModuleBaseURL();
+	  String t = u.substring(7);
+	  u=u.substring(7, 7+t.indexOf('/'));
+	  return "http://"+u+"/PFMWebService/jaxrs";
+  }
+  
   public static void toggleView(String viewId, boolean enable){
 	  if(enable)
 		  DOM.getElementById(viewId).getStyle().setDisplay(Display.BLOCK);
@@ -94,8 +102,19 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   	
   	public static String getJSONdata(){
   		return jsonData;
+  	} 
+  	
+  	public static boolean isUploaded(){
+  		return uploaded;
   	}
-  
+  	
+  	/**
+  	 * Uploads a String to the server and receives a String
+  	 * @param url 	Specify PFMweb.dataURL for most cases
+  	 * @param resource 	Example: /user
+  	 * @param req	What to upload
+  	 * @param method	POST, GET or anything else
+  	 */
   	public static void uploadDownload(String url, String resource, final String req, RequestBuilder.Method method) {
 
 		jsonData=null; //returns null before Callback
@@ -135,13 +154,19 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 		SystemPanel.out("Request sent...");
 	}
   	
-  	
-  	public static String download(String url, String resource, RequestBuilder.Method method) {
+  	/**
+  	 * Sends a request expecting a String to be returned.
+  	 * Use PFMweb.getJSONdata() to get data when it returns
+  	 * @param url 	Specify PFMweb.dataURL for most cases
+  	 * @param resource 	Example: /user
+  	 * @param header Header such as "Content-Type" or "Accepts"
+  	 * @param method	POST, GET or anything else
+  	 */ 	
+  	public static void download(String url, String resource, String header, RequestBuilder.Method method) {
 
-		jsonData=null; //returns null before Callback
 		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(method, url + resource);
-		rb.setHeader("Content-Type", "application/json");
+		rb.setHeader(header, "application/json");
 		SystemPanel.out("Setting callback...");
 		rb.setCallback(new RequestCallback() {
 			@Override
@@ -173,15 +198,19 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 
 		SystemPanel.out("Request sent...");
 
-		return jsonData;
 	}
-  	
-  	public static boolean upload(String url, final String resource, final String req, RequestBuilder.Method method) {
+  	//Probably make uploaded int? -1 sending, 0 error, 1 uploaded
+  	/**
+  	 * Sends a String to the server, expects code 200
+  	 * Use PFMweb.isUploaded() to check for successful upload
+  	 * @param url 	Specify PFMweb.dataURL for most cases
+  	 * @param resource 	Example: /user
+  	 * @param req	Data to be uploaded
+  	 * @param header Header such as "Content-Type" or "Accepts"
+  	 * @param method	POST, GET or anything else
+  	 */ 
+  	public static void upload(String url, final String resource, final String req, String header, RequestBuilder.Method method) {
 
-		if (req.isEmpty()){
-			SystemPanel.out("Won't send empty request");
-			return false;
-		}
 		uploaded=false;
 		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(method, url + resource);
@@ -200,6 +229,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 					SystemPanel.out("Couldn't retrieve message: ("
 							+ response.getStatusText() + ") code "
 							+ response.getStatusCode());
+					uploaded=false;
 				}
 			}
 
@@ -218,7 +248,6 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 
 		SystemPanel.out("Data sent...");
 
-		return uploaded;
 	}
     
 }

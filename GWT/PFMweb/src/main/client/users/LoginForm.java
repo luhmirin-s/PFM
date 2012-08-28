@@ -2,6 +2,7 @@ package main.client.users;
 
 import main.client.PFMweb;
 import main.client.SystemPanel;
+import main.client.data.CreateJson;
 import main.client.data.LocalData;
 import main.client.data.ParseJson;
 import main.client.data.User;
@@ -34,7 +35,6 @@ public class LoginForm {
 	 private static Button signUp = new Button("Sign up");
      
 	 private static Timer loginFormTimer;
-	 private static int timeoutCounter;
 	
 	 public static VerticalPanel init(){	
 		
@@ -81,7 +81,7 @@ public class LoginForm {
 	 
 	 public static void stopTimer(){
 		 loginFormTimer.cancel();
-		 SystemPanel.out("Timer interrupted from outer class");
+		 SystemPanel.out("Timer forced to stop");
 	 }
 	 
 	 private static void initHandlers(){
@@ -95,12 +95,9 @@ public class LoginForm {
 				loginFormTimer = new Timer() {
 					@Override
 					public void run() {
-						SystemPanel.out("Object null for now, "+Integer.valueOf(10-timeoutCounter)+" retries left");
 						
 						if(!PFMweb.getJSONdata().isEmpty()){	
-							SystemPanel.out("Object received!");
-							loginFormTimer.cancel();
-							
+							SystemPanel.out("Object received!");							
 							SystemPanel.out("parsing...");
 							User u = ParseJson.parseUser(PFMweb.getJSONdata());
 							LocalData.initLogin(u.getId(), u.getUsername(), u.getPassword(), u.getEmail());
@@ -108,15 +105,13 @@ public class LoginForm {
 							SystemPanel.doLogin(u.getUsername());
 							PFMweb.toggleView("sysPanelView", true);
 							PFMweb.toggleView("mainTabsView", true);							
-							
+ 
+						} else {
+							SystemPanel.out("Received null");
 						}
-						timeoutCounter--;
-
 					}
 				};
-				timeoutCounter=10;
-		      loginFormTimer.scheduleRepeating(PFMweb.getTimeout());
-					
+		      loginFormTimer.schedule(PFMweb.getTimeout());				
 
 			}
 		});
@@ -124,7 +119,7 @@ public class LoginForm {
 		signUp.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {														
-				int id=0;
+
 				String username=inputUsername.getText(),
 				password=inputPassword.getText(),
 				confPassword=inputConfirmPassword.getText(),
@@ -132,18 +127,26 @@ public class LoginForm {
 				
 				if(
 					!username.isEmpty() && !password.isEmpty() && !email.isEmpty() &&
-					//username.matches("^[0-9A-Za-z\\.]{3,16}$") &&
-					//password.matches("^[0-9A-Za-z\\.]{3,16}$") &&
-					password.equals(confPassword)
-					//email.matches("^[0-9A-Za-z\\.]{3,16}$")
+					//username.matches("^[0-9A-Za-z\\.]{3,32}$") &&
+					//password.matches("^[0-9A-Za-z\\.]{3,32}$") &&
+					password.equals(confPassword) 
+					//email.matches("^[0-9A-Za-z\\.]{3,32}$")
 				){
-					if(PFMweb.upload(PFMweb.dataURL, "user", "{\"username\": \""+username+"\",\"password\": \""+password
-							+"\", \"email\": \""+email+"\"}", RequestBuilder.POST)){
-						SystemPanel.out("Signup successful");
-						cleanup();
-					} else {
-						SystemPanel.out("Signup failed");
-					}
+					PFMweb.upload(PFMweb.dataURL, "/user", CreateJson.toJsonCreateUser(username, password, email), "Accepts", RequestBuilder.POST);
+					loginFormTimer = new Timer() {
+						@Override
+						public void run() {
+							
+							if(PFMweb.isUploaded()){	
+								SystemPanel.out("User successfully created!");							
+								cleanup();								 
+							} else {
+								SystemPanel.out("User already present or error");
+							}
+						}
+					};
+					loginFormTimer.schedule(PFMweb.getTimeout()*2);
+					
 				} else {
 					SystemPanel.out("Check input!");
 				}				
@@ -151,7 +154,9 @@ public class LoginForm {
 			}
 		});
 	 }
-	 
+	 /**
+	  * Cleans all fields of the Login form
+	  */
 	 private static void cleanup(){
 		 inputUsername.setText("");
 		 inputPassword.setText("");
