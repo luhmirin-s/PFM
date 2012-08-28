@@ -52,6 +52,7 @@ public class CategoryRes {
 	public Response getJsonList(@PathParam("userId") int id) {
     	User user = em.find(User.class, id);
     	if (user != null) {
+    		em.refresh(user);
     		List<Category> list = user.getCategories();
 			GenericEntity<List<Category>> entity = new GenericEntity<List<Category>>(list) {};
 	    	return Response.ok(entity).build();
