@@ -3,6 +3,7 @@ package main.pfmandroid.getdata;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.ExecutionException;
 
 import main.pfmandroid.activities.ExpendActivity;
 import main.pfmandroid.data.Category;
@@ -145,10 +146,13 @@ public class RetrieveExpendData extends AsyncTask<String, Void, String>{
 				int id = ((JSONObject) getArray.get(i)).getInt("id");
 				String name = ((JSONObject) getArray.get(i)).getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
-				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++)
-					DataStorage.listOfWallets.get(i).addMoney(
-							new Money(DataStorage.typesOfCurrency.get(j).getId(), 
-									DataStorage.typesOfCurrency.get(j).getCode()));
+				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++){
+					DataStorage.listOfWallets.get(i).addMoney(new Money(
+								DataStorage.typesOfCurrency.get(j).getId(),
+								DataStorage.typesOfCurrency.get(j).getCode()
+								)
+							);
+				}
 			}
 		} catch (JSONException e) {					
 			//If we are here, there is no array -> Only one wallet for the user, extract it.
@@ -157,10 +161,13 @@ public class RetrieveExpendData extends AsyncTask<String, Void, String>{
 				int id = getObject.getInt("id");
 				String name = getObject.getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
-				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++)
-					DataStorage.listOfWallets.get(DataStorage.listOfWallets.size()-1).addMoney(
-							new Money(DataStorage.typesOfCurrency.get(j).getId(), 
-									DataStorage.typesOfCurrency.get(j).getCode()));
+				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++){
+					DataStorage.listOfWallets.get(DataStorage.listOfWallets.size()-1).addMoney(new Money(
+								DataStorage.typesOfCurrency.get(j).getId(),
+								DataStorage.typesOfCurrency.get(j).getCode()
+								)
+							);
+				}
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -188,6 +195,19 @@ public class RetrieveExpendData extends AsyncTask<String, Void, String>{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		
+		GetBalanceInfo innertask = new GetBalanceInfo();
+		innertask.execute();
+		
+		try {
+			innertask.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		if (dialog.isShowing()) {

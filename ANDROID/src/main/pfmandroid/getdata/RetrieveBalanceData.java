@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
 
-import main.pfmandroid.activities.TransferActivity;
+import main.pfmandroid.activities.BalanceActivity;
 import main.pfmandroid.data.Currency;
 import main.pfmandroid.data.DataStorage;
 import main.pfmandroid.data.Money;
@@ -22,14 +22,14 @@ import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RetrieveTransferData extends AsyncTask<String, Void, String> {
+public class RetrieveBalanceData  extends AsyncTask<String, Void, String>{
 	private String currency = "";
 	private String wallets = "";
 	
-	private TransferActivity context;
-	private ProgressDialog dialog;
+	protected BalanceActivity context;
+	protected ProgressDialog dialog;
 	
-	public RetrieveTransferData(TransferActivity test){
+	public RetrieveBalanceData(BalanceActivity test){
 		context = test;
 		dialog = new ProgressDialog(context);
 		DataStorage.clear();
@@ -85,7 +85,7 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
 	          e.printStackTrace();
 	    }
-        
+                
         return "";
 	}
 	
@@ -93,7 +93,6 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 	protected void onPostExecute(String result) {
 		Log.d("Received currency", currency);
 		Log.d("Received wallets", wallets);
-		
 		//Attempt to extract an array of currencies (more than one in database)
 		try {
 			JSONArray getArray = new JSONObject(currency).getJSONArray("currency");
@@ -127,6 +126,13 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 				int id = ((JSONObject) getArray.get(i)).getInt("id");
 				String name = ((JSONObject) getArray.get(i)).getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
+				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++){
+					DataStorage.listOfWallets.get(i).addMoney(new Money(
+								DataStorage.typesOfCurrency.get(j).getId(),
+								DataStorage.typesOfCurrency.get(j).getCode()
+								)
+							);
+				}
 			}
 		} catch (JSONException e) {					
 			//If we are here, there is no array -> Only one wallet for the user, extract it.
@@ -135,6 +141,13 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 				int id = getObject.getInt("id");
 				String name = getObject.getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
+				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++){
+					DataStorage.listOfWallets.get(DataStorage.listOfWallets.size()-1).addMoney(new Money(
+								DataStorage.typesOfCurrency.get(j).getId(),
+								DataStorage.typesOfCurrency.get(j).getCode()
+								)
+							);
+				}
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -157,7 +170,6 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 		if (dialog.isShowing()) {
             dialog.dismiss();
         }
-		
-		context.displayData();
+		context.fillBalanceTable();
 	}
 }

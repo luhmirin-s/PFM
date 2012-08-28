@@ -1,6 +1,7 @@
 package main.pfmandroid;
 
 import main.pfmandroid.data.Currency;
+import main.pfmandroid.data.DataStorage;
 import main.pfmandroid.data.PositionContainer;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,11 +31,11 @@ public class MoneyListener implements OnItemSelectedListener{
 			test.posOfCode = pos;
 		
 		if(changable != null){
-			//double amount = DataStorage.listOfWallets.get(test.posOfWallet).getMoney().get(test.posOfCode).getAmount();
+			double amount = DataStorage.listOfWallets.get(test.posOfWallet).getMoney().get(test.posOfCode).getAmount();
 			
-			//CharSequence message = String.valueOf(amount);
+			CharSequence message = String.valueOf(amount);
 			
-			//changable.setText(message);
+			changable.setText(message);
 		}
 	}
 

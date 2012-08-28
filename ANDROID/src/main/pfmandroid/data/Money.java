@@ -25,6 +25,10 @@ public class Money {
 		amount = newcash;
 	}
 	
+	public int getId(){
+		return id;
+	}
+	
 	public String getCode(){
 		return cashCode;
 	}

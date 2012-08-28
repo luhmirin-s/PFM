@@ -48,17 +48,17 @@ public class Wallet {
 		return type;
 	}
 	
-	//Not used right now
-	public void editCurrency(String code, double amount){
+	public boolean editCurrency(int id, double amount){
 		for(int i=0; i < type.size(); i++){
-			if(code.equals(type.get(i).getCode())){
+			if(id == type.get(i).getId()){
 				type.get(i).editMoney(amount);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	//Search for the currency by the given parameter (string).
+	//Search for the currency by the given id.
 	public Money findCurrency(String code){
 		for(int i=0; i < type.size(); i++){
 			if(code.equals(type.get(i).getCode()))
