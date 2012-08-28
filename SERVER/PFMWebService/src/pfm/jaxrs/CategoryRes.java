@@ -17,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import pfm.model.Category;
 import pfm.model.User;
@@ -42,7 +43,7 @@ public class CategoryRes {
     	if (cat != null) {
     		return Response.ok(cat).build();
     	} else {
-    		return Response.noContent().build();
+    		return Response.status(Status.NOT_FOUND).build();
     	}
     }
     
@@ -52,11 +53,12 @@ public class CategoryRes {
 	public Response getJsonList(@PathParam("userId") int id) {
     	User user = em.find(User.class, id);
     	if (user != null) {
+    		em.refresh(user);
     		List<Category> list = user.getCategories();
 			GenericEntity<List<Category>> entity = new GenericEntity<List<Category>>(list) {};
 	    	return Response.ok(entity).build();
     	} else {
-    		return Response.noContent().build();
+    		return Response.status(Status.NOT_FOUND).build();
     	}
 	}
     

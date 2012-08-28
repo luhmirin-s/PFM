@@ -22,7 +22,7 @@ public class Income implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	private int amount;
+	private double amount;
 	
 	@Transient
 	private int sourceId;
@@ -59,11 +59,11 @@ public class Income implements Serializable {
 		this.id = id;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return this.amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	
