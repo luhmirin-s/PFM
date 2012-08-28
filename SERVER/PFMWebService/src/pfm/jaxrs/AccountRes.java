@@ -51,6 +51,7 @@ public class AccountRes {
     public Response getJsonList(@PathParam("userId") int id) {
     	User user = em.find(User.class, id);
     	if (user != null) {
+    		em.refresh(user);
     		List<Account> list = user.getAccounts();
 			GenericEntity<List<Account>> entity = new GenericEntity<List<Account>>(list) {};
 	    	return Response.ok(entity).build();

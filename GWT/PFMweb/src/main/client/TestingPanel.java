@@ -28,7 +28,7 @@ public class TestingPanel {
 	private static Button getUpButton = new Button("Upload(GET)");
 	private static Button postUpButton = new Button("Upload(POST)");
 	private static Button getHostButton = new Button("Get server host");
-	private static TextBox inputServer = new TextBox();
+	public static TextBox inputServer = new TextBox();
 	private static TextBox inputResource = new TextBox();
 	private static TextBox inputRequest = new TextBox();
 	private static TextArea console = new TextArea();
@@ -95,30 +95,29 @@ public class TestingPanel {
 		getDownButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				out("Downloaded data: "+PFMweb.download(inputServer.getText(), inputResource.getText(), RequestBuilder.GET));
+				//PFMweb.newDownload();
+				PFMweb.download(inputServer.getText(), inputResource.getText(), RequestBuilder.GET);
 			}
 		});
 		
 		postDownButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				out("Downloaded data: "+PFMweb.download(inputServer.getText(), inputResource.getText(), RequestBuilder.POST));
+				PFMweb.download(inputServer.getText(), inputResource.getText(), RequestBuilder.POST);
 			}
 		});
 		
 		getUpButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				if(PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.GET))
-					out("Uploading successful");
+				PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.GET);
 			}
 		});
 		
 		postUpButton.addClickHandler(new ClickHandler() {				
 			@Override
 			public void onClick(ClickEvent event) {									
-				if(PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.POST))
-					out("Uploading successful");
+				PFMweb.upload(inputServer.getText(), inputResource.getText(), inputRequest.getText(), RequestBuilder.POST);
 			}
 		});
 		

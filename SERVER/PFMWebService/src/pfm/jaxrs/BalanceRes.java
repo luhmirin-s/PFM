@@ -11,7 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import pfm.model.helper.Balance;
@@ -33,9 +35,16 @@ public class BalanceRes {
     @Produces("application/json")
     @SuppressWarnings("unchecked")
     public Response getJsonList(@PathParam("accountId") int id) {
-    	Query query = em.createNativeQuery("CALL findAccountBalance(?)", Balance.class);   
+    	em.setProperty("eclipselink.jpa.uppercase-column-names", true);
+    	Query query = em.createNamedQuery("findAccountBalance");
     	query.setParameter(1, id);
-		List<Balance> list = query.getResultList();  
-    	return Response.ok().build();
+    	List<Balance> list = query.getResultList();
+    	
+    	if (!list.isEmpty()) {
+    		GenericEntity<List<Balance>> entity = new GenericEntity<List<Balance>>(list) {};
+    		return Response.ok(entity).build();
+    	} else {
+    		return Response.status(Status.NOT_FOUND).build();
+    	}
     }
 }

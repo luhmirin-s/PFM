@@ -17,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import pfm.model.Source;
 import pfm.model.User;
@@ -41,7 +42,7 @@ public class SourceRes {
         if (src != null) {
     		return Response.ok(src).build();
     	} else {
-    		return Response.noContent().build();
+    		return Response.status(Status.NOT_FOUND).build();
     	}
     }
     
@@ -51,11 +52,12 @@ public class SourceRes {
     public Response getJsonList(@PathParam("userId") int id) {
     	User user = em.find(User.class, id);
     	if (user != null) {
+    		em.refresh(user);
     		List<Source> list = user.getSources();
 			GenericEntity<List<Source>> entity = new GenericEntity<List<Source>>(list) {};
 	    	return Response.ok(entity).build();
     	} else {
-    		return Response.noContent().build();
+    		return Response.status(Status.NOT_FOUND).build();
     	}
     }
     
