@@ -1,16 +1,1 @@
 zdesj budet lezatj wgt
-
-
-sohranjaetsa s rashireniem .sh i zapuskaetsa komandoj:
-sh scriptname.sh
-
-
-#!/bin/bash
-
-from=~/test1
-to=~/test2
-
-cp -u -r $from $to 
-echo "Done at: "
-date
-
