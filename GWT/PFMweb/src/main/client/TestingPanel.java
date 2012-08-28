@@ -28,6 +28,7 @@ public class TestingPanel {
 	private static Button getUpButton = new Button("Upload(GET)");
 	private static Button postUpButton = new Button("Upload(POST)");
 	private static Button getHostButton = new Button("Get server host");
+	private static Button demoUserButton = new Button("Bypass login");
 	public static TextBox inputServer = new TextBox();
 	private static TextBox inputResource = new TextBox();
 	private static TextBox inputRequest = new TextBox();
@@ -57,6 +58,7 @@ public class TestingPanel {
 		 buttonPanel.add(postDownButton);
 		 buttonPanel.add(getUpButton);
 		 buttonPanel.add(postUpButton);
+		 buttonPanel.add(demoUserButton);
 		 
 		 vertPanel.add(toggleButton);
 		 vertPanel.add(consolePanel);
@@ -75,6 +77,17 @@ public class TestingPanel {
 	 }
 	
 	private static void initHandlers(){
+		
+		demoUserButton.addClickHandler(new ClickHandler() {				
+			@Override
+			public void onClick(ClickEvent event) {									
+				SystemPanel.out("Logging in as demo user...");
+				PFMweb.toggleView("loginView", false);
+				SystemPanel.doLogin("Demo user");
+				PFMweb.toggleView("sysPanelView", true);
+				PFMweb.toggleView("mainTabsView", true);
+			}
+		});
 		
 		toggleButton.addClickHandler(new ClickHandler() {				
 			@Override

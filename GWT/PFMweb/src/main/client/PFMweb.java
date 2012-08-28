@@ -1,10 +1,11 @@
 package main.client;
 
-import main.client.JSONPLoader.LoaderCallback;
 import main.client.balance.Balance;
 import main.client.journal.Journal;
 import main.client.manager.AccountManager;
+import main.client.manager.CategoryManager;
 import main.client.manager.Manager;
+import main.client.manager.SourceManager;
 import main.client.transactions.ExpenseTransactions;
 import main.client.transactions.Transactions;
 import main.client.users.LoginForm;
@@ -18,28 +19,19 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.json.client.JSONObject;
 
 
 public class PFMweb implements EntryPoint {
 
 	
 private static TabPanel mainTabs = new TabPanel();
-/*
-private static VerticalPanel transPanel = new VerticalPanel();
-private static VerticalPanel balancePanel = new VerticalPanel();
-private static VerticalPanel journalPanel = new VerticalPanel();
-private static VerticalPanel managerPanel = new VerticalPanel();
-*/  
-  //private HorizontalPanel toolbar = new HorizontalPanel();
+
   private static Timer refreshTimer;
   private Label errorMsgLabel = new Label();
   
-  //private Label lastUpdatedLabel = new Label(); 
   private static final int SERVER_TIMEOUT = 500; //ms
   //http://localhost:8080/PFMWebService/jaxrs
   public static final String dataURL = getAddress();
@@ -97,9 +89,9 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	        	switch(type){
 					case ACC_MGR:{AccountManager.refresh();
 						break;}
-					case CAT_MGR:{
+					case CAT_MGR:{CategoryManager.refresh();
 						break;}
-					case SRC_MGR:{
+					case SRC_MGR:{SourceManager.refresh();
 						break;}	        		
 	        	}
 	        }

@@ -16,7 +16,8 @@ public class SystemPanel {
 	 private static DockPanel sysPanel = new DockPanel();
 	 private static Button signOut = new Button("Sign out");
 	 private static Label lLoggedAs = new Label("Logged in as ...");
-	 private static Label lStatus = new Label("Status: no changes done yet");
+	 private static Label lStatus = new Label("No changes made yet");
+	 private static String currentOp;
 	 /* for development purposes only */
 	 private static TextArea console = new TextArea();
 	
@@ -28,8 +29,9 @@ public class SystemPanel {
 		 //lLoggedAs.setSize("300px", "100%");
 		 sysPanel.setHorizontalAlignment(DockPanel.ALIGN_RIGHT);
 		 sysPanel.setSpacing(32);
+		 currentOp=null;
 		 //sysPanel.add(console, DockPanel.WEST);
-		 lStatus.setText("Status: no changes made yet");
+		 lStatus.setText("No changes made yet");
 		 sysPanel.add(lStatus, DockPanel.WEST);
 		 sysPanel.add(lLoggedAs, DockPanel.CENTER);
 		 sysPanel.add(signOut, DockPanel.EAST);
@@ -42,6 +44,7 @@ public class SystemPanel {
 	 public static void doLogin(String username){
 		 if(username.isEmpty()) username="Demo user";
 		 lLoggedAs.setText("Logged in as "+username);
+		 lStatus.setText("No changes made yet");
 	 }
 	 
 	 private static void initHandlers(){
@@ -62,5 +65,28 @@ public class SystemPanel {
 	 /* redirect */
 	 public static void out(String msg){
 		 TestingPanel.out(msg);
+	 }
+	 public static void status(String st){
+		 lStatus.setText(st);
+	 }
+	 /**
+	  * Set a status to be displayed after some operation.
+	  * Example: "adding data".
+	  * Call statusDone() or statusError() after operation completes.
+	  * @param op Set to null to display status "Ready"
+	  */
+	 public static void statusSetOp(String op){
+		 lStatus.setText("Processing...");
+	 }
+	 public static void statusDone(){
+		 if(currentOp==null) clearStatus();
+		 else lStatus.setText("Done "+currentOp);
+	 }
+	 public static void statusError(){
+		 if(currentOp==null) clearStatus();
+		 else lStatus.setText("Error while "+currentOp+". Try again.");
+	 }
+	 public static void clearStatus(){
+		 lStatus.setText("Ready");
 	 }
 }

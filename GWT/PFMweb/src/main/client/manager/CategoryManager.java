@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class AccountManager {
+public class CategoryManager {
 
 	private static VerticalPanel tablePanel = new VerticalPanel();
 
@@ -29,7 +29,7 @@ public class AccountManager {
 	private static VerticalPanel editDialogPanel = new VerticalPanel();
 	private static VerticalPanel delDialogPanel = new VerticalPanel();
 
-	private static FlexTable accTable = new FlexTable();
+	private static FlexTable catTable = new FlexTable();
 
 	private static HorizontalPanel newNamePanel = new HorizontalPanel();
 	private static Label lNewName = new Label("Name: ");
@@ -55,16 +55,14 @@ public class AccountManager {
 	private static Button delConfirmButton = new Button("Confirm");
 	private static Button delCancelButton = new Button("Cancel");
 
-	private static Button createNewButton = new Button("Create new account");
+	private static Button createNewButton = new Button("Create new category");
 	private static int editedRow;
 
-	// private static Label lUpdating = new
-	// Label("Updating data from server...");
 	private static HorizontalPanel updatingPanel = new HorizontalPanel();
 
 	public static VerticalPanel init() {
 
-		tablePanel.add(accTable);
+		tablePanel.add(catTable);
 		tablePanel.add(createNewButton);
 		updatingPanel.setVisible(true);
 		tablePanel.add(updatingPanel);
@@ -120,20 +118,13 @@ public class AccountManager {
 				if (txt.matches("^[0-9A-Za-z\\s]{1,16}$")) {
 					lNewError.setText("");
 					newDialog.hide();
-					SystemPanel.out("Creating new account...");
-					SystemPanel.statusSetOp("creating account");
-					PFMweb.upload(PFMweb.dataURL, "/account", CreateJson
-							.toJsonCreateAccount(txt, LocalData.getUser()
+					SystemPanel.out("Creating new category...");
+					SystemPanel.statusSetOp("creating category");
+					PFMweb.upload(PFMweb.dataURL, "/category", CreateJson
+							.toJsonCreateCategory(txt, LocalData.getUser()
 									.getId()), "Content-Type",
 							RequestBuilder.POST);
-					PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
-					/*
-					 * int rc = accTable.getRowCount(); accTable.setWidget(rc,
-					 * 0, new Label(txt)); accTable.setWidget(rc, 1,
-					 * makeEditButton(rc)); accTable.setWidget(rc, 2,
-					 * makeDeleteButton(rc));
-					 */
-					
+					PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
 				} else {
 					lNewError.setText("Please specify a valid name!");
 					SystemPanel.clearStatus();
@@ -148,19 +139,16 @@ public class AccountManager {
 				if (txt.matches("^[0-9A-Za-z\\s]{1,16}$")) {
 					lEditError.setText("");
 					editDialog.hide();
-					SystemPanel.out("Editing account...");
-					SystemPanel.statusSetOp("editing account");
-					PFMweb.upload(PFMweb.dataURL, "/account", CreateJson
-							.toJsonAccount(
-									LocalData.getAccountList().get(editedRow)
+					SystemPanel.out("Editing category...");
+					SystemPanel.statusSetOp("editing category");
+					PFMweb.upload(PFMweb.dataURL, "/category", CreateJson
+							.toJsonCategory(
+									LocalData.getCategoryList().get(editedRow)
 											.getId(), txt, LocalData.getUser()
 											.getId()), "Content-Type",
 							RequestBuilder.PUT);
-					PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
-					/*
-					 * accTable.clearCell(editedRow, 0);
-					 * accTable.setWidget(editedRow, 0, new Label(txt));
-					 */					
+					PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
+					
 				} else {
 					lEditError.setText("Please specify a valid replacement name!");
 					SystemPanel.clearStatus();
@@ -172,14 +160,13 @@ public class AccountManager {
 			@Override
 			public void onClick(ClickEvent event) {
 				deletePrompt.hide();
-				SystemPanel.out("Deleting account...");
+				SystemPanel.out("Deleting category...");
 				SystemPanel.statusSetOp("deleting account");
-				PFMweb.download(PFMweb.dataURL, "/account/"
-						+ LocalData.getAccountList().get(editedRow).getId(),
+				PFMweb.download(PFMweb.dataURL, "/category/"
+						+ LocalData.getCategoryList().get(editedRow).getId(),
 						"Accept", RequestBuilder.DELETE);
-				PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
-
-				// accTable.removeRow(editedRow);
+				PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
+				
 			}
 		});
 
@@ -223,8 +210,8 @@ public class AccountManager {
 		b.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				lDelPrompt.setText("Are you sure you want to delete account '"
-						+ accTable.getText(row, 0) + "'?");
+				lDelPrompt.setText("Are you sure you want to delete category '"
+						+ catTable.getText(row, 0) + "'?");
 				editedRow = row;
 				deletePrompt.center();
 			}
@@ -234,29 +221,29 @@ public class AccountManager {
 
 	public static void initRefresh() {
 
-		PFMweb.download(PFMweb.dataURL, "/account/list/"
+		PFMweb.download(PFMweb.dataURL, "/category/list/"
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
-		PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
+		PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
 
 	}
 
 	public static void refresh() {
 
 		if (PFMweb.getJSONdata() != null) {
-			LocalData.setAccountList(ParseJson.parseAccount(PFMweb
+			LocalData.setCategoryList(ParseJson.parseCategory(PFMweb
 					.getJSONdata()));
-			SystemPanel.out("parsing accounts done");
-			accTable.clear();
-			if (LocalData.getAccountList().size() > 0) {
-				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
-					accTable.setWidget(i, 0, new Label(LocalData.getAccountList().get(i).getName()));
-					accTable.setWidget(i, 1, makeEditButton(i));
-					accTable.setWidget(i, 2, makeDeleteButton(i));
+			SystemPanel.out("parsing categories done");
+			catTable.clear();
+			if (LocalData.getCategoryList().size() > 0) {
+				for (int i = 0; i < LocalData.getCategoryList().size(); i++) {
+					catTable.setWidget(i, 0, new Label(LocalData.getCategoryList().get(i).getName()));
+					catTable.setWidget(i, 1, makeEditButton(i));
+					catTable.setWidget(i, 2, makeDeleteButton(i));
 					SystemPanel.statusDone();
 				}
 			} else {
-				SystemPanel.out("Account list is empty");
+				SystemPanel.out("Category list is empty");
 				SystemPanel.statusError();
 			}
 

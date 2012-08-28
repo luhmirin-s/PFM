@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class AccountManager {
+public class SourceManager {
 
 	private static VerticalPanel tablePanel = new VerticalPanel();
 
@@ -29,7 +29,7 @@ public class AccountManager {
 	private static VerticalPanel editDialogPanel = new VerticalPanel();
 	private static VerticalPanel delDialogPanel = new VerticalPanel();
 
-	private static FlexTable accTable = new FlexTable();
+	private static FlexTable srcTable = new FlexTable();
 
 	private static HorizontalPanel newNamePanel = new HorizontalPanel();
 	private static Label lNewName = new Label("Name: ");
@@ -55,16 +55,14 @@ public class AccountManager {
 	private static Button delConfirmButton = new Button("Confirm");
 	private static Button delCancelButton = new Button("Cancel");
 
-	private static Button createNewButton = new Button("Create new account");
+	private static Button createNewButton = new Button("Create new source");
 	private static int editedRow;
-
-	// private static Label lUpdating = new
-	// Label("Updating data from server...");
+	
 	private static HorizontalPanel updatingPanel = new HorizontalPanel();
 
 	public static VerticalPanel init() {
 
-		tablePanel.add(accTable);
+		tablePanel.add(srcTable);
 		tablePanel.add(createNewButton);
 		updatingPanel.setVisible(true);
 		tablePanel.add(updatingPanel);
@@ -120,20 +118,13 @@ public class AccountManager {
 				if (txt.matches("^[0-9A-Za-z\\s]{1,16}$")) {
 					lNewError.setText("");
 					newDialog.hide();
-					SystemPanel.out("Creating new account...");
-					SystemPanel.statusSetOp("creating account");
-					PFMweb.upload(PFMweb.dataURL, "/account", CreateJson
-							.toJsonCreateAccount(txt, LocalData.getUser()
+					SystemPanel.out("Creating new source...");
+					SystemPanel.statusSetOp("creating source");
+					PFMweb.upload(PFMweb.dataURL, "/source", CreateJson
+							.toJsonCreateSource(txt, LocalData.getUser()
 									.getId()), "Content-Type",
 							RequestBuilder.POST);
-					PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
-					/*
-					 * int rc = accTable.getRowCount(); accTable.setWidget(rc,
-					 * 0, new Label(txt)); accTable.setWidget(rc, 1,
-					 * makeEditButton(rc)); accTable.setWidget(rc, 2,
-					 * makeDeleteButton(rc));
-					 */
-					
+					PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);					
 				} else {
 					lNewError.setText("Please specify a valid name!");
 					SystemPanel.clearStatus();
@@ -148,19 +139,15 @@ public class AccountManager {
 				if (txt.matches("^[0-9A-Za-z\\s]{1,16}$")) {
 					lEditError.setText("");
 					editDialog.hide();
-					SystemPanel.out("Editing account...");
+					SystemPanel.out("Editing source...");
 					SystemPanel.statusSetOp("editing account");
-					PFMweb.upload(PFMweb.dataURL, "/account", CreateJson
-							.toJsonAccount(
-									LocalData.getAccountList().get(editedRow)
+					PFMweb.upload(PFMweb.dataURL, "/source", CreateJson
+							.toJsonSource(
+									LocalData.getSourceList().get(editedRow)
 											.getId(), txt, LocalData.getUser()
 											.getId()), "Content-Type",
 							RequestBuilder.PUT);
-					PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
-					/*
-					 * accTable.clearCell(editedRow, 0);
-					 * accTable.setWidget(editedRow, 0, new Label(txt));
-					 */					
+					PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);					
 				} else {
 					lEditError.setText("Please specify a valid replacement name!");
 					SystemPanel.clearStatus();
@@ -172,14 +159,12 @@ public class AccountManager {
 			@Override
 			public void onClick(ClickEvent event) {
 				deletePrompt.hide();
-				SystemPanel.out("Deleting account...");
-				SystemPanel.statusSetOp("deleting account");
-				PFMweb.download(PFMweb.dataURL, "/account/"
-						+ LocalData.getAccountList().get(editedRow).getId(),
+				SystemPanel.out("Deleting source...");
+				SystemPanel.statusSetOp("deleting source");
+				PFMweb.download(PFMweb.dataURL, "/source/"
+						+ LocalData.getSourceList().get(editedRow).getId(),
 						"Accept", RequestBuilder.DELETE);
-				PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
-
-				// accTable.removeRow(editedRow);
+				PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);				
 			}
 		});
 
@@ -223,8 +208,8 @@ public class AccountManager {
 		b.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				lDelPrompt.setText("Are you sure you want to delete account '"
-						+ accTable.getText(row, 0) + "'?");
+				lDelPrompt.setText("Are you sure you want to delete source '"
+						+ srcTable.getText(row, 0) + "'?");
 				editedRow = row;
 				deletePrompt.center();
 			}
@@ -234,29 +219,29 @@ public class AccountManager {
 
 	public static void initRefresh() {
 
-		PFMweb.download(PFMweb.dataURL, "/account/list/"
+		PFMweb.download(PFMweb.dataURL, "/source/list/"
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
-		PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
+		PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);
 
 	}
 
 	public static void refresh() {
 
 		if (PFMweb.getJSONdata() != null) {
-			LocalData.setAccountList(ParseJson.parseAccount(PFMweb
+			LocalData.setSourceList(ParseJson.parseSource(PFMweb
 					.getJSONdata()));
-			SystemPanel.out("parsing accounts done");
-			accTable.clear();
-			if (LocalData.getAccountList().size() > 0) {
-				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
-					accTable.setWidget(i, 0, new Label(LocalData.getAccountList().get(i).getName()));
-					accTable.setWidget(i, 1, makeEditButton(i));
-					accTable.setWidget(i, 2, makeDeleteButton(i));
+			SystemPanel.out("parsing sources done");
+			srcTable.clear();
+			if (LocalData.getSourceList().size() > 0) {
+				for (int i = 0; i < LocalData.getSourceList().size(); i++) {
+					srcTable.setWidget(i, 0, new Label(LocalData.getSourceList().get(i).getName()));
+					srcTable.setWidget(i, 1, makeEditButton(i));
+					srcTable.setWidget(i, 2, makeDeleteButton(i));
 					SystemPanel.statusDone();
 				}
 			} else {
-				SystemPanel.out("Account list is empty");
+				SystemPanel.out("Source list is empty");
 				SystemPanel.statusError();
 			}
 

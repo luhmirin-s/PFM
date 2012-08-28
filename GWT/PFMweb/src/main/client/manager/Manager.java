@@ -14,6 +14,8 @@ public class Manager {
 	public static TabPanel init(){
 		
 		managerTabs.add(AccountManager.init(), "Accounts");		
+		managerTabs.add(CategoryManager.init(), "Categories");	
+		managerTabs.add(SourceManager.init(), "Sources");	
 		managerTabs.selectTab(0);
 		initListeners();
 		return managerTabs;
@@ -31,17 +33,18 @@ public class Manager {
 						AccountManager.initRefresh();
 						break;
 					}
+					case 1:{
+						CategoryManager.initRefresh();
+						break;
+					}
+					case 2:{
+						SourceManager.initRefresh();
+						break;
+					}
 					default: AccountManager.initRefresh();
 				}
 			}
 		});
-	}
-	
-	
-	public static void refreshData(){
-		//get from server
-		
-		//fillBox();
 	}
 
 }
