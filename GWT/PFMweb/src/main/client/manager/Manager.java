@@ -1,5 +1,7 @@
 package main.client.manager;
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.TabPanel;
 
 public class Manager {
@@ -13,22 +15,28 @@ public class Manager {
 		
 		managerTabs.add(AccountManager.init(), "Accounts");		
 		managerTabs.selectTab(0);
-		
+		initListeners();
 		return managerTabs;
 	}
-	/* unfinished:
+	
 	public static void initListeners(){
 		managerTabs.addSelectionHandler(new SelectionHandler<Integer>() {
 			
 			@Override
-			public void onSelection(SelectionEvent<Integer> event) {
+			public void onSelection(SelectionEvent<Integer> event) {		
 				
-				//if tab 0 selected, AccountManager.refresh()...
-				
+				//Window.alert("tab "+event.getSelectedItem()+" clicked!");
+				switch(event.getSelectedItem()){
+					case 0:{
+						AccountManager.initRefresh();
+						break;
+					}
+					default: AccountManager.initRefresh();
+				}
 			}
-		})
+		});
 	}
-	*/
+	
 	
 	public static void refreshData(){
 		//get from server

@@ -3,6 +3,7 @@ package main.client;
 import main.client.JSONPLoader.LoaderCallback;
 import main.client.balance.Balance;
 import main.client.journal.Journal;
+import main.client.manager.AccountManager;
 import main.client.manager.Manager;
 import main.client.transactions.ExpenseTransactions;
 import main.client.transactions.Transactions;
@@ -35,7 +36,7 @@ private static VerticalPanel journalPanel = new VerticalPanel();
 private static VerticalPanel managerPanel = new VerticalPanel();
 */  
   //private HorizontalPanel toolbar = new HorizontalPanel();
-  private Timer refreshTimer;
+  private static Timer refreshTimer;
   private Label errorMsgLabel = new Label();
   
   //private Label lastUpdatedLabel = new Label(); 
@@ -78,7 +79,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	        	//refreshDataFromServer();
 	        }
 	      };
-      refreshTimer.scheduleRepeating(SERVER_TIMEOUT);
+      //refreshTimer.scheduleRepeating(SERVER_TIMEOUT);
 	  
   }
   
@@ -87,6 +88,23 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  String t = u.substring(7);
 	  u=u.substring(7, 7+t.indexOf('/'));
 	  return "http://"+u+"/PFMWebService/jaxrs";
+  }
+  
+  public static void initRefreshTimer(final RefreshingClasses type){
+	  refreshTimer = new Timer() {
+	        @Override
+	        public void run() {
+	        	switch(type){
+					case ACC_MGR:{AccountManager.refresh();
+						break;}
+					case CAT_MGR:{
+						break;}
+					case SRC_MGR:{
+						break;}	        		
+	        	}
+	        }
+	      };
+	  refreshTimer.schedule(PFMweb.getTimeout());
   }
   
   public static void toggleView(String viewId, boolean enable){
@@ -117,7 +135,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   	 */
   	public static void uploadDownload(String url, String resource, final String req, RequestBuilder.Method method) {
 
-		jsonData=null; //returns null before Callback
+		jsonData=null;
 		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(method, url + resource);
 		rb.setHeader("Accepts", "application/json");
@@ -164,7 +182,8 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   	 */ 	
   	public static void download(String url, String resource, String header, RequestBuilder.Method method) {
 
-		SystemPanel.out("Initializing RequestBuilder...");
+		jsonData=null;
+  		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(method, url + resource);
 		rb.setHeader(header, "application/json");
 		SystemPanel.out("Setting callback...");
