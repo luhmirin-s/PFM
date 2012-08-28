@@ -1,2 +1,14 @@
 zdesj budet lezatj wgt
 
+
+
+
+
+#!/bin/bash
+
+from=~/test1
+to=~/test2
+
+cp -u -r $from $to 
+echo "Done at: "
+date
