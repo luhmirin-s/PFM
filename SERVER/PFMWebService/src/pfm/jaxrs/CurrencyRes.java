@@ -9,6 +9,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import pfm.model.Currency;
@@ -30,7 +32,15 @@ public class CurrencyRes {
 	@GET
 	@Path("/list")
 	@Produces("application/json")
-	public List<Currency> getJsonList() {
-    	return em.createQuery("SELECT c FROM Currency c").getResultList();
+	public Response getJsonList() {
+    	try {
+			List<Currency> results = em.createQuery("SELECT c FROM Currency c").getResultList();
+			GenericEntity<List<Currency>> entity = new GenericEntity<List<Currency>>(results) {};
+			return Response.ok(entity).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+    	
 	}
 }

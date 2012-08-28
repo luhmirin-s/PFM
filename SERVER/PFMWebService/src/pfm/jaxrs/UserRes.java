@@ -5,11 +5,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import pfm.model.User;
@@ -28,7 +28,7 @@ public class UserRes {
     
     @POST
     @Produces("application/json")
-    public User postJson(@FormParam("username") String username, 
+    public Response postJson(@FormParam("username") String username, 
 							@FormParam("password") String password) {
     	User user = em.createQuery("SELECT u FROM User u " +
     										"WHERE u.username = :username AND u.password = :password", 
@@ -36,16 +36,23 @@ public class UserRes {
 				    	.setParameter("username", username)
 				    	.setParameter("password", password)
 				    	.getSingleResult();
-    	return user;
+    	if (user != null) {
+    		return Response.ok(user).build(); 
+    	} else {
+    		return Response.noContent().build();
+    	}
+    	
     }
 
     @POST
     @Consumes("application/json")
-    public void postJson(User user) {
+    public Response postJson(User user) {
     	try {
 			em.persist(user);
+			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Response.serverError().build();
 		}
     }
 

@@ -1,1 +1,10 @@
 zdesj budet lezatj wgt
+
+para ssilok o JSONP i ego realizacii:
+
+http://google-web-toolkit.googlecode.com/svn/javadoc/2.0/com/google/gwt/jsonp/client/JsonpRequestBuilder.html
+http://eggsylife.co.uk/2010/04/22/gwt-2-jsonp-and-javascript-overlays-with-jsonprequestbuilder/
+http://stackoverflow.com/questions/6815900/gwt-jsonp-with-post-not-get
+https://developers.google.com/web-toolkit/doc/1.6/tutorial/Xsite?hl=lt
+http://www.peterfranza.com/2010/06/09/gwt-loading-remote-jsonp-xss/
+http://minghuasweblog.wordpress.com/2012/08/15/gwt-ajax-json-jsonp-example-third-party-web-service/

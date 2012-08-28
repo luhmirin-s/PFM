@@ -6,6 +6,7 @@ import main.client.data.LocalData;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DisclosurePanel;
@@ -73,21 +74,60 @@ public class LoginForm {
 	 }
 	 
 	 private static void initHandlers(){
-			signIn.addClickHandler(new ClickHandler() {				
-				@Override
-				public void onClick(ClickEvent event) {														
-					int id=0;
-					String username=inputUsername.getText(),
-						password=inputPassword.getText(),
-						email="example@host.com";
-					//check login data from server, if ok - rewrite above variables
-					LocalData.initLogin(id, username, password, email);
-		 	PFMweb.toggleView("loginView", false);
-			SystemPanel.doLogin(username);
-			PFMweb.toggleView("sysPanelView", true);
-			PFMweb.toggleView("mainTabsView", true);
-				}
-			});
+		 
+		signIn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				int id = 0;
+				String username = inputUsername.getText(), password = inputPassword
+						.getText(), email = "example@host.com";
+				// check login data from server, if ok - rewrite above variables
+				//if(PFMweb.download(PFMweb.dataURL, resource, method))
+				LocalData.initLogin(id, username, password, email);
+				PFMweb.toggleView("loginView", false);
+				SystemPanel.doLogin(username);
+				PFMweb.toggleView("sysPanelView", true);
+				PFMweb.toggleView("mainTabsView", true);
+			}
+		});
+			
+		signUp.addClickHandler(new ClickHandler() {				
+			@Override
+			public void onClick(ClickEvent event) {														
+				int id=0;
+				String username=inputUsername.getText(),
+				password=inputPassword.getText(),
+				confPassword=inputConfirmPassword.getText(),
+				email=inputEmail.getText();
+				
+				if(
+					!username.isEmpty() && !password.isEmpty() && !email.isEmpty() &&
+					//username.matches("^[0-9A-Za-z\\.]{3,16}$") &&
+					//password.matches("^[0-9A-Za-z\\.]{3,16}$") &&
+					password.equals(confPassword)
+					//email.matches("^[0-9A-Za-z\\.]{3,16}$")
+				){
+					if(PFMweb.upload(PFMweb.dataURL, "user", "{\"username\": \""+username+"\",\"password\": \""+password
+							+"\", \"email\": \""+email+"\"}", RequestBuilder.POST)){
+						SystemPanel.out("Signup successful");
+						cleanup();
+					} else {
+						SystemPanel.out("Signup failed");
+					}
+				} else {
+					SystemPanel.out("Check input!");
+				}				
+								 	
+			}
+		});
+	 }
+	 
+	 private static void cleanup(){
+		 inputUsername.setText("");
+		 inputPassword.setText("");
+		 inputConfirmPassword.setText("");
+		 inputEmail.setText("");
+		 signUpDisclosure.setOpen(false);
 	 }
 	 
 }

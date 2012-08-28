@@ -26,7 +26,7 @@ public class SystemPanel {
 		 //lLoggedAs.setSize("300px", "100%");
 		 sysPanel.setHorizontalAlignment(DockPanel.ALIGN_RIGHT);
 		 sysPanel.setSpacing(32);
-		 sysPanel.add(console, DockPanel.WEST);
+		 //sysPanel.add(console, DockPanel.WEST);
 		 sysPanel.add(lLoggedAs, DockPanel.CENTER);
 		 sysPanel.add(signOut, DockPanel.EAST);
 		 
@@ -38,13 +38,6 @@ public class SystemPanel {
 	 public static void doLogin(String username){
 		 if(username.isEmpty()) username="Demo user";
 		 lLoggedAs.setText("Logged in as "+username);
-	 }
-	 
-	 public static void out(String txt){
-		 if(console.getText().length()>5000) 
-			 console.setText(console.getText().substring(console.getText().length()-1000, console.getText().length()-1));
-		 console.setText(console.getText()+"\n"+txt);
-		 console.getElement().setScrollTop(console.getElement().getScrollHeight());
 	 }
 	 
 	 private static void initHandlers(){
@@ -59,5 +52,9 @@ public class SystemPanel {
 					PFMweb.toggleView("loginView", true);
 				}
 			});
+	 }
+	 
+	 public static void out(String msg){
+		 TestingPanel.out(msg);
 	 }
 }

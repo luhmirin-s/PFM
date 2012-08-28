@@ -1,9 +1,5 @@
 package main.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-
 import main.client.balance.Balance;
 import main.client.journal.Journal;
 import main.client.manager.Manager;
@@ -13,35 +9,18 @@ import main.client.users.LoginForm;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Display;
-//import com.google.gwt.sample.stockwatcher.client.StockData;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.Random;
 
 public class PFMweb implements EntryPoint {
 
@@ -59,9 +38,11 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   
   //private Label lastUpdatedLabel = new Label(); 
   private static final int REFRESH_INTERVAL = 1000; //ms
-  private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
-  public static final String dataURL = "http://10.0.1.59:8080/PFMWebService/jaxrs/source";
-
+  //private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
+  public static final String dataURL = "localhost:8080/PFMWebService/jaxrs/";
+  private static RequestBuilder rb;
+  private static String jsonData;
+  public static boolean uploaded;
   /**
    * Entry point method.
    */
@@ -79,11 +60,13 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  RootPanel.get("loginView").add(LoginForm.init());
 	  RootPanel.get("sysPanelView").add(SystemPanel.init());
 	  RootPanel.get("mainTabsView").add(mainTabs);
+	  RootPanel.get("testView").add(TestingPanel.init());
 	  mainTabs.selectTab(0);
 	  ExpenseTransactions.focus();
 	  
 	  toggleView("loadingView", false);
 	  toggleView("loginView", true);
+	  toggleView("sysPanelView", false);
 	  
 	  //TestDBData.initData();
 	  
@@ -103,189 +86,90 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	  else
 		  DOM.getElementById(viewId).getStyle().setDisplay(Display.NONE);
   }
- 
-  	/* 					U N U S E D:					*/
   
-  	private String prepareURL(){
-  		String url = JSON_URL;
+  	public static String download(String url, String resource, RequestBuilder.Method method) {
 
-	    // Append watch list stock symbols to query URL.
-	    /*
-	    Iterator iter; = stocks.iterator();
-	    while (iter.hasNext()) {
-	      url += iter.next();
-	      if (iter.hasNext()) {
-	        url += "+";
-	      }
-	    }
-	    */
+		jsonData=null; //returns null before Callback
+		SystemPanel.out("Initializing RequestBuilder...");
+		rb = new RequestBuilder(RequestBuilder.GET, url + resource);
+		rb.setHeader("Content-Type", "application/json");
+		SystemPanel.out("Setting callback...");
+		rb.setCallback(new RequestCallback() {
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				SystemPanel.out("Status: "+String.valueOf(response.getStatusCode()));
+				if (200 == response.getStatusCode()) {
+					SystemPanel.out("Received message: \n "
+							+ response.getText());
+					jsonData = response.getText();
+				} else {
+					SystemPanel.out("Couldn't retrieve message: ("
+							+ response.getStatusText() + ") code "
+							+ response.getStatusCode());
+				}
+			}
 
-	    url = URL.encode(url);
-		
-  		return url;
-  	}
-  
-  	private void refreshDataFromServer(){
-	    String url = prepareURL();
+			@Override
+			public void onError(Request request, Throwable exception) {
+				SystemPanel.out(exception.getMessage());
+			}
+		});
 
-	 // Send request to server and catch any errors.	    
-	    RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		try {
+			SystemPanel.out("Sending request to " + dataURL + resource + "...");
+			rb.send();
+		} catch (com.google.gwt.http.client.RequestException e) {
+			SystemPanel.out(e.toString());
+		}
 
-	    try {
-	      Request request = builder.sendRequest(null, new RequestCallback() {
-	        public void onError(Request request, Throwable exception) {
-	          displayError("Couldn't retrieve JSON");
-	        }
+		SystemPanel.out("Request sent...");
 
-	        public void onResponseReceived(Request request, Response response) {
-	          if (200 == response.getStatusCode()) {
-	            //updateTable(asArrayOfStockData(response.getText()));
-	          } else {
-	            displayError("Couldn't retrieve JSON (" + response.getStatusText()
-	                + ")");
-	          }
-	        }
-	      });
-	    } catch (RequestException e) {
-	      displayError("Couldn't retrieve JSON");
-	    }
-  	}
-    /**
-     * Convert the string of JSON into JavaScript object.
-     */
-    /*
-  	private final native JsArray<StockData> asArrayOfStockData(String json) /*-{
-      return eval(json);
-    }-*/;
+		return jsonData;
+	}
+  	
+  	public static boolean upload(String url, final String resource, final String req, RequestBuilder.Method method) {
+
+		if (req.isEmpty()){
+			SystemPanel.out("Won't send empty request");
+			return false;
+		}
+		uploaded=false;
+		SystemPanel.out("Initializing RequestBuilder...");
+		rb = new RequestBuilder(method, url + resource);
+		rb.setHeader("Content-Type", "application/json");
+		rb.setRequestData(req);
+		SystemPanel.out("Setting callback...");
+		rb.setCallback(new RequestCallback() {
+			@Override
+			public void onResponseReceived(Request request, Response response) {				
+				SystemPanel.out("Status: "+String.valueOf(response.getStatusCode()));
+				if (200 == response.getStatusCode()) {
+					SystemPanel.out("Received message: \n "
+							+ response.getText());
+					uploaded = true;
+				} else {
+					SystemPanel.out("Couldn't retrieve message: ("
+							+ response.getStatusText() + ") code "
+							+ response.getStatusCode());
+				}
+			}
+
+			@Override
+			public void onError(Request request, Throwable exception) {
+				SystemPanel.out(exception.getMessage());
+			}
+		});
+
+		try {
+			SystemPanel.out("Sending " + req + " to " + dataURL + resource + "...");
+			rb.send();
+		} catch (com.google.gwt.http.client.RequestException e) {
+			SystemPanel.out(e.toString());
+		}
+
+		SystemPanel.out("Data sent...");
+
+		return uploaded;
+	}
     
-    /**
-     * If can't get JSON, display error message.
-     * @param error
-     */
-    private void displayError(String error) {
-      errorMsgLabel.setText("Error: " + error);
-      errorMsgLabel.setVisible(true);
-    }
-  
 }
-  /*
-    
-    Timer refreshTimer = new Timer(){
-    	@Override
-    	public void run(){
-    		refreshWatchList();
-    	}
-    };
-    refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
-    
-    // Listen for keyboard events in the input box.
-    newSymbolTextBox.addKeyPressHandler(new KeyPressHandler() {
-      public void onKeyPress(KeyPressEvent event) {
-        if (event.getCharCode() == KeyCodes.KEY_ENTER) {
-          addStock();
-        }
-      }
-    });
-    
-    
-    
-  }
-
-
-  private void addStock() {
-	  final String symbol = newSymbolTextBox.getText().toUpperCase().trim();
-	    newSymbolTextBox.setFocus(true);
-
-	    // Stock code must be between 1 and 10 chars that are numbers, letters, or dots.
-	    if (!symbol.matches("^[0-9A-Z\\.]{1,10}$")) {
-	      Window.alert("'" + symbol + "' is not a valid symbol.");
-	      newSymbolTextBox.selectAll();
-	      return;
-	    }
-
-	    newSymbolTextBox.setText("");
-
-	    // TODO Don't add the stock if it's already in the table.
-	    if(stocks.contains(symbol))
-	    	return;
-	    // TODO Add the stock to the table.
-	    int row = stocksFlexTable.getRowCount();
-	    stocks.add(symbol);
-	    stocksFlexTable.setText(row, 0, symbol);
-	    // TODO Add a button to remove this stock from the table.
-	    Button removeStockButton = new Button("remove");
-	    removeStockButton.addClickHandler(new ClickHandler(){
-	    	public void onClick(ClickEvent event){
-	    		int removedIndex = stocks.indexOf(symbol);
-	    		stocks.remove(removedIndex);
-	    		stocksFlexTable.removeRow(removedIndex + 1);
-	    	}
-	    });
-	    stocksFlexTable.setWidget(row, 3, removeStockButton);
-	    // TODO Get the stock price.
-	    refreshWatchList();
-
-  }
-  
-
-  private void refreshWatchList() {
-    final double MAX_PRICE = 100.0; // $100.00
-    final double MAX_PRICE_CHANGE = 0.02; // +/- 2%
-
-    StockPrice[] prices = new StockPrice[stocks.size()];
-    for (int i = 0; i < stocks.size(); i++) {
-      double price = Random.nextDouble() * MAX_PRICE;
-      double change = price * MAX_PRICE_CHANGE
-          * (Random.nextDouble() * 2.0 - 1.0);
-
-      prices[i] = new StockPrice(stocks.get(i), price, change);
-    }
-
-    updateTable(prices);
- }
-  
-@SuppressWarnings("deprecation")
-private void updateTable(StockPrice[] prices) {
-	for (int i = 0; i < prices.length; i++) {
-	      updateTable(prices[i]);
-	    }	
-  // Display timestamp showing last refresh.
-  lastUpdatedLabel.setText("Last update : "
-      + DateTimeFormat.getMediumDateTimeFormat().format(new Date()));
-}
-
-
-private void updateTable(StockPrice price) {
-  // Make sure the stock is still in the stock table.
-  if (!stocks.contains(price.getSymbol())) {
-    return;
-  }
-
-  int row = stocks.indexOf(price.getSymbol()) + 1;
-
-  // Format the data in the Price and Change fields.
-  String priceText = NumberFormat.getFormat("#,##0.00").format(
-      price.getPrice());
-  NumberFormat changeFormat = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
-  String changeText = changeFormat.format(price.getChange());
-  String changePercentText = changeFormat.format(price.getChangePercent());
-
-  // Populate the Price and Change fields with new data.
-  stocksFlexTable.setText(row, 1, priceText);
-  stocksFlexTable.setText(row, 2, changeText + " (" + changePercentText
-      + "%)");
-  
-}
-
-private void clearStocks(){
-	  if(stocks.isEmpty()) 
-	  	return;
-	  while(!stocks.isEmpty()){
-		  stocks.remove(stocks.size()-1);
-		  stocksFlexTable.removeRow(stocksFlexTable.getRowCount() - 1);
-	  }
-  }
-
-}
-  
-  */

@@ -1,21 +1,13 @@
 package main.client.manager;
 
-import java.util.ArrayList;
-
+import main.client.PFMweb;
 import main.client.SystemPanel;
-import main.client.data.Customer;
-import main.client.data.CustomerJS;
-import main.client.data.Money;
-import main.client.data.MoneyJS;
+import main.client.data.ParseJson;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -67,27 +59,13 @@ public class AccountManager {
 	//private static Label lUpdating = new Label("Updating data from server...");
 	private static HorizontalPanel updatingPanel = new HorizontalPanel();
 	
-	/*					For testing purposes									*/
-	private static Button refreshButton = new Button("Refresh");
-	private static Button setHostButton = new Button("Set server host");
-	private static TextBox inputServer = new TextBox();
-	
-	private static ArrayList<Customer> customers;
-	
 	private static String jsonData;
 	
 	public static VerticalPanel init(){
 		
 		tablePanel.add(accTable);
 		tablePanel.add(createNewButton);	
-		//updatingPanel.add(lUpdating);
 		updatingPanel.setVisible(true);
-		//lUpdating.setText(("Ready to update!"));
-		updatingPanel.add(inputServer);
-		inputServer.setText(GWT.getModuleBaseURL()+"test?q=ABC+DEF");
-		inputServer.setWidth("640px");
-		updatingPanel.add(refreshButton);	
-		updatingPanel.add(setHostButton);
 		tablePanel.add(updatingPanel);
 			
 		newNamePanel.add(lNewName);
@@ -131,21 +109,6 @@ public class AccountManager {
 			public void onClick(ClickEvent event) {				
 				inputNewName.setText("");
 				newDialog.center();					
-			}
-		});
-		
-		refreshButton.addClickHandler(new ClickHandler() {			
-			@Override
-			public void onClick(ClickEvent event) {				
-					refreshButton.setText("Refresh");
-					refreshData(inputServer.getText());				
-			}
-		});	
-		
-		setHostButton.addClickHandler(new ClickHandler() {			
-			@Override
-			public void onClick(ClickEvent event) {				
-					inputServer.setText(GWT.getModuleBaseURL());			
 			}
 		});
 		
@@ -237,140 +200,12 @@ public class AccountManager {
 		return b;
 	}
 	
-	 private final native static JsArray<CustomerJS> parseJson(String json) /*-{
-		return eval(json);
-	}-*/;
-
-	public static void loadJS() {
-
-
-		//globaljnij spisok
-		customers = new ArrayList<Customer>();
-
-		try {
-			//parsim JSON
-			JsArray<CustomerJS> jsobj = parseJson(jsonData);
-
-			//Kazdij osnovnoj elemnent peredelivaem v nuznij nam objekt
-			for (int i = 0; i < jsobj.length(); i++) {
-
-				//vremennie peremennie:
-				ArrayList<Money> tempArr = new ArrayList<Money>();
-				Customer tempCust = new Customer("a", "b", tempArr);
-
-				//kazdoe pole elementa peredajom vremennomu objektu
-				tempCust.setFirstName(((CustomerJS) jsobj.get(i)).getFirstName());
-				tempCust.setLastName(((CustomerJS) jsobj.get(i)).getLastName());
-
-				//vremennomu massivu JS peredajom vlozennij spisok
-				JsArray<MoneyJS> jsMoney = ((CustomerJS) jsobj.get(i)).getMoney();
-				//kazdij element spiska perevodiv v vremennuju peremennuju 
-				for (int j = 0; j < jsMoney.length(); j++) {
-					//vremennaja peremennaja
-					Money tempMoney = new Money("as", 43);
-					//kazdoe pole spiska peredajom peremennoj
-					tempMoney.setValue((int) ((MoneyJS) jsMoney.get(j)).getValue());
-					tempMoney.setCode(((MoneyJS) jsMoney.get(j)).getCode());
-					//dobavljaem kazduju peremennuju k vremennomu spisku
-					tempArr.add(tempMoney);
-				}
-
-				//vremennomu objektu peredajom vremennij vlozennij spisok
-				tempCust.setMoney(tempArr);
-				//dobavljaem vremennuju peremennuju v globaljnij spisok
-				customers.add(tempCust);
-			}
-
-			//vivodim klass:
-			String line = "Class output: \n";
-			for (Customer c : customers) {
-				line += c.getFirstName() + " " + c.getLastName() + "\n#";
-				for (Money m : c.getMoney()) {
-					line += m.getCode() + " " + m.getValue() + "\n#";
-				}
-				line += "\n";
-			}
-			SystemPanel.out(line);
-
-		} catch (Exception e) {
-			//errorLabel.setText(e.toString());
-		}
-
-
-	}
 	
-	public static void refreshData(final String url){
-		//lUpdating.setText(("Updating data from server..."));
-				//GWT.getModuleBaseURL()+"test?q=ABC+DEF");
-				//"http://10.0.1.59:8080/PFMWebService/jaxrs/source");
-				
-		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, url);				
-		rb.setHeader("Content-Type", "application/json");
-	    rb.setCallback(new RequestCallback(){
-			
-			@Override
-			public void onResponseReceived(Request request, Response response) {
-				//lUpdating.setText("Connecting to "+url+"...");
-				SystemPanel.out("Connecting to "+url+"...");
-				if (200 == response.getStatusCode()) {
-					SystemPanel.out("Received message: \n "+response.getText());
-					jsonData=response.getText();
-					loadJS();
-            	} else {
-            		SystemPanel.out("Couldn't retrieve message: (" + response.getStatusText()
-        				+ ") code "+response.getStatusCode());
-		          }			
-			}
-			
-			@Override
-			public void onError(Request request, Throwable exception) {
-				SystemPanel.out(exception.getMessage());
-			}
-		});
-	    rb.setRequestData("HelloFromClient!");
-        
-        try {
-			rb.send();
-		} catch (com.google.gwt.http.client.RequestException e) {
-			SystemPanel.out(e.toString());
-		}
+	
+	public static void refresh(){
 		
-        SystemPanel.out("Data updated successfully");
-	}		    
-	
-	/*    
-    public void executeQuery(String query, final AsyncCallback<JavaScriptObject> callback){
-
-    	RequestBuilder builder = new RequestBuilder(RequestBuilder.GET,
-	                URL.encode(PFMweb.dataURL + query));
-    	
-    	try{
-    		builder.sendRequest(null, new RequestCallback() {
-    			public void onError(Request request, Throwable caught) {
-    				callback.onFailure(caught);
-    			}
-		
-    			public void onResponseReceived(Request request, Response response) {
-    				if(Response.SC_OK == response.getStatusCode()) {
-						 try {send
-						   callback.onSuccess(JsonUtils.safeEval(response.getText()));
-						 } catch (IllegalArgumentException iax) {
-						   callback.onFailure(iax);
-						 }
-					} else {
-						// Better to use a typed exception here to indicate the specific
-						// cause of the failure.
-						callback.onFailure(new Exception("Bad return code."));
-					}
-    			}
-    		});
-    	} catch (RequestException e) {
-    		callback.onFailure(e);
-    	}
-	}
-	*/	
-	
-	public static void uploadData(){
+		String data=PFMweb.download(PFMweb.dataURL, "/account", RequestBuilder.GET);
+		if(data!=null) ParseJson.parseAccount(data);
 		
 	}
 

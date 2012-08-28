@@ -1,38 +1,46 @@
 package main.client.data;
 
 public class Account {
+
 	
 	private int id;
+	private int userId;
 	private String name;
-	private User user;
 	
-	public Account(){
+
+	public Account() {}
+	
+	public Account(int id, String name, int userID) {
+		setId(id);
+		setName(name);
+		setUserId(userId);
 	}
-	
-	public Account(int id, String name, User user){
-		this.id=id;
-		this.name=name;
-		this.user=user;
-	}
-	
-	public int getID(){
+
+	public int getId() {
 		return id;
 	}
-	
-	public String getName(){
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name){
-		this.name=name;
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public User getUser(){
-		return this.user;
-	}
 	
-	public void setUser(User user){
-		this.user=user;
-	}
+	
 	
 }
