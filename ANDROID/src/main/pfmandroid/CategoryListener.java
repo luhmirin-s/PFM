@@ -1,5 +1,6 @@
 package main.pfmandroid;
 
+import main.pfmandroid.data.Category;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -18,7 +19,7 @@ public class CategoryListener implements OnItemSelectedListener{
             int pos, long id) {
 		//Get the category name
 		category = (Category) parent.getItemAtPosition(pos);
-		this.pos = pos;
+		this.pos = category.getId();
     }
 
 	@Override
@@ -30,7 +31,7 @@ public class CategoryListener implements OnItemSelectedListener{
 		return category;
 	}
 	
-	public int returnPos(){
+	public int returnId(){
 		return pos;
 	}
 }

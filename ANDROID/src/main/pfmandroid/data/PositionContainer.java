@@ -1,4 +1,4 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 
 //Allows synchronization between Wallet and Money listeners, so that we can track both spinner changes.
 

@@ -1,10 +1,10 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 
 public class Source {
 	private int id;
 	private String name;
 	
-	Source(int id, String name){
+	public Source(int id, String name){
 		this.id = id;
 		this.name = name;
 	}

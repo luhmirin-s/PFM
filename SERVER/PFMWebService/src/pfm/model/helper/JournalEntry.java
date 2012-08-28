@@ -1,5 +1,6 @@
 package pfm.model.helper;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,7 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 		  query="CALL findJournalEntries(?)",
 		  resultClass=JournalEntry.class
 		)
-public class JournalEntry {
+public class JournalEntry implements Serializable  {
+	private static final long serialVersionUID = 1L;
+	
 	//@Id
 	private int id;
 	//@Id

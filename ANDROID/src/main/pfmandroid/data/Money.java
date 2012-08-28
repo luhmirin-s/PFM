@@ -1,4 +1,4 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 
 /*
  * Money class, represents a certain currency in a wallet, has a code and how much of that currency is there.
@@ -9,13 +9,13 @@ public class Money {
 	private String cashCode;
 	private double amount;
 	
-	Money(int id, String code, double cash){
+	public Money(int id, String code, double cash){
 		this.id = id;
 		cashCode = code;
 		amount = cash;
 	}
 	
-	Money(int id, String code){
+	public Money(int id, String code){
 		this.id = id;
 		cashCode = code;
 		amount = 0;
@@ -23,6 +23,10 @@ public class Money {
 	
 	public void editMoney(double newcash){
 		amount = newcash;
+	}
+	
+	public int getId(){
+		return id;
 	}
 	
 	public String getCode(){

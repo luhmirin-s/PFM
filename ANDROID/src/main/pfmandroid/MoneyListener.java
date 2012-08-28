@@ -1,6 +1,8 @@
 package main.pfmandroid;
 
-import android.util.Log;
+import main.pfmandroid.data.Currency;
+import main.pfmandroid.data.DataStorage;
+import main.pfmandroid.data.PositionContainer;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 public class MoneyListener implements OnItemSelectedListener{
 	
+	private Currency currency;
+	private int curid;
 	private String currencyCode;
 	private TextView changable;
 	PositionContainer test;
@@ -20,15 +24,18 @@ public class MoneyListener implements OnItemSelectedListener{
 	public void onItemSelected(AdapterView<?> parent, View arg1, int pos,
 			long id) {
 		
+		currency = (Currency) parent.getItemAtPosition(pos);
+		curid = currency.getId();
+		
 		if(test != null)
 			test.posOfCode = pos;
 		
 		if(changable != null){
-			//double amount = DataStorage.listOfWallets.get(test.posOfWallet).getMoney().get(test.posOfCode).getAmount();
+			double amount = DataStorage.listOfWallets.get(test.posOfWallet).getMoney().get(test.posOfCode).getAmount();
 			
-			//CharSequence message = String.valueOf(amount);
+			CharSequence message = String.valueOf(amount);
 			
-			//changable.setText(message);
+			changable.setText(message);
 		}
 	}
 
@@ -42,15 +49,15 @@ public class MoneyListener implements OnItemSelectedListener{
 		return currencyCode;
 	}
 	
-	public int returnPos(){
-		return 0;
+	public int returnId(){
+		return curid;
 	}
 	
-	MoneyListener(){
+	public MoneyListener(){
 		
 	}
 	
-	MoneyListener(TextView what, PositionContainer mine){
+	public MoneyListener(TextView what, PositionContainer mine){
 		changable = what;
 		test = mine;
 	}

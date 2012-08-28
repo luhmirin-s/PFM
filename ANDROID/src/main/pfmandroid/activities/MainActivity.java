@@ -1,5 +1,9 @@
-package main.pfmandroid;
+package main.pfmandroid.activities;
 
+import main.pfmandroid.R;
+import main.pfmandroid.R.layout;
+import main.pfmandroid.R.menu;
+import main.pfmandroid.data.DataStorage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +15,12 @@ import android.view.View;
  */
 
 public class MainActivity extends Activity {
+	static DataStorage globalData = new DataStorage();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        DataStorage global = new DataStorage();
-        global.getData();
     }
 
     @Override
@@ -49,11 +51,6 @@ public class MainActivity extends Activity {
     
     public void journalShow(View view){
     	Intent intent = new Intent(this, JournalActivity.class);
-    	startActivity(intent);
-    }
-    
-    public void connectionTest(View view){
-    	Intent intent = new Intent(this, ConnectionTest.class);
     	startActivity(intent);
     }
 }

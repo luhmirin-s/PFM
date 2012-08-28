@@ -1,5 +1,10 @@
-package main.pfmandroid;
+package main.pfmandroid.activities;
 
+import main.pfmandroid.R;
+import main.pfmandroid.data.DataStorage;
+import main.pfmandroid.data.Money;
+import main.pfmandroid.data.Wallet;
+import main.pfmandroid.getdata.RetrieveBalanceData;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -26,7 +31,8 @@ public class BalanceActivity extends Activity {
         
         //Find table to reference it later
         balanceTable = (TableLayout) findViewById(R.id.balance_table);
-        fillBalanceTable();
+        RetrieveBalanceData task = new RetrieveBalanceData(this);
+        task.execute();
     }
     
     
@@ -70,6 +76,8 @@ public class BalanceActivity extends Activity {
                 trCode.setText(y.getCode());
                 
                 TextView trAmount = (TextView)tr.findViewById(R.id.trBalanceAmount);
+                if(y.getAmount() == 0)
+                	continue;
                 trAmount.setText(String.valueOf(y.getAmount()));
                 
                 balanceTable.addView(tr);

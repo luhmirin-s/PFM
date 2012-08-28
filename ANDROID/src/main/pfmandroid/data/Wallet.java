@@ -1,4 +1,4 @@
-package main.pfmandroid;
+package main.pfmandroid.data;
 
 import java.util.ArrayList;
 
@@ -13,12 +13,12 @@ public class Wallet {
 	private String name;
 	private ArrayList<Money> type;
 	
-	Wallet(){
+	public Wallet(){
 		name = "default";
 		type = new ArrayList<Money>();
 	}
 	
-	Wallet(int id, String name){
+	public Wallet(int id, String name){
 		this.id = id;
 		this.name = name;
 		type = new ArrayList<Money>();
@@ -26,6 +26,10 @@ public class Wallet {
 		
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	public int getId(){
+		return id;
 	}
 	
 	public String getName(){
@@ -44,17 +48,17 @@ public class Wallet {
 		return type;
 	}
 	
-	//Not used right now
-	public void editCurrency(String code, double amount){
+	public boolean editCurrency(int id, double amount){
 		for(int i=0; i < type.size(); i++){
-			if(code.equals(type.get(i).getCode())){
+			if(id == type.get(i).getId()){
 				type.get(i).editMoney(amount);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	//Search for the currency by the given parameter (string).
+	//Search for the currency by the given id.
 	public Money findCurrency(String code){
 		for(int i=0; i < type.size(); i++){
 			if(code.equals(type.get(i).getCode()))
