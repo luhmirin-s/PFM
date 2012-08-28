@@ -17,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import pfm.model.Account;
 import pfm.model.User;
@@ -41,7 +42,7 @@ public class AccountRes {
         if (acc != null) {
     		return Response.ok(acc).build();
     	} else {
-    		return Response.noContent().build();
+    		return Response.status(Status.NOT_FOUND).build();
     	}
     }
     
@@ -56,7 +57,7 @@ public class AccountRes {
 			GenericEntity<List<Account>> entity = new GenericEntity<List<Account>>(list) {};
 	    	return Response.ok(entity).build();
     	} else {
-    		return Response.noContent().build();
+    		return Response.status(Status.NOT_FOUND).build();
     	}
     }
     
@@ -67,6 +68,7 @@ public class AccountRes {
 			User user = em.find(User.class, acc.getUserId());
 			acc.setUser(user);
 			em.persist(acc);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,7 +82,8 @@ public class AccountRes {
     	try {
     		User user = em.find(User.class, acc.getUserId());
 			acc.setUser(user);
-			em.merge(acc);	
+			em.merge(acc);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
