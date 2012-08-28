@@ -3,10 +3,14 @@ package main.client.users;
 import main.client.PFMweb;
 import main.client.SystemPanel;
 import main.client.data.LocalData;
+import main.client.data.ParseJson;
+import main.client.data.User;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DisclosurePanel;
@@ -29,6 +33,8 @@ public class LoginForm {
 	 private static Button signIn = new Button("Sign in");
 	 private static Button signUp = new Button("Sign up");
      
+	 private static Timer loginFormTimer;
+	 private static int timeoutCounter;
 	
 	 public static VerticalPanel init(){	
 		
@@ -73,21 +79,45 @@ public class LoginForm {
 		 
 	 }
 	 
+	 public static void stopTimer(){
+		 loginFormTimer.cancel();
+		 SystemPanel.out("Timer interrupted from outer class");
+	 }
+	 
 	 private static void initHandlers(){
 		 
 		signIn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				int id = 0;
-				String username = inputUsername.getText(), password = inputPassword
-						.getText(), email = "example@host.com";
-				// check login data from server, if ok - rewrite above variables
-				//if(PFMweb.download(PFMweb.dataURL, resource, method))
-				LocalData.initLogin(id, username, password, email);
-				PFMweb.toggleView("loginView", false);
-				SystemPanel.doLogin(username);
-				PFMweb.toggleView("sysPanelView", true);
-				PFMweb.toggleView("mainTabsView", true);
+				
+				PFMweb.uploadDownload(PFMweb.dataURL, "/user", "username="+inputUsername.getText()+"&password="+inputPassword.getText(), RequestBuilder.POST);
+				SystemPanel.out("Download initiated");				
+				loginFormTimer = new Timer() {
+					@Override
+					public void run() {
+						SystemPanel.out("Object null for now, "+Integer.valueOf(10-timeoutCounter)+" retries left");
+						
+						if(!PFMweb.getJSONdata().isEmpty()){	
+							SystemPanel.out("Object received!");
+							loginFormTimer.cancel();
+							
+							SystemPanel.out("parsing...");
+							User u = ParseJson.parseUser(PFMweb.getJSONdata());
+							LocalData.initLogin(u.getId(), u.getUsername(), u.getPassword(), u.getEmail());
+							PFMweb.toggleView("loginView", false);
+							SystemPanel.doLogin(u.getUsername());
+							PFMweb.toggleView("sysPanelView", true);
+							PFMweb.toggleView("mainTabsView", true);							
+							
+						}
+						timeoutCounter--;
+
+					}
+				};
+				timeoutCounter=10;
+		      loginFormTimer.scheduleRepeating(PFMweb.getTimeout());
+					
+
 			}
 		});
 			

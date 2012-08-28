@@ -1,5 +1,9 @@
 package main.client.data;
 
+import main.client.SystemPanel;
+
+import com.google.gwt.user.client.Window;
+
 public class User {
 
 	
@@ -17,6 +21,7 @@ public class User {
 		setEmail(email);
 		setUsername(username);
 		setPassword(password);
+		SystemPanel.out("user created! :)");
 	}
 
 	public int getId() {

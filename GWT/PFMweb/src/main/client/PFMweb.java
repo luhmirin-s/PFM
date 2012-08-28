@@ -1,5 +1,6 @@
 package main.client;
 
+import main.client.JSONPLoader.LoaderCallback;
 import main.client.balance.Balance;
 import main.client.journal.Journal;
 import main.client.manager.Manager;
@@ -8,19 +9,19 @@ import main.client.transactions.Transactions;
 import main.client.users.LoginForm;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.json.client.JSONObject;
+
 
 public class PFMweb implements EntryPoint {
 
@@ -37,9 +38,9 @@ private static VerticalPanel managerPanel = new VerticalPanel();
   private Label errorMsgLabel = new Label();
   
   //private Label lastUpdatedLabel = new Label(); 
-  private static final int REFRESH_INTERVAL = 1000; //ms
+  private static final int SERVER_TIMEOUT = 500; //ms
   //private static final String JSON_URL = GWT.getModuleBaseURL() + "stockPrices?q=";
-  public static final String dataURL = "localhost:8080/PFMWebService/jaxrs/";
+  public static final String dataURL = "http://localhost:8080/PFMWebService/jaxrs";
   private static RequestBuilder rb;
   private static String jsonData;
   public static boolean uploaded;
@@ -76,7 +77,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 	        	//refreshDataFromServer();
 	        }
 	      };
-      refreshTimer.scheduleRepeating(REFRESH_INTERVAL);
+      refreshTimer.scheduleRepeating(SERVER_TIMEOUT);
 	  
   }
   
@@ -87,11 +88,59 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 		  DOM.getElementById(viewId).getStyle().setDisplay(Display.NONE);
   }
   
+  	public static int getTimeout(){
+  		return SERVER_TIMEOUT;
+  	}
+  	
+  	public static String getJSONdata(){
+  		return jsonData;
+  	}
+  
+  	public static void uploadDownload(String url, String resource, final String req, RequestBuilder.Method method) {
+
+		jsonData=null; //returns null before Callback
+		SystemPanel.out("Initializing RequestBuilder...");
+		rb = new RequestBuilder(method, url + resource);
+		rb.setHeader("Accepts", "application/json");
+		rb.setRequestData(req);
+		SystemPanel.out("Setting callback...");
+		rb.setCallback(new RequestCallback() {
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				SystemPanel.out("Status: "+String.valueOf(response.getStatusCode()));
+				if (200 == response.getStatusCode()) {
+					SystemPanel.out("Received message: \n "
+							+ response.getText());
+					jsonData = response.getText();			
+				} else {
+					SystemPanel.out("Couldn't retrieve message: ("
+							+ response.getStatusText() + ") code "
+							+ response.getStatusCode());
+				}
+			}
+
+			@Override
+			public void onError(Request request, Throwable exception) {
+				SystemPanel.out(exception.getMessage());
+			}
+		});
+
+		try {
+			SystemPanel.out("Sending request to " + url + resource + "...");
+			rb.send();
+		} catch (com.google.gwt.http.client.RequestException e) {
+			SystemPanel.out(e.toString());
+		}
+
+		SystemPanel.out("Request sent...");
+	}
+  	
+  	
   	public static String download(String url, String resource, RequestBuilder.Method method) {
 
 		jsonData=null; //returns null before Callback
 		SystemPanel.out("Initializing RequestBuilder...");
-		rb = new RequestBuilder(RequestBuilder.GET, url + resource);
+		rb = new RequestBuilder(method, url + resource);
 		rb.setHeader("Content-Type", "application/json");
 		SystemPanel.out("Setting callback...");
 		rb.setCallback(new RequestCallback() {
@@ -116,7 +165,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 		});
 
 		try {
-			SystemPanel.out("Sending request to " + dataURL + resource + "...");
+			SystemPanel.out("Sending request to " + url + resource + "...");
 			rb.send();
 		} catch (com.google.gwt.http.client.RequestException e) {
 			SystemPanel.out(e.toString());
@@ -136,7 +185,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 		uploaded=false;
 		SystemPanel.out("Initializing RequestBuilder...");
 		rb = new RequestBuilder(method, url + resource);
-		rb.setHeader("Content-Type", "application/json");
+		rb.setHeader("Content-Type", "application/json");		
 		rb.setRequestData(req);
 		SystemPanel.out("Setting callback...");
 		rb.setCallback(new RequestCallback() {
@@ -161,7 +210,7 @@ private static VerticalPanel managerPanel = new VerticalPanel();
 		});
 
 		try {
-			SystemPanel.out("Sending " + req + " to " + dataURL + resource + "...");
+			SystemPanel.out("Sending " + req + " to " + url + resource + "...");
 			rb.send();
 		} catch (com.google.gwt.http.client.RequestException e) {
 			SystemPanel.out(e.toString());
