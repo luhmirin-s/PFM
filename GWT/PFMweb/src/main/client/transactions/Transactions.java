@@ -1,18 +1,12 @@
 package main.client.transactions;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.SuggestBox;
+import main.client.SystemPanel;
+import main.client.manager.CategoryManager;
+import main.client.manager.SourceManager;
+
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Transactions {
 
@@ -30,6 +24,7 @@ public class Transactions {
 		
 		transTabs.selectTab(0);
 
+		initListeners();
 		/*
 		transTabs.getWidget(0).addSelectionHandler(new ClickHandler() {
 			
@@ -42,11 +37,42 @@ public class Transactions {
 		});
 		*/
 		//refreshData();
+		
 		return transTabs;
 	}
 	
-	public static void refreshData(){
-		//get from server
+	public static void reselectCurrentTab(){
+		transTabs.getTabBar().selectTab(transTabs.getTabBar().getSelectedTab());
+		SystemPanel.out(String.valueOf(transTabs.getTabBar().getSelectedTab()));
+	}
+	
+	public static void initListeners(){
+		transTabs.addSelectionHandler(new SelectionHandler<Integer>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<Integer> event) {		
+				
+				//Window.alert("tab "+event.getSelectedItem()+" clicked!");
+				switch(event.getSelectedItem()){
+					case 0:{
+						ExpenseTransactions.refreshData();
+						ExpenseTransactions.focus();						
+						break;
+					}
+					case 1:{
+						CategoryManager.initRefresh();
+						IncomeTransactions.focus();
+						break;
+					}
+					case 2:{
+						SourceManager.initRefresh();
+						TransferTransactions.focus();
+						break;
+					}
+					default: ExpenseTransactions.refreshData();
+				}
+			}
+		});
 	}
 	 
 }

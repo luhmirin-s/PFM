@@ -126,16 +126,16 @@ public class CreateJson {
 	/**
 	 * Creates "Create new expense" string
 	 * 
-	 * @param ammount
+	 * @param amount
 	 * @param accountId
 	 * @param categoryId
 	 * @param currencyId
 	 * @return JSON String
 	 */
-	public static String toJsonExpenses(int ammount,int accountId,
+	public static String toJsonExpenses(int amount,int accountId,
 											int categoryId,int currencyId){
 		String line = "{" +
-				"\"ammount\": \"" + ammount +	"\"," +
+				"\"amount\": \"" + amount +	"\"," +
 				"\"accountId\": \"" + accountId +	"\"," +
 				"\"categoryId\": \"" + categoryId +	"\"," +
 				"\"currencyId\": \"" + currencyId +	"\"" +
@@ -146,16 +146,16 @@ public class CreateJson {
 	/**
 	 * Creates "Create new income" string
 	 * 
-	 * @param ammount
+	 * @param amount
 	 * @param accountId
 	 * @param sourceId
 	 * @param currencyId
 	 * @return JSON String
 	 */
-	public static String toJsonIncome(int ammount,int accountId,
+	public static String toJsonIncome(int amount,int accountId,
 											int sourceId,int currencyId){
 		String line = "{" +
-				"\"ammount\": \"" + ammount +	"\"," +
+				"\"amount\": \"" + amount +	"\"," +
 				"\"accountId\": \"" + accountId +	"\"," +
 				"\"sourceId\": \"" + sourceId +	"\"," +
 				"\"currencyId\": \"" + currencyId +	"\"" +
@@ -166,16 +166,16 @@ public class CreateJson {
 	/**
 	 * Creates "Create new transfer" string
 	 * 
-	 * @param ammount
+	 * @param amount
 	 * @param fromAccountId
 	 * @param toAccountId
 	 * @param currencyId
 	 * @return JSON String
 	 */
-	public static String toJsonTransfer(int ammount,int fromAccountId,
+	public static String toJsonTransfer(int amount,int fromAccountId,
 											int toAccountId,int currencyId){
 		String line = "{" +
-				"\"ammount\": \"" + ammount +	"\"," +
+				"\"amount\": \"" + amount +	"\"," +
 				"\"fromAccountId\": \"" + fromAccountId +	"\"," +
 				"\"toAccountId\": \"" + toAccountId +	"\"," +
 				"\"currencyId\": \"" + currencyId +	"\"" +

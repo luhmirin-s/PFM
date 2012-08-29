@@ -14,17 +14,15 @@ public class LocalData {
 		LocalData.user = user;
 	}
 	private static ArrayList<Account> accountList;
+	private static ArrayList<Currency> currencyList;
 	private static ArrayList<Category> categoryList;
 	private static ArrayList<Source> sourceList;
+	private static ArrayList<Balance> balanceList;
 	
 	public static void initLogin(int id, String username, String password, String email){
 		
 		user= new User(id, username, password, email);
-		
-		//accountList=new ArrayList<Account>();
-		//categoryList=new ArrayList<Category>();
-		//sourceList=new ArrayList<Source>();
-		
+	
 	}
 	
 	public static void initLogout(){
@@ -62,6 +60,18 @@ public class LocalData {
 	}
 	public static void setSourceList(ArrayList<Source> sourceList) {
 		LocalData.sourceList = sourceList;
+	}
+	public static ArrayList<Currency> getCurrencyList() {
+		return currencyList;
+	}
+	public static void setCurrencyList(ArrayList<Currency> currencyList) {
+		LocalData.currencyList = currencyList;
+	}
+	public static ArrayList<Balance> getBalanceList() {
+		return balanceList;
+	}
+	public static void setBalanceList(ArrayList<Balance> balanceList) {
+		LocalData.balanceList = balanceList;
 	}
 	
 }
