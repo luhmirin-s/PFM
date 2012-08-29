@@ -42,6 +42,7 @@ public class ExpenseRes {
 			exp.setCurrency(cur);
 			
 			em.persist(exp);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,6 +56,7 @@ public class ExpenseRes {
     	try {
     		Expense exp = em.find(Expense.class, id);
         	em.remove(exp);
+        	em.flush();
         	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -41,6 +41,7 @@ public class TransferRes {
 			trs.setCurrency(cur);
 			
 			em.persist(trs);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +55,7 @@ public class TransferRes {
     	try {
     		Transfer trs = em.find(Transfer.class, id);
         	em.remove(trs);
+        	em.flush();
         	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();

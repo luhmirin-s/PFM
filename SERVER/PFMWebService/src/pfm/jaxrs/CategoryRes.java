@@ -69,6 +69,7 @@ public class CategoryRes {
 			User user = em.find(User.class, cat.getUserId());
 			cat.setUser(user);
 			em.persist(cat);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,6 +84,7 @@ public class CategoryRes {
     		User user = em.find(User.class, cat.getUserId());
 			cat.setUser(user);
 			em.merge(cat);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,6 +98,7 @@ public class CategoryRes {
     	try {
     		Category cat = em.find(Category.class, id);
         	em.remove(cat);
+        	em.flush();
         	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
