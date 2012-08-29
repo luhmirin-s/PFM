@@ -68,6 +68,7 @@ public class SourceRes {
 			User user = em.find(User.class, src.getUserId());
 			src.setUser(user);
 			em.persist(src);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,6 +83,7 @@ public class SourceRes {
 			User user = em.find(User.class, src.getUserId());
 			src.setUser(user);
 			em.merge(src);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,6 +97,7 @@ public class SourceRes {
     	try {
     		Source src = em.find(Source.class, id);
         	em.remove(src);
+        	em.flush();
         	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -3,7 +3,7 @@ package main.client;
 public class Expense {
 
 	
-	private int ammount;
+	private int amount;
 	private int accountId;
 	private int currencyId;
 	private int categoryId;
@@ -12,21 +12,21 @@ public class Expense {
 	public Expense() {}
 
 
-	public Expense(int ammount, int accountId, int currencyId, int categoryId) {
+	public Expense(int amount, int accountId, int currencyId, int categoryId) {
 		setAccountId(accountId);
-		setAmmount(ammount);
+		setAmount(amount);
 		setCategoryId(categoryId);
 		setCurrencyId(currencyId);
 	}
 
 
-	public int getAmmount() {
-		return ammount;
+	public int getAmount() {
+		return amount;
 	}
 
 
-	public void setAmmount(int ammount) {
-		this.ammount = ammount;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 

@@ -77,6 +77,7 @@ public class SystemPanel {
 	  */
 	 public static void statusSetOp(String op){
 		 lStatus.setText("Processing...");
+		 currentOp=op;
 	 }
 	 public static void statusDone(){
 		 if(currentOp==null) clearStatus();

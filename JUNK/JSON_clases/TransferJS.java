@@ -10,7 +10,7 @@ class TransferJS extends JavaScriptObject {
 protected TransferJS() { }
 
 //Typically, methods on overlay types are JSNI
-public final native String getAmmount() /*-{ return this.ammount; }-*/;
+public final native String getAmount() /*-{ return this.amount; }-*/;
 public final native String getToAccountId() /*-{ return this.toAccountID; }-*/;
 public final native String getFromAccountId() /*-{ return this.fromAccountId; }-*/;
 public final native String getCurrencyId() /*-{ return this.currencyId; }-*/;

@@ -124,7 +124,7 @@ public class CategoryManager {
 							.toJsonCreateCategory(txt, LocalData.getUser()
 									.getId()), "Content-Type",
 							RequestBuilder.POST);
-					PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
+					PFMweb.requestRefresh(RefreshingClasses.CAT_MGR);
 				} else {
 					lNewError.setText("Please specify a valid name!");
 					SystemPanel.clearStatus();
@@ -147,7 +147,7 @@ public class CategoryManager {
 											.getId(), txt, LocalData.getUser()
 											.getId()), "Content-Type",
 							RequestBuilder.PUT);
-					PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
+					PFMweb.requestRefresh(RefreshingClasses.CAT_MGR);
 					
 				} else {
 					lEditError.setText("Please specify a valid replacement name!");
@@ -165,7 +165,7 @@ public class CategoryManager {
 				PFMweb.download(PFMweb.dataURL, "/category/"
 						+ LocalData.getCategoryList().get(editedRow).getId(),
 						"Accept", RequestBuilder.DELETE);
-				PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
+				PFMweb.requestRefresh(RefreshingClasses.CAT_MGR);
 				
 			}
 		});
@@ -224,6 +224,7 @@ public class CategoryManager {
 		PFMweb.download(PFMweb.dataURL, "/category/list/"
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
+		catTable.removeAllRows();
 		PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
 
 	}
@@ -239,9 +240,9 @@ public class CategoryManager {
 				for (int i = 0; i < LocalData.getCategoryList().size(); i++) {
 					catTable.setWidget(i, 0, new Label(LocalData.getCategoryList().get(i).getName()));
 					catTable.setWidget(i, 1, makeEditButton(i));
-					catTable.setWidget(i, 2, makeDeleteButton(i));
-					SystemPanel.statusDone();
+					catTable.setWidget(i, 2, makeDeleteButton(i));					
 				}
+				SystemPanel.statusDone();
 			} else {
 				SystemPanel.out("Category list is empty");
 				SystemPanel.statusError();

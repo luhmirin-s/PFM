@@ -42,6 +42,7 @@ public class IncomeRes {
 			inc.setCurrency(cur);
 			
 			em.persist(inc);
+			em.flush();
 			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,6 +56,7 @@ public class IncomeRes {
     	try {
     		Income inc = em.find(Income.class, id);
         	em.remove(inc);
+        	em.flush();
         	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();

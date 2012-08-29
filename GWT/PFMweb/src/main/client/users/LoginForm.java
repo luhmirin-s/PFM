@@ -6,6 +6,7 @@ import main.client.data.CreateJson;
 import main.client.data.LocalData;
 import main.client.data.ParseJson;
 import main.client.data.User;
+import main.client.transactions.ExpenseTransactions;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -113,6 +114,12 @@ public class LoginForm {
 					@Override
 					public void run() {
 						
+						if(PFMweb.getJSONdata().equals("fail")){
+							SystemPanel.out("User not found");
+							lSignInStatus.setText("Incorrect");
+							return;
+						}
+						
 						if(!PFMweb.getJSONdata().isEmpty()){	
 							SystemPanel.out("Object received!");							
 							SystemPanel.out("parsing...");
@@ -122,7 +129,8 @@ public class LoginForm {
 							PFMweb.toggleView("loginView", false);
 							SystemPanel.doLogin(u.getUsername());
 							PFMweb.toggleView("sysPanelView", true);
-							PFMweb.toggleView("mainTabsView", true);							
+							PFMweb.toggleView("mainTabsView", true);	
+							ExpenseTransactions.refreshData();
  
 						} else {
 							SystemPanel.out("Received null");
@@ -139,7 +147,7 @@ public class LoginForm {
 			@Override
 			public void onClick(ClickEvent event) {														
 
-				String username=inputUsername.getText(),
+				final String username=inputUsername.getText(),
 				password=inputPassword.getText(),
 				confPassword=inputConfirmPassword.getText(),
 				email=inputEmail.getText();
@@ -158,7 +166,9 @@ public class LoginForm {
 							
 							if(PFMweb.isUploaded()){	
 								SystemPanel.out("User successfully created!");							
-								cleanup();								 
+								cleanup();
+								inputUsername.setText(username);
+								lSignInStatus.setText("You can now sign in!");
 							} else {
 								SystemPanel.out("User already present or error");
 								lSignUpStatus.setText("An error occured");

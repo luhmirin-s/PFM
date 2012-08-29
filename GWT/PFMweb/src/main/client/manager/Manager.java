@@ -21,6 +21,10 @@ public class Manager {
 		return managerTabs;
 	}
 	
+	public static void reselectCurrentTab(){
+		managerTabs.getTabBar().selectTab(managerTabs.getTabBar().getSelectedTab());
+	}
+	
 	public static void initListeners(){
 		managerTabs.addSelectionHandler(new SelectionHandler<Integer>() {
 			

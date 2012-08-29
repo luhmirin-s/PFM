@@ -97,6 +97,7 @@ public class AccountRes {
     	try {
     		Account acc = em.find(Account.class, id);
         	em.remove(acc);
+        	em.flush();
         	return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
