@@ -357,5 +357,71 @@ Available resources:
 		Sends: 
 		Sent body example:
 
+	Available action for /balance:
+		Description: 
+		Method: GET
+		Parameters: /list/{accountId}
+		Accepts: 
+		Accepted body example: 
+		Sends: application/json
+		Sent body example: 
+		{
+			"balance": [
+				{
+					"currencyId": "1",
+					"sum": "-500.0"
+				},
+				{
+					"currencyId": "2",
+					"sum": "500.0"
+				}
+			]
+		}
+
+	Available action for /journal:
+		Description: 
+		Method: GET
+		Parameters: /list?userid={userid}&timeframe={timeframe}
+			{timeframe} take integer in range {1;4}, where:
+								1 - today
+								2 - last week
+								3 - last month
+								4 - last year
+		Accepts: 
+		Accepted body example: 
+		Sends: application/json
+		Sent body example: 
+		{
+			"journalEntry":	[
+				{
+					"accountName": "Hansabanka",
+					"amount": "500 EUR",
+					"date": "2012-08-29 13:52:04",
+					"text": "Other",
+					"transactionId": "11",
+					"type": "2"
+				},
+				{
+					"accountName": "Hansabanka",
+					"amount": "-300 LVL",
+					"date": "2012-08-29 10:57:31",
+					"text": "Clothes",
+					"transactionId": "9",
+					"type": "1"
+				},
+				{
+					"accountName": "Hansabanka",
+					"amount": "2000 LVL",
+					"date": "2012-08-29 10:56:10",
+					"text": "Salary",
+					"transactionId": "10",
+					"type": "2"
+				}
+			]
+		}
+
+
+
+
 		
 		
