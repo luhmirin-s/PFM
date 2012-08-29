@@ -6,6 +6,7 @@ import main.client.data.CreateJson;
 import main.client.data.LocalData;
 import main.client.data.ParseJson;
 import main.client.data.User;
+import main.client.transactions.ExpenseTransactions;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -128,7 +129,8 @@ public class LoginForm {
 							PFMweb.toggleView("loginView", false);
 							SystemPanel.doLogin(u.getUsername());
 							PFMweb.toggleView("sysPanelView", true);
-							PFMweb.toggleView("mainTabsView", true);							
+							PFMweb.toggleView("mainTabsView", true);	
+							ExpenseTransactions.refreshData();
  
 						} else {
 							SystemPanel.out("Received null");

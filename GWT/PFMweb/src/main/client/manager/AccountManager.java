@@ -231,7 +231,9 @@ public class AccountManager {
 		});
 		return b;
 	}
-
+	/**
+	 * Send a request for getting all data  (non-specific request)
+	 */
 	public static void initRefresh() {
 
 		PFMweb.download(PFMweb.dataURL, "/account/list/"
@@ -241,7 +243,9 @@ public class AccountManager {
 		PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
 
 	}
-
+	/**
+	 * handle data when received
+	 */
 	public static void refresh() {
 
 		if (PFMweb.getJSONdata() != null) {

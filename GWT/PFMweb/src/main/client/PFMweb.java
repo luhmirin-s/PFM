@@ -58,24 +58,15 @@ private static TabPanel mainTabs = new TabPanel();
 	  RootPanel.get("sysPanelView").add(SystemPanel.init());
 	  RootPanel.get("mainTabsView").add(mainTabs);
 	  RootPanel.get("testView").add(TestingPanel.init());
+	  
+	  //Transactions.reselectCurrentTab();
 	  mainTabs.selectTab(0);
-	  ExpenseTransactions.focus();
 	  
 	  toggleView("loadingView", false);
 	  toggleView("loginView", true);
 	  toggleView("sysPanelView", false);
 	  
 	  initListeners();
-	  
-	  //TestDBData.initData();
-	  
-	  refreshTimer = new Timer() {
-	        @Override
-	        public void run() {
-	        	//refreshDataFromServer();
-	        }
-	      };
-      //refreshTimer.scheduleRepeating(SERVER_TIMEOUT);
 	  
   }
   
@@ -87,12 +78,27 @@ private static TabPanel mainTabs = new TabPanel();
 				
 				//Window.alert("tab "+event.getSelectedItem()+" clicked!");
 				switch(event.getSelectedItem()){
+					case 0:{
+						Transactions.reselectCurrentTab();
+						break;
+					}	
+					
+					case 1:{
+						SystemPanel.out("Selected tab 1");
+						break;
+					}
+					
+					case 2:{
+						SystemPanel.out("Selected tab 2");
+						break;
+					}
+					
 					case 3:{
 						Manager.reselectCurrentTab();
 						break;
 					}
 
-					default: AccountManager.initRefresh();
+					default: SystemPanel.out("Default selection");
 				}
 			}
 		});
@@ -105,6 +111,14 @@ private static TabPanel mainTabs = new TabPanel();
 	  return "http://"+u+"/PFMWebService/jaxrs";
   }
   
+  public static TabPanel getMaintabs(){
+	  return mainTabs;
+  }
+  
+  /**
+   * Call when need to refresh all data after clicking on the tab
+   * @param type
+   */
   public static void initRefreshTimer(final RefreshingClasses type){
 	  refreshTimer = new Timer() {
 	        @Override
@@ -121,22 +135,36 @@ private static TabPanel mainTabs = new TabPanel();
 	      };
 	  refreshTimer.schedule(getTimeout());
   }
-  
+  /**
+   * Call when need to refresh all data after an operation (add, edit, delete)
+   * EDIT: from now on, will be used also as initRefreshTimer (must specify specific type)
+   * @param type
+   */
   public static void requestRefresh(final RefreshingClasses type){
 	  refreshTimer = new Timer() {
 	        @Override
 	        public void run() {
+	        	SystemPanel.out("Timer called for "+type.toString());
 	        	switch(type){
 					case ACC_MGR:{AccountManager.initRefresh();
 						break;}
 					case CAT_MGR:{CategoryManager.initRefresh();
 						break;}
 					case SRC_MGR:{SourceManager.initRefresh();
-						break;}	        		
+						break;}	
+					
+					case TRA_EXP:{ExpenseTransactions.refreshData();
+						break;}
+					case TRA_EXP_ACC:{ExpenseTransactions.handleAccounts();
+						break;}
+					case TRA_EXP_CAT:{ExpenseTransactions.handleCategories();
+						break;}	
+					case TRA_EXP_CUR:{ExpenseTransactions.handleCurrencies();
+					break;}
 	        	}
 	        }
 	      };
-	  refreshTimer.schedule(getTimeout());
+	  refreshTimer.schedule(300);
   }
   
   public static void toggleView(String viewId, boolean enable){
