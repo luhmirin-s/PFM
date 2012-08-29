@@ -86,7 +86,7 @@ private static TabPanel mainTabs = new TabPanel();
 					}	
 					
 					case 1:{
-						SystemPanel.out("Selected tab 1");
+						Balance.reselectCurrentTab();
 						break;
 					}
 					
@@ -176,6 +176,13 @@ private static TabPanel mainTabs = new TabPanel();
 					case TRA_TRANSF_ACC:{TransferTransactions.handleAccounts();
 						break;}
 					case TRA_TRANSF_CUR:{TransferTransactions.handleCurrencies();
+						break;}	
+					
+					case BAL_ACC:{Balance.handleAccounts();
+					break;}
+					case BAL_CUR:{Balance.handleCurrencies();
+						break;}
+					case BAL_AMNT:{Balance.retrieveBalance();
 						break;}	
 	        	}
 	        }

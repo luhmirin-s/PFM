@@ -43,7 +43,6 @@ public class Transactions {
 	
 	public static void reselectCurrentTab(){
 		transTabs.getTabBar().selectTab(transTabs.getTabBar().getSelectedTab());
-		SystemPanel.out(String.valueOf(transTabs.getTabBar().getSelectedTab()));
 	}
 	
 	public static void initListeners(){

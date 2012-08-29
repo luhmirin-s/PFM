@@ -362,7 +362,7 @@ public class ParseJson {
 					Balance temp = new Balance();
 					temp.setCurrencyId(Integer.parseInt(((BalanceJS) jsobj.get(i))
 							.getCurrencyId()));
-					temp.setSum(Integer.parseInt(((BalanceJS) jsobj.get(i))
+					temp.setSum(Double.parseDouble(((BalanceJS) jsobj.get(i))
 							.getSum()));
 					accs.add(temp);
 				}
@@ -372,11 +372,13 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData = jsonData.replace("\"balance\":", "");
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				BalanceJS jsobj = parseJsonBalance(jsonData);
 				// vremennij fail
 				Balance temp = new Balance();
-				temp.setCurrencyId(Integer.parseInt(jsobj.getCurrencyId()));
-				temp.setSum(Integer.parseInt(jsobj.getSum()));
+				temp.setCurrencyId(Integer.parseInt(((BalanceJS) jsobj).getCurrencyId()));
+				temp.setSum(Double.parseDouble(((BalanceJS) jsobj).getSum()));
 				accs.add(temp);
 			} catch (Exception e) {
 				Window.alert(e.toString());
