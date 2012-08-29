@@ -126,7 +126,7 @@ public class AccountManager {
 							.toJsonCreateAccount(txt, LocalData.getUser()
 									.getId()), "Content-Type",
 							RequestBuilder.POST);
-					PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
+					PFMweb.requestRefresh(RefreshingClasses.ACC_MGR);
 					/*
 					 * int rc = accTable.getRowCount(); accTable.setWidget(rc,
 					 * 0, new Label(txt)); accTable.setWidget(rc, 1,
@@ -156,7 +156,7 @@ public class AccountManager {
 											.getId(), txt, LocalData.getUser()
 											.getId()), "Content-Type",
 							RequestBuilder.PUT);
-					PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
+					PFMweb.requestRefresh(RefreshingClasses.ACC_MGR);
 					/*
 					 * accTable.clearCell(editedRow, 0);
 					 * accTable.setWidget(editedRow, 0, new Label(txt));
@@ -177,7 +177,7 @@ public class AccountManager {
 				PFMweb.download(PFMweb.dataURL, "/account/"
 						+ LocalData.getAccountList().get(editedRow).getId(),
 						"Accept", RequestBuilder.DELETE);
-				PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
+				PFMweb.requestRefresh(RefreshingClasses.ACC_MGR);
 
 				// accTable.removeRow(editedRow);
 			}
@@ -237,6 +237,7 @@ public class AccountManager {
 		PFMweb.download(PFMweb.dataURL, "/account/list/"
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
+		accTable.removeAllRows();
 		PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
 
 	}
@@ -247,14 +248,14 @@ public class AccountManager {
 			LocalData.setAccountList(ParseJson.parseAccount(PFMweb
 					.getJSONdata()));
 			SystemPanel.out("parsing accounts done");
-			accTable.clear();
+			SystemPanel.out("Table size: "+String.valueOf(accTable.getRowCount()));
 			if (LocalData.getAccountList().size() > 0) {
 				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
 					accTable.setWidget(i, 0, new Label(LocalData.getAccountList().get(i).getName()));
 					accTable.setWidget(i, 1, makeEditButton(i));
-					accTable.setWidget(i, 2, makeDeleteButton(i));
-					SystemPanel.statusDone();
+					accTable.setWidget(i, 2, makeDeleteButton(i));					
 				}
+				SystemPanel.statusDone();
 			} else {
 				SystemPanel.out("Account list is empty");
 				SystemPanel.statusError();

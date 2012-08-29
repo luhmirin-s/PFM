@@ -124,7 +124,7 @@ public class SourceManager {
 							.toJsonCreateSource(txt, LocalData.getUser()
 									.getId()), "Content-Type",
 							RequestBuilder.POST);
-					PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);					
+					PFMweb.requestRefresh(RefreshingClasses.SRC_MGR);					
 				} else {
 					lNewError.setText("Please specify a valid name!");
 					SystemPanel.clearStatus();
@@ -147,7 +147,7 @@ public class SourceManager {
 											.getId(), txt, LocalData.getUser()
 											.getId()), "Content-Type",
 							RequestBuilder.PUT);
-					PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);					
+					PFMweb.requestRefresh(RefreshingClasses.SRC_MGR);					
 				} else {
 					lEditError.setText("Please specify a valid replacement name!");
 					SystemPanel.clearStatus();
@@ -164,7 +164,7 @@ public class SourceManager {
 				PFMweb.download(PFMweb.dataURL, "/source/"
 						+ LocalData.getSourceList().get(editedRow).getId(),
 						"Accept", RequestBuilder.DELETE);
-				PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);				
+				PFMweb.requestRefresh(RefreshingClasses.SRC_MGR);				
 			}
 		});
 
@@ -222,6 +222,7 @@ public class SourceManager {
 		PFMweb.download(PFMweb.dataURL, "/source/list/"
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
+		srcTable.removeAllRows();
 		PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);
 
 	}
@@ -237,9 +238,9 @@ public class SourceManager {
 				for (int i = 0; i < LocalData.getSourceList().size(); i++) {
 					srcTable.setWidget(i, 0, new Label(LocalData.getSourceList().get(i).getName()));
 					srcTable.setWidget(i, 1, makeEditButton(i));
-					srcTable.setWidget(i, 2, makeDeleteButton(i));
-					SystemPanel.statusDone();
+					srcTable.setWidget(i, 2, makeDeleteButton(i));					
 				}
+				SystemPanel.statusDone();
 			} else {
 				SystemPanel.out("Source list is empty");
 				SystemPanel.statusError();

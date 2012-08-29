@@ -113,6 +113,12 @@ public class LoginForm {
 					@Override
 					public void run() {
 						
+						if(PFMweb.getJSONdata().equals("fail")){
+							SystemPanel.out("User not found");
+							lSignInStatus.setText("Incorrect");
+							return;
+						}
+						
 						if(!PFMweb.getJSONdata().isEmpty()){	
 							SystemPanel.out("Object received!");							
 							SystemPanel.out("parsing...");
@@ -139,7 +145,7 @@ public class LoginForm {
 			@Override
 			public void onClick(ClickEvent event) {														
 
-				String username=inputUsername.getText(),
+				final String username=inputUsername.getText(),
 				password=inputPassword.getText(),
 				confPassword=inputConfirmPassword.getText(),
 				email=inputEmail.getText();
@@ -158,7 +164,9 @@ public class LoginForm {
 							
 							if(PFMweb.isUploaded()){	
 								SystemPanel.out("User successfully created!");							
-								cleanup();								 
+								cleanup();
+								inputUsername.setText(username);
+								lSignInStatus.setText("You can now sign in!");
 							} else {
 								SystemPanel.out("User already present or error");
 								lSignUpStatus.setText("An error occured");

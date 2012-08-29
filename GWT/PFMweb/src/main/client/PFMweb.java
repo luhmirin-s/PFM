@@ -13,6 +13,8 @@ import main.client.users.LoginForm;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -63,6 +65,8 @@ private static TabPanel mainTabs = new TabPanel();
 	  toggleView("loginView", true);
 	  toggleView("sysPanelView", false);
 	  
+	  initListeners();
+	  
 	  //TestDBData.initData();
 	  
 	  refreshTimer = new Timer() {
@@ -73,6 +77,25 @@ private static TabPanel mainTabs = new TabPanel();
 	      };
       //refreshTimer.scheduleRepeating(SERVER_TIMEOUT);
 	  
+  }
+  
+  private static void initListeners(){
+	  mainTabs.addSelectionHandler(new SelectionHandler<Integer>() {
+			
+			@Override
+			public void onSelection(SelectionEvent<Integer> event) {		
+				
+				//Window.alert("tab "+event.getSelectedItem()+" clicked!");
+				switch(event.getSelectedItem()){
+					case 3:{
+						Manager.reselectCurrentTab();
+						break;
+					}
+
+					default: AccountManager.initRefresh();
+				}
+			}
+		});
   }
   
   public static String getAddress(){
@@ -96,7 +119,24 @@ private static TabPanel mainTabs = new TabPanel();
 	        	}
 	        }
 	      };
-	  refreshTimer.schedule(PFMweb.getTimeout());
+	  refreshTimer.schedule(getTimeout());
+  }
+  
+  public static void requestRefresh(final RefreshingClasses type){
+	  refreshTimer = new Timer() {
+	        @Override
+	        public void run() {
+	        	switch(type){
+					case ACC_MGR:{AccountManager.initRefresh();
+						break;}
+					case CAT_MGR:{CategoryManager.initRefresh();
+						break;}
+					case SRC_MGR:{SourceManager.initRefresh();
+						break;}	        		
+	        	}
+	        }
+	      };
+	  refreshTimer.schedule(getTimeout());
   }
   
   public static void toggleView(String viewId, boolean enable){
@@ -119,7 +159,9 @@ private static TabPanel mainTabs = new TabPanel();
   	}
   	
   	/**
-  	 * Uploads a String to the server and receives a String
+  	 * Uploads a String to the server and receives a String.
+  	 * Sets jsonData to received JSON, or "fail" if received code 
+  	 * differs from 200
   	 * @param url 	Specify PFMweb.dataURL for most cases
   	 * @param resource 	Example: /user
   	 * @param req	What to upload
@@ -145,6 +187,7 @@ private static TabPanel mainTabs = new TabPanel();
 					SystemPanel.out("Couldn't retrieve message: ("
 							+ response.getStatusText() + ") code "
 							+ response.getStatusCode());
+					jsonData="fail";
 				}
 			}
 
