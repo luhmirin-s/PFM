@@ -228,7 +228,7 @@ public class ParseJson {
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
 					Expense temp = new Expense();
-					temp.setAmmount(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getAmmount()));
+					temp.setAmount(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getAmount()));
 					temp.setAccountId(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getAccountId()));
 					temp.setCategoryId(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getCategoryId()));
 					temp.setCurrencyId(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getCurrencyId()));
@@ -243,7 +243,7 @@ public class ParseJson {
 				ExpenseJS jsobj = parseJsonExpense(jsonData);
 				// vremennij fail
 				Expense temp = new Expense();
-				temp.setAmmount(Integer.parseInt(((ExpenseJS) jsobj).getAmmount()));
+				temp.setAmount(Integer.parseInt(((ExpenseJS) jsobj).getAmount()));
 				temp.setAccountId(Integer.parseInt(((ExpenseJS) jsobj).getAccountId()));
 				temp.setCategoryId(Integer.parseInt(((ExpenseJS) jsobj).getCategoryId()));
 				temp.setCurrencyId(Integer.parseInt(((ExpenseJS) jsobj).getCurrencyId()));
@@ -272,7 +272,7 @@ public class ParseJson {
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
 					Income temp = new Income();
-					temp.setAmmount(Integer.parseInt(((IncomeJS) jsobj.get(i)).getAmmount()));
+					temp.setAmount(Integer.parseInt(((IncomeJS) jsobj.get(i)).getAmount()));
 					temp.setAccountId(Integer.parseInt(((IncomeJS) jsobj.get(i)).getAccountId()));
 					temp.setSourceId(Integer.parseInt(((IncomeJS) jsobj.get(i)).getSourceId()));
 					temp.setCurrencyId(Integer.parseInt(((IncomeJS) jsobj.get(i)).getCurrencyId()));
@@ -287,7 +287,7 @@ public class ParseJson {
 				IncomeJS jsobj = parseJsonIncome(jsonData);
 				// vremennij fail
 				Income temp = new Income();
-				temp.setAmmount(Integer.parseInt(((IncomeJS) jsobj).getAmmount()));
+				temp.setAmount(Integer.parseInt(((IncomeJS) jsobj).getAmount()));
 				temp.setAccountId(Integer.parseInt(((IncomeJS) jsobj).getAccountId()));
 				temp.setSourceId(Integer.parseInt(((IncomeJS) jsobj).getSourceId()));
 				temp.setCurrencyId(Integer.parseInt(((IncomeJS) jsobj).getCurrencyId()));
@@ -316,7 +316,7 @@ public class ParseJson {
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
 					Transfer temp = new Transfer();
-					temp.setAmmount(Integer.parseInt(((TransferJS) jsobj.get(i)).getAmmount()));
+					temp.setAmount(Integer.parseInt(((TransferJS) jsobj.get(i)).getAmount()));
 					temp.setToAccountId(Integer.parseInt(((TransferJS) jsobj.get(i)).getToAccountId()));
 					temp.setFromAccountId(Integer.parseInt(((TransferJS) jsobj.get(i)).getFromAccountId()));
 					temp.setCurrencyId(Integer.parseInt(((TransferJS) jsobj.get(i)).getCurrencyId()));
@@ -331,7 +331,7 @@ public class ParseJson {
 				TransferJS jsobj = parseJsonTransfer(jsonData);
 				// vremennij fail
 				Transfer temp = new Transfer();
-				temp.setAmmount(Integer.parseInt(((TransferJS) jsobj).getAmmount()));
+				temp.setAmount(Integer.parseInt(((TransferJS) jsobj).getAmount()));
 				temp.setToAccountId(Integer.parseInt(((TransferJS) jsobj).getToAccountId()));
 				temp.setFromAccountId(Integer.parseInt(((TransferJS) jsobj).getFromAccountId()));
 				temp.setCurrencyId(Integer.parseInt(((TransferJS) jsobj).getCurrencyId()));
@@ -377,6 +377,58 @@ public class ParseJson {
 				Balance temp = new Balance();
 				temp.setCurrencyId(Integer.parseInt(jsobj.getCurrencyId()));
 				temp.setSum(Integer.parseInt(jsobj.getSum()));
+				accs.add(temp);
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		}
+		return accs;
+	}
+	
+	/**
+	 * Deserializes JSON String to list of Balance objects 
+	 * 
+	 * @param jsonData - JSON String
+	 * @return list of Balance objects
+	 */
+	public static ArrayList<JournalEntry> parseJournal(String jsonData) {
+		ArrayList<JournalEntry> accs = new ArrayList<JournalEntry>();
+		if (jsonData.contains("[")) {
+			// neslojko objektov v spiske
+			try {
+				// udaljaem lishnij tekst, ctob izbezatj oshibok
+				jsonData = jsonData.replace("\"journalEntry\":", "");
+				JsArray<JournalEntryJS> jsobj = parseJsonJournals(jsonData);
+				for (int i = 0; i < jsobj.length(); i++) {
+					// vremennij fail
+					JournalEntry temp = new JournalEntry();
+					
+					temp.setAccountName(((JournalEntryJS) jsobj.get(i)).getAccountName());
+					temp.setAmount(((JournalEntryJS) jsobj.get(i)).getAmount());
+					temp.setDate(((JournalEntryJS) jsobj.get(i)).getDate());
+					temp.setText(((JournalEntryJS) jsobj.get(i)).getText());
+					temp.setTransactionId(Integer.parseInt(((JournalEntryJS) jsobj.get(i)).getTransactionId()));
+					temp.setType(Integer.parseInt(((JournalEntryJS) jsobj.get(i)).getType()));
+					
+					accs.add(temp);
+				}
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		} else {
+			// odin objekt v spiske
+			try {
+				JournalEntryJS jsobj = parseJsonJournal(jsonData);
+				// vremennij fail
+				JournalEntry temp = new JournalEntry();
+				
+				temp.setAccountName(((JournalEntryJS) jsobj).getAccountName());
+				temp.setAmount(((JournalEntryJS) jsobj).getAmount());
+				temp.setDate(((JournalEntryJS) jsobj).getDate());
+				temp.setText(((JournalEntryJS) jsobj).getText());
+				temp.setTransactionId(Integer.parseInt(((JournalEntryJS) jsobj).getTransactionId()));
+				temp.setType(Integer.parseInt(((JournalEntryJS) jsobj).getType()));
+				
 				accs.add(temp);
 			} catch (Exception e) {
 				Window.alert(e.toString());
@@ -466,6 +518,15 @@ public class ParseJson {
 	}-*/;
 	
 	private final native static BalanceJS parseJsonBalance(String json) /*-{
+	eval('var res = ' + json);
+	return res;
+	}-*/;
+	
+	private final native static JsArray<JournalEntryJS> parseJsonJournals(String json) /*-{
+	return eval(json);
+	}-*/;
+	
+	private final native static JournalEntryJS parseJsonJournal(String json) /*-{
 	eval('var res = ' + json);
 	return res;
 	}-*/;

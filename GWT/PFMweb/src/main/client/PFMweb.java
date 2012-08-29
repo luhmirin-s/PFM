@@ -7,7 +7,9 @@ import main.client.manager.CategoryManager;
 import main.client.manager.Manager;
 import main.client.manager.SourceManager;
 import main.client.transactions.ExpenseTransactions;
+import main.client.transactions.IncomeTransactions;
 import main.client.transactions.Transactions;
+import main.client.transactions.TransferTransactions;
 import main.client.users.LoginForm;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -160,7 +162,21 @@ private static TabPanel mainTabs = new TabPanel();
 					case TRA_EXP_CAT:{ExpenseTransactions.handleCategories();
 						break;}	
 					case TRA_EXP_CUR:{ExpenseTransactions.handleCurrencies();
-					break;}
+						break;}
+					case TRA_INC:{IncomeTransactions.refreshData();
+						break;}
+					case TRA_INC_ACC:{IncomeTransactions.handleAccounts();
+						break;}
+					case TRA_INC_CUR:{IncomeTransactions.handleCurrencies();
+						break;}	
+					case TRA_INC_SRC:{IncomeTransactions.handleSources();
+						break;}
+					case TRA_TRANSF:{TransferTransactions.refreshData();
+						break;}
+					case TRA_TRANSF_ACC:{TransferTransactions.handleAccounts();
+						break;}
+					case TRA_TRANSF_CUR:{TransferTransactions.handleCurrencies();
+						break;}	
 	        	}
 	        }
 	      };

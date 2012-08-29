@@ -132,7 +132,7 @@ public class CreateJson {
 	 * @param currencyId
 	 * @return JSON String
 	 */
-	public static String toJsonExpenses(int amount,int accountId,
+	public static String toJsonExpenses(double amount,int accountId,
 											int categoryId,int currencyId){
 		String line = "{" +
 				"\"amount\": \"" + amount +	"\"," +
@@ -152,7 +152,7 @@ public class CreateJson {
 	 * @param currencyId
 	 * @return JSON String
 	 */
-	public static String toJsonIncome(int amount,int accountId,
+	public static String toJsonIncome(double amount,int accountId,
 											int sourceId,int currencyId){
 		String line = "{" +
 				"\"amount\": \"" + amount +	"\"," +
@@ -172,7 +172,7 @@ public class CreateJson {
 	 * @param currencyId
 	 * @return JSON String
 	 */
-	public static String toJsonTransfer(int amount,int fromAccountId,
+	public static String toJsonTransfer(double amount,double fromAccountId,
 											int toAccountId,int currencyId){
 		String line = "{" +
 				"\"amount\": \"" + amount +	"\"," +

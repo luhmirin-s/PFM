@@ -93,6 +93,8 @@ public class LoginForm {
 		 inputPassword.setText("");
 		 inputConfirmPassword.setText("");
 		 inputEmail.setText("");
+	 	 lSignInStatus.setText("");
+	 	 lSignUpStatus.setText("");
 		 signUpDisclosure.setOpen(false);
 		 
 	 }

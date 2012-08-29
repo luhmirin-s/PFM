@@ -60,12 +60,12 @@ public class Transactions {
 						break;
 					}
 					case 1:{
-						CategoryManager.initRefresh();
+						IncomeTransactions.refreshData();
 						IncomeTransactions.focus();
 						break;
 					}
 					case 2:{
-						SourceManager.initRefresh();
+						TransferTransactions.refreshData();
 						TransferTransactions.focus();
 						break;
 					}

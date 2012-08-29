@@ -62,29 +62,29 @@ public class ExpenseTransactions {
 		saveButton.addClickHandler(new ClickHandler() {
 			
 			@Override
-			public void onClick(ClickEvent event) {				
+			public void onClick(ClickEvent event) {
 				String name = amountInput.getText().trim();
-				if(accountBox.getItemCount()>0 &&
-						currencyBox.getItemCount()>0 &&
-						catBox.getItemCount()>0){
-					if(name.length()>0 && name.matches("^[0-9\\.]{1,16}$")){						
+				if (accountBox.getItemCount() > 0
+						&& currencyBox.getItemCount() > 0
+						&& catBox.getItemCount() > 0) {
+					if (name.length() > 0 && name.matches("^[0-9\\.]{1,16}$")) {
 						lError.setText("");
 						SystemPanel.out("Creating new expense transaction...");
 						SystemPanel.statusSetOp("making an expense transaction");
 						saveButton.setEnabled(false);
-						PFMweb.upload(PFMweb.dataURL, "/expense", CreateJson
-								.toJsonExpenses(Integer.valueOf(name), 
+						PFMweb.upload(PFMweb.dataURL, "/expense", CreateJson.toJsonExpenses(
+										Double.valueOf(name),
 										LocalData.getAccountList().get(accountBox.getSelectedIndex()).getId(),
 										LocalData.getCategoryList().get(catBox.getSelectedIndex()).getId(),
-										LocalData.getCurrencyList().get(currencyBox.getSelectedIndex()).getId()) , "Content-Type",
-								RequestBuilder.POST);
+										LocalData.getCurrencyList().get(currencyBox.getSelectedIndex()).getId()),
+										"Content-Type", RequestBuilder.POST);
 						SystemPanel.out("Requesting refresh...");
-						PFMweb.requestRefresh(RefreshingClasses.TRA_EXP);						
+						PFMweb.requestRefresh(RefreshingClasses.TRA_EXP);
 					} else {
-						lError.setText("Please specify a valid name!");
+						lError.setText("Please specify a valid amount!");
 						SystemPanel.clearStatus();
-					}	
-				}				
+					}
+				}
 			}
 		});
 		
@@ -189,6 +189,5 @@ public class ExpenseTransactions {
 			saveButton.setEnabled(true);
 			return;
 		}		
-	}	
-	
+	}		
 }
