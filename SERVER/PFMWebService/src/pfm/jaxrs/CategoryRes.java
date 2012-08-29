@@ -55,11 +55,13 @@ public class CategoryRes {
     	if (user != null) {
     		em.refresh(user);
     		List<Category> list = user.getCategories();
-			GenericEntity<List<Category>> entity = new GenericEntity<List<Category>>(list) {};
-	    	return Response.ok(entity).build();
-    	} else {
-    		return Response.status(Status.NOT_FOUND).build();
-    	}
+    		if (!list.isEmpty()) {
+				GenericEntity<List<Category>> entity = new GenericEntity<List<Category>>(list) {};
+		    	return Response.ok(entity).build();
+	    	}
+    	} 
+    	
+    	return Response.status(Status.NOT_FOUND).build();
 	}
     
 	@POST

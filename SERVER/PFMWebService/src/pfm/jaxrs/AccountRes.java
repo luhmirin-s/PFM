@@ -54,11 +54,13 @@ public class AccountRes {
     	if (user != null) {
     		em.refresh(user);
     		List<Account> list = user.getAccounts();
-			GenericEntity<List<Account>> entity = new GenericEntity<List<Account>>(list) {};
-	    	return Response.ok(entity).build();
-    	} else {
-    		return Response.status(Status.NOT_FOUND).build();
-    	}
+    		if (!list.isEmpty()) {
+				GenericEntity<List<Account>> entity = new GenericEntity<List<Account>>(list) {};
+		    	return Response.ok(entity).build();
+    		}
+    	} 
+    		
+    	return Response.status(Status.NOT_FOUND).build();
     }
     
     @POST

@@ -98,7 +98,8 @@ public class JournalRes {
     	query.setParameter(1, id);
     	query.setParameter(2, from);
     	query.setParameter(3, to);
-    	List<JournalEntry> list = query.getResultList();
+    	@SuppressWarnings("unchecked")
+		List<JournalEntry> list = query.getResultList();
     	
     	if (!list.isEmpty()) {
     		GenericEntity<List<JournalEntry>> entity = new GenericEntity<List<JournalEntry>>(list) {};

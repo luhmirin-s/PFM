@@ -43,8 +43,8 @@ public class BalanceRes {
     	if (!list.isEmpty()) {
     		GenericEntity<List<Balance>> entity = new GenericEntity<List<Balance>>(list) {};
     		return Response.ok(entity).build();
-    	} else {
-    		return Response.status(Status.NOT_FOUND).build();
-    	}
+    	} 
+    		
+    	return Response.status(Status.NOT_FOUND).build();
     }
 }
