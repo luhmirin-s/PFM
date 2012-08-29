@@ -58,13 +58,14 @@ public class Wallet {
 		return false;
 	}
 	
-	//Search for the currency by the given id.
-	public Money findCurrency(String code){
+	public boolean addCurrency(int id, double amount){
 		for(int i=0; i < type.size(); i++){
-			if(code.equals(type.get(i).getCode()))
-				return type.get(i);
+			if(id == type.get(i).getId()){
+				type.get(i).addMoney(amount);
+				return true;
+			}
 		}
-		return null;
+		return false;
 	}
 	@Override
 	public String toString(){

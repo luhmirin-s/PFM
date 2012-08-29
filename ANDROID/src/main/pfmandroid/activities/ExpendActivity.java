@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 import main.pfmandroid.CategoryListener;
 import main.pfmandroid.MoneyListener;
 import main.pfmandroid.R;
 import main.pfmandroid.WalletListener;
-import main.pfmandroid.R.id;
-import main.pfmandroid.R.layout;
-import main.pfmandroid.R.menu;
 import main.pfmandroid.data.Category;
 import main.pfmandroid.data.Currency;
 import main.pfmandroid.data.DataStorage;
@@ -29,6 +28,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
@@ -98,7 +98,8 @@ public class ExpendActivity extends Activity {
     	super.onStop();
     }
     
-    public void returnBack(View view){
+    @SuppressLint("NewApi")
+	public void returnBack(View view){
     	
     	EditText textfield = (EditText) findViewById(R.id.editTextEx2);
     	
@@ -145,7 +146,7 @@ public class ExpendActivity extends Activity {
 		protected String doInBackground(String... params) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
 			
-			HttpPost httpPost = new HttpPost("http://10.0.1.59/PFMWebService/jaxrs/expense");
+			HttpPost httpPost = new HttpPost(DataStorage.domain + "expense");
 			String response = "";
 			
 			JSONObject send = new JSONObject();
@@ -210,7 +211,6 @@ public class ExpendActivity extends Activity {
         ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, R.layout.spinneritem, R.id.spinneritem, wallets);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner.setAdapter(adapter);
-	    adapter.notifyDataSetChanged();
 	    if(DataStorage.listOfWallets.size() > 0){
 	    	walletlistener = new WalletListener(changable, poscon);
 	    	spinner.setOnItemSelectedListener(walletlistener);

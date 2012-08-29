@@ -25,6 +25,10 @@ public class Money {
 		amount = newcash;
 	}
 	
+	public void addMoney(double newcash){
+		amount += newcash;
+	}
+	
 	public int getId(){
 		return id;
 	}

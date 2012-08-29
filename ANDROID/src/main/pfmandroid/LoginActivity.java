@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -45,7 +46,7 @@ public class LoginActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_login, menu);
         return true;
     }
-    
+     
     public void login(View view){
     	TextView userinput = (TextView) findViewById(R.id.usernameentry);
     	String username = userinput.getText().toString();
@@ -59,6 +60,7 @@ public class LoginActivity extends Activity {
 			int duration = Toast.LENGTH_LONG;
 
 			Toast toast = Toast.makeText(context, text, duration);
+			toast.setGravity(Gravity.CENTER, 0, 0);
 			toast.show();
 			return;
     	}
@@ -93,7 +95,7 @@ public class LoginActivity extends Activity {
 
 		    AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
 			
-		    HttpPost httpGet = new HttpPost("http://10.0.1.59/PFMWebService/jaxrs/user");
+		    HttpPost httpGet = new HttpPost(DataStorage.domain + "user");
 	        try {
 	          httpGet.addHeader("Content-Type", "application/x-www-form-urlencodedForm");
 	          httpGet.addHeader("Accept", "application/json");
@@ -144,6 +146,7 @@ public class LoginActivity extends Activity {
 					int duration = Toast.LENGTH_LONG;
 
 					Toast toast = Toast.makeText(context, text, duration);
+					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.show();
 				}
 			} catch (JSONException e) {

@@ -47,9 +47,9 @@ public class RetrieveEarnData extends AsyncTask<String, Void, String>{
 	@Override
 	protected String doInBackground(String... arg0) {
 
-		HttpGet getCurrency = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/currency/list");
-		HttpGet getWallets = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/account/list/" + DataStorage.userId);
-		HttpGet getSources = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/source/list/" + DataStorage.userId);
+		HttpGet getCurrency = new HttpGet(DataStorage.domain + "currency/list");
+		HttpGet getWallets = new HttpGet(DataStorage.domain + "account/list/" + DataStorage.userId);
+		HttpGet getSources = new HttpGet(DataStorage.domain + "source/list/" + DataStorage.userId);
 	    
 		getCurrency.addHeader("Accepts", "application/json");
 	    getWallets.addHeader("Accepts", "application/json");
@@ -127,7 +127,7 @@ public class RetrieveEarnData extends AsyncTask<String, Void, String>{
 			//If we reach here, it means we couldn't find currency array (only one in database)					
 			//Create a single currency, extracted from database.
 			try {
-				JSONObject getObject = new JSONObject(currency);
+				JSONObject getObject = new JSONObject(currency).getJSONObject("currency");
 				int id = getObject.getInt("id");
 				String code = getObject.getString("code");
 				DataStorage.typesOfCurrency.add(new Currency(id, code));
@@ -158,7 +158,7 @@ public class RetrieveEarnData extends AsyncTask<String, Void, String>{
 		} catch (JSONException e) {					
 			//If we are here, there is no array -> Only one wallet for the user, extract it.
 			try {
-				JSONObject getObject = new JSONObject(wallets);
+				JSONObject getObject = new JSONObject(wallets).getJSONObject("account");
 				int id = getObject.getInt("id");
 				String name = getObject.getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
@@ -188,7 +188,7 @@ public class RetrieveEarnData extends AsyncTask<String, Void, String>{
 		} catch (JSONException e) {				
 			//Only one category defined (no array)
 			try {
-				JSONObject getObject = new JSONObject(sources);
+				JSONObject getObject = new JSONObject(sources).getJSONObject("source");
 				int id = getObject.getInt("id");
 				String name = getObject.getString("name");
 				DataStorage.listOfSources.add(new Source(id, name));

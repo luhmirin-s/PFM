@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 public class WalletListener implements OnItemSelectedListener{
 	
-	private Wallet wallet;
-	private TextView changable;
-	PositionContainer test;
+	private Wallet wallet = null;
+	private TextView changable = null;
+	PositionContainer test = null;
 	private int id;
 	
 	
