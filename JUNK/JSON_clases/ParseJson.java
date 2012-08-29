@@ -211,6 +211,181 @@ public class ParseJson {
 		return acc;
 	}
 	
+	/**
+	 * Deserializes JSON String to list of Expense objects 
+	 * 
+	 * @param jsonData
+	 * @return list of Expense objects
+	 */
+	public static ArrayList<Expense> parseExpense(String jsonData) {
+		ArrayList<Expense> accs = new ArrayList<Expense>();
+		if (jsonData.contains("[")) {
+			// neslojko objektov v spiske
+			try {
+				// udaljaem lishnij tekst, ctob izbezatj oshibok
+				jsonData = jsonData.replace("\"account\":", "");
+				JsArray<ExpenseJS> jsobj = parseJsonExpenses(jsonData);
+				for (int i = 0; i < jsobj.length(); i++) {
+					// vremennij fail
+					Expense temp = new Expense();
+					temp.setAmmount(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getAmmount()));
+					temp.setAccountId(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getAccountId()));
+					temp.setCategoryId(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getCategoryId()));
+					temp.setCurrencyId(Integer.parseInt(((ExpenseJS) jsobj.get(i)).getCurrencyId()));
+					accs.add(temp);
+				}
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		} else {
+			// odin objekt v spiske
+			try {
+				ExpenseJS jsobj = parseJsonExpense(jsonData);
+				// vremennij fail
+				Expense temp = new Expense();
+				temp.setAmmount(Integer.parseInt(((ExpenseJS) jsobj).getAmmount()));
+				temp.setAccountId(Integer.parseInt(((ExpenseJS) jsobj).getAccountId()));
+				temp.setCategoryId(Integer.parseInt(((ExpenseJS) jsobj).getCategoryId()));
+				temp.setCurrencyId(Integer.parseInt(((ExpenseJS) jsobj).getCurrencyId()));
+				accs.add(temp);
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		}
+		return accs;
+	}
+	
+	/**
+	 * Deserializes JSON String to list of Income objects 
+	 * 
+	 * @param jsonData
+	 * @return list of Income objects
+	 */
+	public static ArrayList<Income> parseIncome(String jsonData) {
+		ArrayList<Income> accs = new ArrayList<Income>();
+		if (jsonData.contains("[")) {
+			// neslojko objektov v spiske
+			try {
+				// udaljaem lishnij tekst, ctob izbezatj oshibok
+				jsonData = jsonData.replace("\"account\":", "");
+				JsArray<IncomeJS> jsobj = parseJsonIncomes(jsonData);
+				for (int i = 0; i < jsobj.length(); i++) {
+					// vremennij fail
+					Income temp = new Income();
+					temp.setAmmount(Integer.parseInt(((IncomeJS) jsobj.get(i)).getAmmount()));
+					temp.setAccountId(Integer.parseInt(((IncomeJS) jsobj.get(i)).getAccountId()));
+					temp.setSourceId(Integer.parseInt(((IncomeJS) jsobj.get(i)).getSourceId()));
+					temp.setCurrencyId(Integer.parseInt(((IncomeJS) jsobj.get(i)).getCurrencyId()));
+					accs.add(temp);
+				}
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		} else {
+			// odin objekt v spiske
+			try {
+				IncomeJS jsobj = parseJsonIncome(jsonData);
+				// vremennij fail
+				Income temp = new Income();
+				temp.setAmmount(Integer.parseInt(((IncomeJS) jsobj).getAmmount()));
+				temp.setAccountId(Integer.parseInt(((IncomeJS) jsobj).getAccountId()));
+				temp.setSourceId(Integer.parseInt(((IncomeJS) jsobj).getSourceId()));
+				temp.setCurrencyId(Integer.parseInt(((IncomeJS) jsobj).getCurrencyId()));
+				accs.add(temp);
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		}
+		return accs;
+	}
+	
+	/**
+	 * Deserializes JSON String to list of Transfer objects 
+	 * 
+	 * @param jsonData
+	 * @return list of Transfer objects
+	 */
+	public static ArrayList<Transfer> parseTransfer(String jsonData) {
+		ArrayList<Transfer> accs = new ArrayList<Transfer>();
+		if (jsonData.contains("[")) {
+			// neslojko objektov v spiske
+			try {
+				// udaljaem lishnij tekst, ctob izbezatj oshibok
+				jsonData = jsonData.replace("\"account\":", "");
+				JsArray<TransferJS> jsobj = parseJsonTransfers(jsonData);
+				for (int i = 0; i < jsobj.length(); i++) {
+					// vremennij fail
+					Transfer temp = new Transfer();
+					temp.setAmmount(Integer.parseInt(((TransferJS) jsobj.get(i)).getAmmount()));
+					temp.setToAccountId(Integer.parseInt(((TransferJS) jsobj.get(i)).getToAccountId()));
+					temp.setFromAccountId(Integer.parseInt(((TransferJS) jsobj.get(i)).getFromAccountId()));
+					temp.setCurrencyId(Integer.parseInt(((TransferJS) jsobj.get(i)).getCurrencyId()));
+					accs.add(temp);
+				}
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		} else {
+			// odin objekt v spiske
+			try {
+				TransferJS jsobj = parseJsonTransfer(jsonData);
+				// vremennij fail
+				Transfer temp = new Transfer();
+				temp.setAmmount(Integer.parseInt(((TransferJS) jsobj).getAmmount()));
+				temp.setToAccountId(Integer.parseInt(((TransferJS) jsobj).getToAccountId()));
+				temp.setFromAccountId(Integer.parseInt(((TransferJS) jsobj).getFromAccountId()));
+				temp.setCurrencyId(Integer.parseInt(((TransferJS) jsobj).getCurrencyId()));
+				accs.add(temp);
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		}
+		return accs;
+	}
+	
+	/**
+	 * Deserializes JSON String to list of Balance objects 
+	 * 
+	 * @param jsonData - JSON String
+	 * @return list of Balance objects
+	 */
+	public static ArrayList<Balance> parseBalance(String jsonData) {
+		ArrayList<Balance> accs = new ArrayList<Balance>();
+		if (jsonData.contains("[")) {
+			// neslojko objektov v spiske
+			try {
+				// udaljaem lishnij tekst, ctob izbezatj oshibok
+				jsonData = jsonData.replace("\"account\":", "");
+				JsArray<BalanceJS> jsobj = parseJsonBalances(jsonData);
+				for (int i = 0; i < jsobj.length(); i++) {
+					// vremennij fail
+					Balance temp = new Balance();
+					temp.setCurrencyId(Integer.parseInt(((BalanceJS) jsobj.get(i))
+							.getCurrencyId()));
+					temp.setSum(Integer.parseInt(((BalanceJS) jsobj.get(i))
+							.getSum()));
+					accs.add(temp);
+				}
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		} else {
+			// odin objekt v spiske
+			try {
+				BalanceJS jsobj = parseJsonBalance(jsonData);
+				// vremennij fail
+				Balance temp = new Balance();
+				temp.setCurrencyId(Integer.parseInt(jsobj.getCurrencyId()));
+				temp.setSum(Integer.parseInt(jsobj.getSum()));
+				accs.add(temp);
+			} catch (Exception e) {
+				Window.alert(e.toString());
+			}
+		}
+		return accs;
+	}
+	
+	
 	/*
 	 * Takes in a trusted JSON String and evals it.
 	 * 
@@ -255,6 +430,42 @@ public class ParseJson {
 	}-*/;
 	
 	private final native static UserJS parseJsonUser(String json) /*-{
+	eval('var res = ' + json);
+	return res;
+	}-*/;
+	
+	private final native static JsArray<ExpenseJS> parseJsonExpenses(String json) /*-{
+	return eval(json);
+	}-*/;
+	
+	private final native static ExpenseJS parseJsonExpense(String json) /*-{
+	eval('var res = ' + json);
+	return res;
+	}-*/;
+	
+	private final native static JsArray<IncomeJS> parseJsonIncomes(String json) /*-{
+	return eval(json);
+	}-*/;
+	
+	private final native static IncomeJS parseJsonIncome(String json) /*-{
+	eval('var res = ' + json);
+	return res;
+	}-*/;
+	
+	private final native static JsArray<TransferJS> parseJsonTransfers(String json) /*-{
+	return eval(json);
+	}-*/;
+	
+	private final native static TransferJS parseJsonTransfer(String json) /*-{
+	eval('var res = ' + json);
+	return res;
+	}-*/;
+	
+	private final native static JsArray<BalanceJS> parseJsonBalances(String json) /*-{
+	return eval(json);
+	}-*/;
+	
+	private final native static BalanceJS parseJsonBalance(String json) /*-{
 	eval('var res = ' + json);
 	return res;
 	}-*/;
