@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 import main.pfmandroid.MoneyListener;
 import main.pfmandroid.R;
 import main.pfmandroid.SourceListener;
 import main.pfmandroid.WalletListener;
-import main.pfmandroid.R.id;
-import main.pfmandroid.R.layout;
-import main.pfmandroid.R.menu;
 import main.pfmandroid.data.Currency;
 import main.pfmandroid.data.DataStorage;
 import main.pfmandroid.data.PositionContainer;
@@ -29,6 +28,7 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
@@ -145,7 +145,7 @@ public void returnBack(View view){
 		protected String doInBackground(String... params) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
 			
-			HttpPost httpPost = new HttpPost("http://10.0.1.59/PFMWebService/jaxrs/income");
+			HttpPost httpPost = new HttpPost(DataStorage.domain + "income");
 			String response = "";
 			
 			JSONObject send = new JSONObject();

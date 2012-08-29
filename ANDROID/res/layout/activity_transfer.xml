@@ -1,86 +1,106 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textViewTr1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="@string/accountfromlabel"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <Spinner
-        android:id="@+id/spinnerTr1"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_alignLeft="@+id/textViewTr1"
-        android:layout_below="@+id/textViewTr1" />
-
-    <EditText
-        android:id="@+id/editTextTr2"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinnerTr1"
-        android:layout_below="@+id/spinnerTr1"
-        android:layout_marginTop="24dp"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:hint="@string/amount" />
-
+	
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="20dp"
+	    android:orientation="horizontal" >
+	    <Spinner
+	        android:id="@+id/spinnerTr1"
+	        android:layout_width="0dp"
+	        android:layout_weight="0.5"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="15dp" />
+	    <Spinner
+	        android:id="@+id/spinnerTr3"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.5"
+	        android:layout_marginTop="15dp" />
+	</LinearLayout>
+	
     <TextView
+        android:id="@+id/textViewTr4"
+        android:layout_width="fill_parent"
+        android:gravity="right"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        android:text="Current balance:"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="20dp"
+	    android:orientation="horizontal" >
+	    <EditText
+	        android:id="@+id/editTextTr2"
+	        android:layout_width="0dp"
+	        android:layout_weight="0.5"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dp"
+	        android:inputType="numberDecimal"
+	        android:hint="@string/amount" />
+		<TextView
+	        android:id="@+id/textViewTr3"
+	        android:layout_width="0dp"
+	        android:layout_weight="0.5"
+	        android:gravity="center_horizontal"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dp"
+	        android:textSize="24dp"
+	        android:text="@string/currentamount" />
+    </LinearLayout>
+	
+	<TextView
         android:id="@+id/textViewTr2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextTr2"
-        android:layout_below="@+id/editTextTr2"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="24dp"
         android:text="@string/accounttolabel"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <Spinner
+	
+	<Spinner
         android:id="@+id/spinnerTr2"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_alignLeft="@+id/textViewTr2"
-        android:layout_below="@+id/textViewTr2" />
-
-   <Button
-        android:id="@+id/buttonTr1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_alignLeft="@+id/spinnerTr2"
-        android:layout_alignRight="@+id/spinnerTr3"
-        android:text="@string/confirmbutton"
-        android:onClick="returnBack" />
-    
-    <Spinner
-        android:id="@+id/spinnerTr3"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_above="@+id/editTextTr2"
-        android:layout_toRightOf="@+id/spinnerTr1"
-        android:layout_alignBaseline="@+id/spinnerTr1" />
-    
-    <TextView
-        android:id="@+id/textViewTr3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="24dp"
-        android:layout_alignBaseline="@+id/editTextTr2"
-        android:layout_alignBottom="@+id/editTextTr2"
-        android:layout_toRightOf="@+id/editTextTr2"
-        android:text="@string/currentamount" />
-
-</RelativeLayout>
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp" />
+	
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="horizontal" >
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_gravity="bottom"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical" >
+		    <Button
+		        android:id="@+id/buttonTr1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center"
+		        android:layout_marginBottom="20dp"
+		        android:onClick="returnBack"
+		        android:text="@string/confirmbutton"
+		        android:textSize="40dp" />
+	    </LinearLayout>
+	</LinearLayout>
+</LinearLayout>

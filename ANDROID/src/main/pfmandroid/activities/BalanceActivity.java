@@ -6,6 +6,7 @@ import main.pfmandroid.data.Money;
 import main.pfmandroid.data.Wallet;
 import main.pfmandroid.getdata.RetrieveBalanceData;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
 /*
@@ -54,6 +56,10 @@ public class BalanceActivity extends Activity {
     }
     
     public void fillBalanceTable(){
+    	Wallet totals = new Wallet();
+    	for(int i = 0; i < DataStorage.typesOfCurrency.size(); i++)
+    		totals.addMoney(new Money(DataStorage.typesOfCurrency.get(i).getId(),
+    				DataStorage.typesOfCurrency.get(i).getCode()));
     	//Iterate through all of the user wallets and all of the currencies inside each wallet.
         for (Wallet x : DataStorage.listOfWallets){
         	boolean addedname = false;
@@ -76,9 +82,9 @@ public class BalanceActivity extends Activity {
                 trCode.setText(y.getCode());
                 
                 TextView trAmount = (TextView)tr.findViewById(R.id.trBalanceAmount);
-                if(y.getAmount() == 0)
-                	continue;
                 trAmount.setText(String.valueOf(y.getAmount()));
+                
+                totals.addCurrency(y.getId(), y.getAmount());
                 
                 balanceTable.addView(tr);
 	        }
@@ -88,6 +94,37 @@ public class BalanceActivity extends Activity {
             TableRow tr = (TableRow)inflater.inflate(R.layout.balancerow, balanceTable, false);
             balanceTable.addView(tr);
         }
+        
+        View line = new View(this);
+        line.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 2));
+        line.setBackgroundColor(Color.BLACK);
+        balanceTable.addView(line);
+
+        boolean addedname = false;
+        for(Money y : totals.getMoney()){
+        	
+    		LayoutInflater inflater = getLayoutInflater();
+        	
+    		//Create new table row, using our own created balancerow layout (defined in res/layout)
+            TableRow tr = (TableRow)inflater.inflate(R.layout.balancerow, balanceTable, false);
+            
+            //Fill in the name, if it has not yet been added, otherwise, make it empty.
+            TextView trWallet = (TextView)tr.findViewById(R.id.trBalanceWallet);
+            if(!addedname){
+            	trWallet.setText("Totals");
+            	addedname = true;
+            }else
+            	trWallet.setText("");
+            
+            TextView trCode = (TextView)tr.findViewById(R.id.trBalanceCode);
+            trCode.setText(y.getCode());
+            
+            TextView trAmount = (TextView)tr.findViewById(R.id.trBalanceAmount);
+            trAmount.setText(String.valueOf(y.getAmount()));
+            
+            balanceTable.addView(tr);
+        }
+        
     }
     
     public void returnBack(View view){

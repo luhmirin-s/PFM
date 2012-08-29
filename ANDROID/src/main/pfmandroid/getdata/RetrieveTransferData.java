@@ -44,8 +44,8 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... arg0) {
 
-	    HttpGet getCurrency = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/currency/list");
-	    HttpGet getWallets = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/account/list/" + DataStorage.userId);
+	    HttpGet getCurrency = new HttpGet(DataStorage.domain + "currency/list");
+	    HttpGet getWallets = new HttpGet(DataStorage.domain + "account/list/" + DataStorage.userId);
 	    
 	    getCurrency.addHeader("Accepts", "application/json");
         getWallets.addHeader("Accepts", "application/json");
@@ -91,9 +91,6 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
-		Log.d("Received currency", currency);
-		Log.d("Received wallets", wallets);
-		
 		//Attempt to extract an array of currencies (more than one in database)
 		try {
 			JSONArray getArray = new JSONObject(currency).getJSONArray("currency");
@@ -107,7 +104,7 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 			//If we reach here, it means we couldn't find currency array (only one in database)					
 			//Create a single currency, extracted from database.
 			try {
-				JSONObject getObject = new JSONObject(currency);
+				JSONObject getObject = new JSONObject(currency).getJSONObject("currency");
 				int id = getObject.getInt("id");
 				String code = getObject.getString("code");
 				DataStorage.typesOfCurrency.add(new Currency(id, code));
@@ -127,14 +124,28 @@ public class RetrieveTransferData extends AsyncTask<String, Void, String> {
 				int id = ((JSONObject) getArray.get(i)).getInt("id");
 				String name = ((JSONObject) getArray.get(i)).getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
+				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++){
+					DataStorage.listOfWallets.get(i).addMoney(new Money(
+								DataStorage.typesOfCurrency.get(j).getId(),
+								DataStorage.typesOfCurrency.get(j).getCode()
+								)
+							);
+				}
 			}
 		} catch (JSONException e) {					
 			//If we are here, there is no array -> Only one wallet for the user, extract it.
 			try {
-				JSONObject getObject = new JSONObject(wallets);
+				JSONObject getObject = new JSONObject(wallets).getJSONObject("account");
 				int id = getObject.getInt("id");
 				String name = getObject.getString("name");
 				DataStorage.listOfWallets.add(new Wallet(id, name));
+				for(int j = 0; j < DataStorage.typesOfCurrency.size(); j++){
+					DataStorage.listOfWallets.get(DataStorage.listOfWallets.size()-1).addMoney(new Money(
+								DataStorage.typesOfCurrency.get(j).getId(),
+								DataStorage.typesOfCurrency.get(j).getCode()
+								)
+							);
+				}
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

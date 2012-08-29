@@ -10,9 +10,6 @@ import java.util.concurrent.TimeUnit;
 import main.pfmandroid.MoneyListener;
 import main.pfmandroid.R;
 import main.pfmandroid.WalletListener;
-import main.pfmandroid.R.id;
-import main.pfmandroid.R.layout;
-import main.pfmandroid.R.menu;
 import main.pfmandroid.data.Currency;
 import main.pfmandroid.data.DataStorage;
 import main.pfmandroid.data.PositionContainer;
@@ -49,10 +46,11 @@ import android.widget.Toast;
  */
 
 public class TransferActivity extends Activity {
-	static TransferActivity reference;
+
     MoneyListener moneylistener;
     WalletListener walletlistenerfrom;
     WalletListener walletlistenerto;
+    PositionContainer poscon;
 	
     Wallet[] wallets;
     Currency[] currencies;
@@ -150,7 +148,7 @@ public class TransferActivity extends Activity {
 		protected String doInBackground(String... params) {
 			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
 			
-			HttpPost httpPost = new HttpPost("http://10.0.1.59/PFMWebService/jaxrs/transfer");
+			HttpPost httpPost = new HttpPost(DataStorage.domain + "transfer");
 			String response = "";
 			
 			JSONObject send = new JSONObject();
@@ -205,22 +203,26 @@ public class TransferActivity extends Activity {
         setContentView(R.layout.activity_transfer);
         
         TextView changable = (TextView) findViewById(R.id.textViewTr3);
-        PositionContainer poscon = new PositionContainer();
+        poscon = new PositionContainer();
         
         //First spinner will update the remaining amount of money (sender).
         Spinner spinner = (Spinner) findViewById(R.id.spinnerTr1);
         ArrayAdapter<Wallet> adapter = new ArrayAdapter<Wallet>(this, R.layout.spinneritem, R.id.spinneritem, wallets);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner.setAdapter(adapter);
-	    walletlistenerfrom = new WalletListener(changable, poscon);
-	    spinner.setOnItemSelectedListener(walletlistenerfrom);
+	    if(DataStorage.listOfWallets.size() > 0){
+		    walletlistenerfrom = new WalletListener(changable, poscon);
+		    spinner.setOnItemSelectedListener(walletlistenerfrom);
+	    }
 	    
 	    //Second spinner only tracks which wallet to transfer to, hence, doesn't need to synchronise.
 	    Spinner spinner2 = (Spinner) findViewById(R.id.spinnerTr2);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner2.setAdapter(adapter);
-	    walletlistenerto = new WalletListener();
-	    spinner2.setOnItemSelectedListener(walletlistenerto);
+	    if(DataStorage.listOfWallets.size() > 0){
+	    	walletlistenerto = new WalletListener();
+	    	spinner2.setOnItemSelectedListener(walletlistenerto);
+	    }
 	    
 	    //Money spinner listener.
 	    Spinner spinner3 = (Spinner) findViewById(R.id.spinnerTr3);

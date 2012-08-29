@@ -13,31 +13,43 @@ import java.util.Date;
 
 public class Transaction {
 	
+	private int type;
+	private int id;
 	private String wallet;
-	private String code;
-	private double value;
-	private Date date;
+	private String amount;
+	private String text;
+	private String date;
 	
-	public Transaction(String wallet, String code, double value){
+	public Transaction(int type, int id, String wallet, String amount, String text, String date){
+		this.type = type;
+		this.id = id;
 		this.wallet = wallet;
-		this.code = code;
-		this.value = value;
-		date = new Date();
+		this.amount = amount;
+		this.text = text;
+		this.date = date;
 	}
 	
-	public String getName(){
+	public int getType(){
+		return type;
+	}
+	
+	public int getId(){
+		return id;
+	}
+	
+	public String getWallet(){
 		return wallet;
 	}
 	
-	public String getCode(){
-		return code;
+	public String getAmount(){
+		return amount;
 	}
 	
-	public double getAmount(){
-		return value;
+	public String getText(){
+		return text;
 	}
 	
-	public Date getDate(){
+	public String getDate(){
 		return date;
 	}
 }

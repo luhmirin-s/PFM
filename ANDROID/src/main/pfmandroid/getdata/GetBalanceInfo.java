@@ -23,7 +23,7 @@ public class GetBalanceInfo extends AsyncTask<String, Void, String>{
 		String balance = "";
 		for(int i = 0; i < DataStorage.listOfWallets.size(); i++){
 			balance = "";
-			HttpGet getBalance = new HttpGet("http://10.0.1.59/PFMWebService/jaxrs/balance/list/" + DataStorage.listOfWallets.get(i).getId());
+			HttpGet getBalance = new HttpGet(DataStorage.domain + "balance/list/" + DataStorage.listOfWallets.get(i).getId());
 	        getBalance.addHeader("Accepts", "application/json");
 	        
 	        try {
@@ -44,8 +44,6 @@ public class GetBalanceInfo extends AsyncTask<String, Void, String>{
 		          e.printStackTrace();
 		    }
 	        
-	        Log.d("Received balance", balance);
-	        
 			try {
 				JSONArray getArray = new JSONObject(balance).getJSONArray("balance");
 				
@@ -56,7 +54,7 @@ public class GetBalanceInfo extends AsyncTask<String, Void, String>{
 				}
 			} catch (JSONException e) {					
 				try {
-					JSONObject getObject = new JSONObject(balance);
+					JSONObject getObject = new JSONObject(balance).getJSONObject("balance");
 					int id = getObject.getInt("currencyId");
 					double amount = getObject.getDouble("sum");
 					DataStorage.listOfWallets.get(i).editCurrency(id, amount);
