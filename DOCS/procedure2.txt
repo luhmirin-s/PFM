@@ -1,6 +1,40 @@
-select exp.id, cat.name, CONCAT (exp.amount, ' ', cur.code), exp.dateamount from Expense as exp
-join Category as cat
-on exp.categoryId = cat.id
-join Currency as cur
-on exp.currencyId = cur.id
-where exp.accountId = 1;
+SELECT 1 AS TYPE, exp.id AS TRANSACTIONID, 
+--     acc.name AS ACCOUNTNAME, cat.name AS TEXT, 
+--     CONCAT ('-', exp.amount, ' ', cur.code) AS AMOUNT, 
+--     exp.date AS DATE FROM Expense AS exp
+--     JOIN Account AS acc
+--     ON exp.accountId = acc.id
+--     JOIN Category AS cat
+--     ON exp.categoryId = cat.id
+--     JOIN Currency AS cur
+--     ON exp.currencyId = cur.id
+--     WHERE acc.userId = 1 AND 
+--     exp.date BETWEEN '2012-08-28' AND '2012-08-30'
+-- UNION
+--     SELECT 2 AS TYPE, inc.id AS TRANSACTIONID, 
+--     acc.name AS ACCOUNTNAME, src.name AS TEXT, 
+--     CONCAT (inc.amount, ' ', cur.code) AS AMOUNT, 
+--     inc.date AS DATE FROM Income AS inc
+--     JOIN Account AS acc
+--     ON inc.accountId = acc.id
+--     JOIN Source AS src
+--     ON inc.sourceId = src.id
+--     JOIN Currency AS cur
+--     ON inc.currencyId = cur.id
+--     WHERE acc.userId = 1 AND 
+--     inc.date BETWEEN '2012-08-28' AND '2012-08-30'
+-- UNION
+--     SELECT 3 AS TYPE, trs.id AS TRANSACTIONID, 
+--     NULL AS ACCOUNTNAME,
+--     CONCAT('from ', fromAcc.name, ' to ', toAcc.name) AS TEXT, 
+--     CONCAT (trs.amount, ' ', cur.code) AS AMOUNT, 
+--     trs.date AS DATE FROM Transfer AS trs
+--     JOIN Account AS fromAcc
+--     ON trs.fromAccountId = fromAcc.id
+--     JOIN Account AS toAcc
+--     ON trs.toAccountId = toAcc.id
+--     JOIN Currency AS cur
+--     ON trs.currencyId = cur.id
+--     WHERE fromAcc.userId = 1 AND 
+--     trs.date BETWEEN '2012-08-28' AND '2012-08-30'
+-- ORDER BY DATE DESC;

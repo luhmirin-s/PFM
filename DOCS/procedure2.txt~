@@ -1,0 +1,6 @@
+select exp.id, cat.name, CONCAT (exp.amount, ' ', cur.code), exp.dateamount from Expense as exp
+join Category as cat
+on exp.categoryId = cat.id
+join Currency as cur
+on exp.currencyId = cur.id
+where exp.accountId = 1;
