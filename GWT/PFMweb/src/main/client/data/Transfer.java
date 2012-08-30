@@ -3,7 +3,7 @@ package main.client.data;
 public class Transfer {
 
 	
-	private int ammount;
+	private int amount;
 	private int toAccountId;
 	private int currencyId;
 	private int fromAccountId;
@@ -12,21 +12,21 @@ public class Transfer {
 	public Transfer() {}
 
 
-	public Transfer(int ammount, int toAccountId, int currencyId, int fromAccountId) {
+	public Transfer(int amount, int toAccountId, int currencyId, int fromAccountId) {
 		setToAccountId(toAccountId);
-		setAmmount(ammount);
+		setAmount(amount);
 		setFromAccountId(fromAccountId);
 		setCurrencyId(currencyId);
 	}
 
 
-	public int getAmmount() {
-		return ammount;
+	public int getAmount() {
+		return amount;
 	}
 
 
-	public void setAmmount(int ammount) {
-		this.ammount = ammount;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 

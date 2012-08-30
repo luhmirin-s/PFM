@@ -54,11 +54,13 @@ public class SourceRes {
     	if (user != null) {
     		em.refresh(user);
     		List<Source> list = user.getSources();
-			GenericEntity<List<Source>> entity = new GenericEntity<List<Source>>(list) {};
-	    	return Response.ok(entity).build();
-    	} else {
-    		return Response.status(Status.NOT_FOUND).build();
-    	}
+    		if (!list.isEmpty()) {
+				GenericEntity<List<Source>> entity = new GenericEntity<List<Source>>(list) {};
+		    	return Response.ok(entity).build();
+    		}
+    	} 
+    		
+    	return Response.status(Status.NOT_FOUND).build();
     }
     
     @POST

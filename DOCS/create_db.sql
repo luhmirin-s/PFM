@@ -2,6 +2,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+DROP SCHEMA IF EXISTS `pfmdb` ;
 CREATE SCHEMA IF NOT EXISTS `pfmdb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
 USE `pfmdb` ;
 
@@ -78,7 +79,7 @@ DROP TABLE IF EXISTS `pfmdb`.`Expense` ;
 
 CREATE  TABLE IF NOT EXISTS `pfmdb`.`Expense` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `amount` INT UNSIGNED NOT NULL ,
+  `amount` DOUBLE UNSIGNED NOT NULL ,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `categoryId` INT UNSIGNED NOT NULL ,
   `accountId` INT UNSIGNED NOT NULL ,
@@ -131,7 +132,7 @@ DROP TABLE IF EXISTS `pfmdb`.`Income` ;
 
 CREATE  TABLE IF NOT EXISTS `pfmdb`.`Income` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `amount` INT UNSIGNED NOT NULL ,
+  `amount` DOUBLE UNSIGNED NOT NULL ,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `sourceId` INT UNSIGNED NOT NULL ,
   `accountId` INT UNSIGNED NOT NULL ,
@@ -165,7 +166,7 @@ DROP TABLE IF EXISTS `pfmdb`.`Transfer` ;
 
 CREATE  TABLE IF NOT EXISTS `pfmdb`.`Transfer` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `amount` INT UNSIGNED NOT NULL ,
+  `amount` DOUBLE UNSIGNED NOT NULL ,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `fromAccountId` INT UNSIGNED NOT NULL ,
   `toAccountId` INT UNSIGNED NOT NULL ,
@@ -192,6 +193,181 @@ CREATE  TABLE IF NOT EXISTS `pfmdb`.`Transfer` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- procedure findAccountBalance
+-- -----------------------------------------------------
+
+USE `pfmdb`;
+DROP procedure IF EXISTS `pfmdb`.`findAccountBalance`;
+
+DELIMITER $$
+USE `pfmdb`$$
+CREATE PROCEDURE `pfmdb`.`findAccountBalance` (IN accId INT)
+BEGIN
+    
+SELECT IFNULL(expinc.currencyId, transf.currencyId) as CURRENCYID, (IFNULL(expinc.sum, 0) + IFNULL(transf.sum, 0)) as SUM
+FROM
+    ((SELECT IFNULL(exp.currencyId, inc.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Expense
+                WHERE accountId = accId 
+                GROUP BY currencyId) AS exp
+        LEFT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Income as inc
+                WHERE accountId = accId 
+                GROUP BY currencyId) as inc
+        ON exp.currencyId = inc.currencyId)
+    UNION
+    (SELECT IFNULL(exp.currencyId, inc.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Expense
+                WHERE accountId = accId 
+                GROUP BY currencyId) AS exp
+        RIGHT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Income as inc
+                WHERE accountId = accId 
+                GROUP BY currencyId) as inc
+        ON exp.currencyId = inc.currencyId)) AS expinc
+LEFT OUTER JOIN   
+    ((SELECT IFNULL(inc.currencyId, exp.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as inc
+                WHERE toAccountId = accId 
+                GROUP BY currencyId, toAccountId) AS inc
+        LEFT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as exp
+                WHERE fromAccountId = accId 
+                GROUP BY currencyId) as exp
+        ON exp.currencyId = inc.currencyId)
+    UNION
+    (SELECT IFNULL(inc.currencyId, exp.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as inc
+                WHERE toAccountId = accId 
+                GROUP BY currencyId, toAccountId) AS inc
+        RIGHT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as exp
+                WHERE fromAccountId = accId 
+                GROUP BY currencyId) as exp
+        ON exp.currencyId = inc.currencyId)) AS transf
+ON expinc.currencyID = transf.currencyId
+UNION
+SELECT IFNULL(expinc.currencyId, transf.currencyId) as CURRENCYID, (IFNULL(expinc.sum, 0) + IFNULL(transf.sum, 0)) as SUM
+FROM
+    ((SELECT IFNULL(exp.currencyId, inc.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Expense
+                WHERE accountId = accId 
+                GROUP BY currencyId) AS exp
+        LEFT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Income as inc
+                WHERE accountId = accId 
+                GROUP BY currencyId) as inc
+        ON exp.currencyId = inc.currencyId)
+    UNION
+    (SELECT IFNULL(exp.currencyId, inc.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Expense
+                WHERE accountId = accId 
+                GROUP BY currencyId) AS exp
+        RIGHT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Income as inc
+                WHERE accountId = accId 
+                GROUP BY currencyId) as inc
+        ON exp.currencyId = inc.currencyId)) AS expinc
+RIGHT OUTER JOIN   
+    ((SELECT IFNULL(inc.currencyId, exp.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as inc
+                WHERE toAccountId = accId 
+                GROUP BY currencyId, toAccountId) AS inc
+        LEFT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as exp
+                WHERE fromAccountId = accId 
+                GROUP BY currencyId) as exp
+        ON exp.currencyId = inc.currencyId)
+    UNION
+    (SELECT IFNULL(inc.currencyId, exp.currencyId) as currencyId, (IFNULL(inc.sum, 0) - IFNULL(exp.sum, 0)) as sum
+        FROM (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as inc
+                WHERE toAccountId = accId 
+                GROUP BY currencyId, toAccountId) AS inc
+        RIGHT OUTER JOIN (SELECT currencyId, sum(amount) as sum
+                FROM Transfer as exp
+                WHERE fromAccountId = accId 
+                GROUP BY currencyId) as exp
+        ON exp.currencyId = inc.currencyId)) AS transf
+ON expinc.currencyID = transf.currencyId;
+
+END
+$$
+
+DELIMITER ;
+-- -----------------------------------------------------
+-- procedure findJournalEntries
+-- -----------------------------------------------------
+
+USE `pfmdb`;
+DROP procedure IF EXISTS `pfmdb`.`findJournalEntries`;
+
+DELIMITER $$
+USE `pfmdb`$$
+CREATE PROCEDURE `pfmdb`.`findJournalEntries` (IN userId INT, 
+                                                IN fromDate TIMESTAMP,
+                                                IN toDate TIMESTAMP)
+BEGIN
+
+    SELECT 1 AS TYPE, exp.id AS TRANSACTIONID, 
+    acc.name AS ACCOUNTNAME, cat.name AS TEXT, 
+    CONCAT ('-', CAST(exp.amount AS CHAR(255)), ' ', cur.code) AS AMOUNT, 
+    exp.date AS DATE FROM Expense AS exp
+    JOIN Account AS acc
+    ON exp.accountId = acc.id
+    JOIN Category AS cat
+    ON exp.categoryId = cat.id
+    JOIN Currency AS cur
+    ON exp.currencyId = cur.id
+    WHERE acc.userId = userId AND 
+    exp.date BETWEEN fromDate AND toDate 
+UNION
+    SELECT 2 AS TYPE, inc.id AS TRANSACTIONID, 
+    acc.name AS ACCOUNTNAME, src.name AS TEXT, 
+    CONCAT (CAST(inc.amount AS CHAR(255)), ' ', cur.code) AS AMOUNT, 
+    inc.date AS DATE FROM Income AS inc
+    JOIN Account AS acc
+    ON inc.accountId = acc.id
+    JOIN Source AS src
+    ON inc.sourceId = src.id
+    JOIN Currency AS cur
+    ON inc.currencyId = cur.id
+    WHERE acc.userId = userId AND 
+    inc.date BETWEEN fromDate AND toDate 
+UNION
+    SELECT 3 AS TYPE, trs.id AS TRANSACTIONID, 
+    CONCAT('from ', fromAcc.name, ' to ', toAcc.name) AS ACCOUNTNAME, 
+    
+    "" AS TEXT,
+    CONCAT (CAST(trs.amount AS CHAR(255)), ' ', cur.code) AS AMOUNT, 
+    trs.date AS DATE FROM Transfer AS trs
+    JOIN Account AS fromAcc
+    ON trs.fromAccountId = fromAcc.id
+    JOIN Account AS toAcc
+    ON trs.toAccountId = toAcc.id
+    JOIN Currency AS cur
+    ON trs.currencyId = cur.id
+    WHERE fromAcc.userId = userId AND 
+    trs.date BETWEEN fromDate  AND toDate 
+ORDER BY DATE DESC;
+
+
+
+
+
+
+END
+$$
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

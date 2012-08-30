@@ -34,6 +34,17 @@ public class LocalData {
 		user=null;
 	}
 	
+	//currency name by id
+	
+	public static String getCurrencyCode(int curID){
+		
+		for(Currency c:currencyList){
+			if(c.getId()==curID) return c.getCode();
+		}
+		
+		return "";
+	}
+	
 	public static ArrayList<Account> accounts(){
 		return accountList;
 	}
