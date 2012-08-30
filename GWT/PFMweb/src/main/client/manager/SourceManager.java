@@ -223,13 +223,17 @@ public class SourceManager {
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
 		srcTable.removeAllRows();
-		PFMweb.initRefreshTimer(RefreshingClasses.SRC_MGR);
+		PFMweb.requestRefresh(RefreshingClasses.SRC_MGR_REF);
 
 	}
 
 	public static void refresh() {
 
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				SystemPanel.statusDone();
+				return;
+			}
 			LocalData.setSourceList(ParseJson.parseSource(PFMweb
 					.getJSONdata()));
 			SystemPanel.out("parsing sources done");

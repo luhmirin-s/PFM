@@ -100,6 +100,7 @@ public class ExpenseTransactions {
 		 currencyBox.clear();
 		 catBox.clear();		 
 		 amountInput.setText("");
+		 lError.setText("");
 	 }
 	
 	/**
@@ -117,6 +118,12 @@ public class ExpenseTransactions {
 	
 	public static void handleAccounts(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("You do not have any accounts yet!");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setAccountList(ParseJson.parseAccount(PFMweb.getJSONdata()));
 			if (LocalData.getAccountList().size() > 0) {
 				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
@@ -143,6 +150,12 @@ public class ExpenseTransactions {
 	
 	public static void handleCurrencies(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("No currencies defined in database");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setCurrencyList(ParseJson.parseCurrency(PFMweb.getJSONdata()));
 			if (LocalData.getCurrencyList().size() > 0) {
 				for (int i = 0; i < LocalData.getCurrencyList().size(); i++) {
@@ -169,6 +182,12 @@ public class ExpenseTransactions {
 	
 	public static void handleCategories(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("Define some categories first!");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setCategoryList(ParseJson.parseCategory(PFMweb.getJSONdata()));
 			if (LocalData.getCategoryList().size() > 0) {
 				for (int i = 0; i < LocalData.getCategoryList().size(); i++) {

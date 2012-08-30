@@ -20,13 +20,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class Balance {
+public class BalanceViewer {
 
 	private static TabPanel balanceTabs = new TabPanel();
 	private static VerticalPanel panel = new VerticalPanel();
 	private static HorizontalPanel totalPanel = new HorizontalPanel();
 	private static FlexTable balanceTable = new FlexTable();
-	private static Label lTotal = new Label("Total:");
+	//private static Label lTotal = new Label("Total:");
 	private static FlexTable totalBalanceTable = new FlexTable();
 	private static ArrayList<main.client.data.Balance> balanceList;
 	private static int counter;
@@ -34,15 +34,16 @@ public class Balance {
 	public static TabPanel init(){
 		
 		panel.add(balanceTable);
-		totalPanel.add(lTotal);
+		//totalPanel.add(lTotal);
 		totalPanel.add(totalBalanceTable);
 		panel.add(totalPanel);
-		
+		balanceTable.setVisible(true);
 		balanceTable.setText(0, 0, "Name ");
 		balanceTable.setText(0, 1, "Value");	
 		balanceTable.setText(0, 2, "Currency ");
 		
-	  	balanceTable.setBorderWidth(1);
+	  	balanceTable.setCellSpacing(0);
+		balanceTable.setBorderWidth(1);
 	  	balanceTable.setCellPadding(5);
 	  	//set size to 100%!
 	  	/*
@@ -90,6 +91,7 @@ public class Balance {
 	
 	public static void refreshData(){
 		balanceTable.removeAllRows();
+		balanceTable.setVisible(false);
 		balanceTable.setText(0, 0, "Name ");
 		balanceTable.setText(0, 1, "Value");	
 		balanceTable.setText(0, 2, "Currency ");
@@ -103,6 +105,11 @@ public class Balance {
 	
 	public static void handleAccounts(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				balanceTable.setText(1, 0, "No accounts yet");
+				SystemPanel.statusDone();
+				return;
+			}
 			LocalData.setAccountList(ParseJson.parseAccount(PFMweb.getJSONdata()));
 			if (LocalData.getAccountList().size() > 0) {
 				/*
@@ -131,6 +138,10 @@ public class Balance {
 	
 	public static void handleCurrencies(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				SystemPanel.clearStatus();
+				return;
+			}
 			LocalData.setCurrencyList(ParseJson.parseCurrency(PFMweb.getJSONdata()));
 			if (LocalData.getCurrencyList().size() > 0) {
 				//for (int i = 0; i < LocalData.getCurrencyList().size(); i++) {
@@ -160,16 +171,16 @@ public class Balance {
 		if(counter>0){
 			//parse
 			if (PFMweb.getJSONdata() != null) {
-				if(!PFMweb.getJSONdata().equals("null"))
+				if(!PFMweb.getJSONdata().equals("null")){
 					balanceList = ParseJson.parseBalance(PFMweb.getJSONdata());
-				SystemPanel.out("got balance list for "+Integer.valueOf(counter-1));
-				if(!PFMweb.getJSONdata().equals("null"))
 					printCurrentAccount(balanceList);
+				}
+				SystemPanel.out("got balance list for "+Integer.valueOf(counter-1));					
 				if (balanceList.size() > 0) {
 					SystemPanel.statusDone();
 				} else {
 					SystemPanel.out("Balance list is empty");
-					SystemPanel.statusError();
+					SystemPanel.statusDone();
 					//return; //probably needs rethinking
 				}
 
@@ -181,6 +192,7 @@ public class Balance {
 		}
 		if(counter>=LocalData.getAccountList().size()){
 			SystemPanel.statusDone();
+			balanceTable.setVisible(true);
 			return;
 		}
 		SystemPanel.out("Retrieving amount "+ counter + " for "+LocalData.getAccountList().get(counter).getId()+"...");
@@ -203,68 +215,4 @@ public class Balance {
 	public static void reselectCurrentTab(){
 		balanceTabs.getTabBar().selectTab(balanceTabs.getTabBar().getSelectedTab());
 	}
-	
-	/* unneeded! */
-	/*
-	public static void handleCurrency(int index){
-		if (PFMweb.getJSONdata() != null) {
-			LocalData.setAccountList(ParseJson.parseAccount(PFMweb.getJSONdata()));
-			if (LocalData.getAccountList().size() > 0) {
-				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
-					//accountBox.addItem(LocalData.getAccountList().get(i).getName());
-				}
-				SystemPanel.statusDone();
-			} else {
-				SystemPanel.out("Account list is empty");
-				SystemPanel.statusError();
-				return; //probably needs rethinking
-			}
-
-		} else {
-			SystemPanel.out("Error receiving JSON");
-			SystemPanel.statusError();
-			return;
-		}		
-		
-		//currency
-		PFMweb.download(PFMweb.dataURL, "/currency/list", "Accepts", RequestBuilder.GET);
-		SystemPanel.statusSetOp("refreshing currencies");
-		PFMweb.requestRefresh(RefreshingClasses.TRA_EXP_CUR);
-	}
-	
-	
-	
-	/*
-	public static void addWallet(String name, int amount){
-		Wallet w = new Wallet(name, amount);
-		walletList.add(w);
-		refreshData();
-		ExpenseTransactions.refreshData();
-	}
-	
-	public static boolean removeWallet(int walletID){
-		if(walletID!=-1){
-			if(!walletList.isEmpty()) walletList.remove(walletID);
-			if(walletTable.getRowCount() > 1) walletTable.removeRow(walletID+1);
-			refreshData();
-			ExpenseTransactions.refreshData();
-			return true;
-		}
-		return false; //return false if now empty or none selected
-	}
-	
-	private static void fillTable(){
-		int c=1;
-		walletTable.clear();
-		
-		setText(0, 0, "Name ");
-		setText(0, 1, "Value");	
-		
-		for(Wallet w: walletList){
-			setText(c, 0, w.getName());
-			setText(c, 1, String.valueOf(w.getValue()));
-			c++;
-		}
-	}
-	*/
 }

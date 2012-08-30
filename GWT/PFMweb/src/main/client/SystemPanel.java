@@ -1,6 +1,7 @@
 package main.client;
 
 import main.client.data.LocalData;
+import main.client.transactions.ExpenseTransactions;
 import main.client.users.LoginForm;
 
 import com.google.gwt.event.dom.client.ClickEvent;

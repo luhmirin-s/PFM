@@ -101,6 +101,7 @@ public class IncomeTransactions {
 		 currencyBox.clear();
 		 srcBox.clear();		 
 		 amountInput.setText("");
+		 lError.setText("");
 	 }
 	
 	/**
@@ -118,6 +119,12 @@ public class IncomeTransactions {
 	
 	public static void handleAccounts(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("No accounts yet");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setAccountList(ParseJson.parseAccount(PFMweb.getJSONdata()));
 			if (LocalData.getAccountList().size() > 0) {
 				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
@@ -144,6 +151,12 @@ public class IncomeTransactions {
 	
 	public static void handleCurrencies(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("No currencies defined in database");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setCurrencyList(ParseJson.parseCurrency(PFMweb.getJSONdata()));
 			if (LocalData.getCurrencyList().size() > 0) {
 				for (int i = 0; i < LocalData.getCurrencyList().size(); i++) {
@@ -170,6 +183,12 @@ public class IncomeTransactions {
 	
 	public static void handleSources(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("No sources yet!");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setSourceList(ParseJson.parseSource(PFMweb.getJSONdata()));
 			if (LocalData.getSourceList().size() > 0) {
 				for (int i = 0; i < LocalData.getSourceList().size(); i++) {

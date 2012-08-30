@@ -2,6 +2,8 @@ package main.client.data;
 
 import java.util.ArrayList;
 
+import main.client.SystemPanel;
+
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.Window;
 
@@ -40,7 +42,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -53,7 +55,7 @@ public class ParseJson {
 				temp.setName(jsobj.getName());
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -81,7 +83,7 @@ public class ParseJson {
 					curr.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -93,7 +95,7 @@ public class ParseJson {
 				temp.setCode(jsobj.getCode());
 				curr.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return curr;
@@ -124,7 +126,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -137,7 +139,7 @@ public class ParseJson {
 				temp.setName(jsobj.getName());
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -168,7 +170,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -181,7 +183,7 @@ public class ParseJson {
 				temp.setName(jsobj.getName());
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -206,7 +208,7 @@ public class ParseJson {
 				acc.setEmail(jsobj.getEmail());
 				
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		return acc;
 	}
@@ -235,7 +237,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -249,7 +251,7 @@ public class ParseJson {
 				temp.setCurrencyId(Integer.parseInt(((ExpenseJS) jsobj).getCurrencyId()));
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -279,7 +281,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -293,7 +295,7 @@ public class ParseJson {
 				temp.setCurrencyId(Integer.parseInt(((IncomeJS) jsobj).getCurrencyId()));
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -323,7 +325,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -337,7 +339,7 @@ public class ParseJson {
 				temp.setCurrencyId(Integer.parseInt(((TransferJS) jsobj).getCurrencyId()));
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -367,7 +369,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -381,7 +383,7 @@ public class ParseJson {
 				temp.setSum(Double.parseDouble(((BalanceJS) jsobj).getSum()));
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
@@ -415,7 +417,7 @@ public class ParseJson {
 					accs.add(temp);
 				}
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		} else {
 			// odin objekt v spiske
@@ -433,7 +435,7 @@ public class ParseJson {
 				
 				accs.add(temp);
 			} catch (Exception e) {
-				Window.alert(e.toString());
+				SystemPanel.out(e.toString());
 			}
 		}
 		return accs;
