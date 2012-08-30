@@ -91,6 +91,16 @@ public class TransferActivity extends Activity {
     }
     
     public void returnBack(View view){
+    	if(walletlistenerfrom == null || moneylistener == null || walletlistenerto == null){
+    		Context context = getApplicationContext();
+    		CharSequence text = "Your do not have any accounts";
+    		int duration = Toast.LENGTH_LONG;
+
+    		Toast toast = Toast.makeText(context, text, duration);
+    		toast.setGravity(Gravity.CENTER, 0, 0);
+    		toast.show();
+    		return;
+    	}
     	
     	EditText textfield = (EditText) findViewById(R.id.editTextTr2);
     	
@@ -130,7 +140,7 @@ public class TransferActivity extends Activity {
     		toast.show();
     		return;
     	}
-    	
+
     	CreateTransfer task = new CreateTransfer(amount);
     	task.execute();
     	this.finish();
@@ -229,7 +239,7 @@ public class TransferActivity extends Activity {
 	    ArrayAdapter<Currency> adapter3 = new ArrayAdapter<Currency>(this, R.layout.spinneritem, R.id.spinneritem, currencies);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
-	    if(DataStorage.typesOfCurrency.size() > 0){
+	    if(DataStorage.listOfWallets.size() > 0){
 		    moneylistener = new MoneyListener(changable, poscon);
 		    spinner3.setOnItemSelectedListener(moneylistener);
 	    }

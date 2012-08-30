@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public class DataStorage {
 	static public int userId;
 	static public String currentUsername;
-	static public String domain = "http://10.0.1.59/PFMWebService/jaxrs/";
+	static public String domain = "http://85.254.250.27/PFMWebService/jaxrs/";
+	//Placeholder - http://10.0.1.59/PFMWebService/jaxrs/
 	//Placeholder - http://85.254.250.27/PFMWebService/jaxrs/
 	static public ArrayList<Wallet> listOfWallets = new ArrayList<Wallet>();
     static public ArrayList<Source> listOfSources = new ArrayList<Source>();

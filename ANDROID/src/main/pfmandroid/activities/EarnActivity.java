@@ -99,7 +99,17 @@ public class EarnActivity extends Activity{
     }
     
 public void returnBack(View view){
-    	
+		if(sourcelistener == null || moneylistener == null || walletlistener == null){
+			Context context = getApplicationContext();
+			CharSequence text = "You do not have one of the following:\n 1. Account\n 2. Source";
+			int duration = Toast.LENGTH_LONG;
+	
+			Toast toast = Toast.makeText(context, text, duration);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
+			return;
+		}
+	
     	EditText textfield = (EditText) findViewById(R.id.editTextEa2);
     	
     	String value = textfield.getText().toString();
@@ -127,7 +137,7 @@ public void returnBack(View view){
     		toast.show();
     		return;
     	}
-    	
+
     	CreateIncome task = new CreateIncome(amount);
     	task.execute();
     	this.finish();
@@ -235,7 +245,7 @@ public void returnBack(View view){
         ArrayAdapter<Currency> adapter3 = new ArrayAdapter<Currency>(this, R.layout.spinneritem, R.id.spinneritem, currencies);
 	    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    spinner3.setAdapter(adapter3);
-	    if(DataStorage.typesOfCurrency.size() > 0){
+	    if(DataStorage.listOfWallets.size() > 0){
 	    	moneylistener = new MoneyListener(changable, poscon);
 	    	spinner3.setOnItemSelectedListener(moneylistener);
 	    }
