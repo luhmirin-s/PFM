@@ -1,6 +1,7 @@
 package main.client;
 
 import main.client.data.LocalData;
+import main.client.transactions.ExpenseTransactions;
 import main.client.users.LoginForm;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -56,6 +57,7 @@ public class SystemPanel {
 					PFMweb.toggleView("mainTabsView", false);
 					LocalData.initLogout();
 					LoginForm.reloadForm();
+					PFMweb.globalCleanup();
 					PFMweb.toggleView("loginView", true);
 					
 				}
@@ -64,7 +66,7 @@ public class SystemPanel {
 	 
 	 /* redirect */
 	 public static void out(String msg){
-		 TestingPanel.out(msg);
+		 //TestingPanel.out(msg);
 	 }
 	 public static void status(String st){
 		 lStatus.setText(st);

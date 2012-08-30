@@ -1,6 +1,6 @@
 package main.client;
 
-import main.client.balance.Balance;
+import main.client.balance.BalanceViewer;
 import main.client.journal.Journal;
 import main.client.manager.AccountManager;
 import main.client.manager.CategoryManager;
@@ -36,7 +36,7 @@ private static TabPanel mainTabs = new TabPanel();
   private static Timer refreshTimer;
   private Label errorMsgLabel = new Label();
   
-  private static final int SERVER_TIMEOUT = 500; //ms
+  private static final int SERVER_TIMEOUT = 100; //ms
   //http://localhost:8080/PFMWebService/jaxrs
   public static final String dataURL = getAddress();
   private static RequestBuilder rb;
@@ -51,7 +51,7 @@ private static TabPanel mainTabs = new TabPanel();
 	  //mainTabs.getDeckPanel().getElement().setId("mainTabsId");
 	  //mainTabs.add(LoginForm.init(), "Login");
 	  mainTabs.add(Transactions.init(), "Transactions");
-	  mainTabs.add(Balance.init(), "Balance");
+	  mainTabs.add(BalanceViewer.init(), "Balance");
 	  mainTabs.add(Journal.init(), "Journal");
 	  mainTabs.add(Manager.init(), "Manage");	  
 	  mainTabs.setSize("100%", "100%");  
@@ -72,6 +72,10 @@ private static TabPanel mainTabs = new TabPanel();
 	  
   }
   
+  public static void cleanup(){
+	  mainTabs.selectTab(0);
+  }
+  
   private static void initListeners(){
 	  mainTabs.addSelectionHandler(new SelectionHandler<Integer>() {
 			
@@ -86,12 +90,12 @@ private static TabPanel mainTabs = new TabPanel();
 					}	
 					
 					case 1:{
-						Balance.reselectCurrentTab();
+						BalanceViewer.reselectCurrentTab();
 						break;
 					}
 					
 					case 2:{
-						SystemPanel.out("Selected tab 2");
+						Journal.reselectCurrentTab();
 						break;
 					}
 					
@@ -118,28 +122,8 @@ private static TabPanel mainTabs = new TabPanel();
   }
   
   /**
-   * Call when need to refresh all data after clicking on the tab
-   * @param type
-   */
-  public static void initRefreshTimer(final RefreshingClasses type){
-	  refreshTimer = new Timer() {
-	        @Override
-	        public void run() {
-	        	switch(type){
-					case ACC_MGR:{AccountManager.refresh();
-						break;}
-					case CAT_MGR:{CategoryManager.refresh();
-						break;}
-					case SRC_MGR:{SourceManager.refresh();
-						break;}	        		
-	        	}
-	        }
-	      };
-	  refreshTimer.schedule(getTimeout());
-  }
-  /**
    * Call when need to refresh all data after an operation (add, edit, delete)
-   * EDIT: from now on, will be used also as initRefreshTimer (must specify specific type)
+   * EDIT: from now on, will be used also for refreshing all (must specify specific type)
    * @param type
    */
   public static void requestRefresh(final RefreshingClasses type){
@@ -148,6 +132,13 @@ private static TabPanel mainTabs = new TabPanel();
 	        public void run() {
 	        	SystemPanel.out("Timer called for "+type.toString());
 	        	switch(type){
+	        	
+		        	case ACC_MGR_REF:{AccountManager.refresh();
+						break;}
+					case CAT_MGR_REF:{CategoryManager.refresh();
+						break;}
+					case SRC_MGR_REF:{SourceManager.refresh();
+						break;}	        		
 					case ACC_MGR:{AccountManager.initRefresh();
 						break;}
 					case CAT_MGR:{CategoryManager.initRefresh();
@@ -178,16 +169,21 @@ private static TabPanel mainTabs = new TabPanel();
 					case TRA_TRANSF_CUR:{TransferTransactions.handleCurrencies();
 						break;}	
 					
-					case BAL_ACC:{Balance.handleAccounts();
+					case BAL_ACC:{BalanceViewer.handleAccounts();
 					break;}
-					case BAL_CUR:{Balance.handleCurrencies();
+					case BAL_CUR:{BalanceViewer.handleCurrencies();
 						break;}
-					case BAL_AMNT:{Balance.retrieveBalance();
+					case BAL_AMNT:{BalanceViewer.retrieveBalance();
 						break;}	
+					
+					case JRN:{Journal.handleJournal();
+					break;}	
+					case JRN_REF:{Journal.refreshData();
+					break;}	
 	        	}
 	        }
 	      };
-	  refreshTimer.schedule(300);
+	  refreshTimer.schedule(SERVER_TIMEOUT);
   }
   
   public static void toggleView(String viewId, boolean enable){
@@ -207,6 +203,17 @@ private static TabPanel mainTabs = new TabPanel();
   	
   	public static boolean isUploaded(){
   		return uploaded;
+  	}
+  	
+  	public static void globalCleanup(){
+  		ExpenseTransactions.cleanup();
+  		IncomeTransactions.cleanup();
+  		TransferTransactions.cleanup();
+  		BalanceViewer.cleanup();
+  		Journal.cleanup();
+  		AccountManager.cleanup();
+  		CategoryManager.cleanup();
+  		SourceManager.cleanup();
   	}
   	
   	/**
@@ -282,9 +289,16 @@ private static TabPanel mainTabs = new TabPanel();
 							+ response.getText());
 					jsonData = response.getText();
 				} else {
+					
+					if(404==response.getStatusCode()){
+						jsonData="null";
+						SystemPanel.out("Received no data");
+					} else {
+					
 					SystemPanel.out("Couldn't retrieve message: ("
 							+ response.getStatusText() + ") code "
 							+ response.getStatusCode());
+					}
 				}
 			}
 

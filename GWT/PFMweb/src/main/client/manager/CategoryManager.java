@@ -225,13 +225,17 @@ public class CategoryManager {
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
 		catTable.removeAllRows();
-		PFMweb.initRefreshTimer(RefreshingClasses.CAT_MGR);
+		PFMweb.requestRefresh(RefreshingClasses.CAT_MGR_REF);
 
 	}
 
 	public static void refresh() {
 
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				SystemPanel.statusDone();
+				return;
+			}
 			LocalData.setCategoryList(ParseJson.parseCategory(PFMweb
 					.getJSONdata()));
 			SystemPanel.out("parsing categories done");
@@ -254,5 +258,10 @@ public class CategoryManager {
 		}
 
 	}
+	
+	public static void cleanup(){
+		catTable.removeAllRows();
+	}
+	
 
 }

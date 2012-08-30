@@ -240,7 +240,7 @@ public class AccountManager {
 				+ LocalData.getUser().getId(), "Accepts", RequestBuilder.GET);
 		SystemPanel.statusSetOp("refreshing");
 		accTable.removeAllRows();
-		PFMweb.initRefreshTimer(RefreshingClasses.ACC_MGR);
+		PFMweb.requestRefresh(RefreshingClasses.ACC_MGR_REF);
 
 	}
 	/**
@@ -249,6 +249,10 @@ public class AccountManager {
 	public static void refresh() {
 
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				SystemPanel.statusDone();
+				return;
+			}
 			LocalData.setAccountList(ParseJson.parseAccount(PFMweb
 					.getJSONdata()));
 			SystemPanel.out("parsing accounts done");
@@ -271,5 +275,10 @@ public class AccountManager {
 		}
 
 	}
+	
+	public static void cleanup(){
+		accTable.removeAllRows();
+	}
+	
 
 }
