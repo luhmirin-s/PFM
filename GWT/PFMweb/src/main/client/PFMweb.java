@@ -72,6 +72,10 @@ private static TabPanel mainTabs = new TabPanel();
 	  
   }
   
+  public static void cleanup(){
+	  mainTabs.selectTab(0);
+  }
+  
   private static void initListeners(){
 	  mainTabs.addSelectionHandler(new SelectionHandler<Integer>() {
 			
@@ -199,6 +203,17 @@ private static TabPanel mainTabs = new TabPanel();
   	
   	public static boolean isUploaded(){
   		return uploaded;
+  	}
+  	
+  	public static void globalCleanup(){
+  		ExpenseTransactions.cleanup();
+  		IncomeTransactions.cleanup();
+  		TransferTransactions.cleanup();
+  		BalanceViewer.cleanup();
+  		Journal.cleanup();
+  		AccountManager.cleanup();
+  		CategoryManager.cleanup();
+  		SourceManager.cleanup();
   	}
   	
   	/**

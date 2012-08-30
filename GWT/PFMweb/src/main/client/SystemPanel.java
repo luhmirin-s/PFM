@@ -57,6 +57,7 @@ public class SystemPanel {
 					PFMweb.toggleView("mainTabsView", false);
 					LocalData.initLogout();
 					LoginForm.reloadForm();
+					PFMweb.globalCleanup();
 					PFMweb.toggleView("loginView", true);
 					
 				}
@@ -65,7 +66,7 @@ public class SystemPanel {
 	 
 	 /* redirect */
 	 public static void out(String msg){
-		 TestingPanel.out(msg);
+		 //TestingPanel.out(msg);
 	 }
 	 public static void status(String st){
 		 lStatus.setText(st);

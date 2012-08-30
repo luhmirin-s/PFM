@@ -108,6 +108,10 @@ public class Journal {
 		journalTabs.getTabBar().selectTab(journalTabs.getTabBar().getSelectedTab());
 	}
 	
+	public static void cleanup(){
+		transactionTable.removeAllRows();
+	}
+	
 	public static void refreshData(){
 		transactionTable.removeAllRows();
 		SystemPanel.out("Retrieving journal...");

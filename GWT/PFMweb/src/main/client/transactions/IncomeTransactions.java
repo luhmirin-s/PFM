@@ -96,7 +96,7 @@ public class IncomeTransactions {
 		amountInput.setFocus(true);
 	}
 	 
-	 private static void cleanup(){
+	public static void cleanup(){
 		 accountBox.clear();
 		 currencyBox.clear();
 		 srcBox.clear();		 

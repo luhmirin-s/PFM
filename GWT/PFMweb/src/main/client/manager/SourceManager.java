@@ -256,5 +256,10 @@ public class SourceManager {
 		}
 
 	}
+	
+	public static void cleanup(){
+		srcTable.removeAllRows();
+	}
+	
 
 }
