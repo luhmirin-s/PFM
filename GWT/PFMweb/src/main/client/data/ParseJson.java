@@ -25,11 +25,12 @@ public class ParseJson {
 	 */
 	public static ArrayList<Account> parseAccount(String jsonData) {
 		ArrayList<Account> accs = new ArrayList<Account>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"account\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"account\":", "");
+				
 				JsArray<AccountJS> jsobj = parseJsonAccounts(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -47,6 +48,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				AccountJS jsobj = parseJsonAccount(jsonData);
 				// vremennij fail
 				Account temp = new Account();
@@ -69,11 +71,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<Currency> parseCurrency(String jsonData) {
 		ArrayList<Currency> curr = new ArrayList<Currency>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"currency\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"currency\":", "");
 				JsArray<CurrencyJS> jsobj = parseJsonCurrencies(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -88,6 +90,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				CurrencyJS jsobj = parseJsonCurrency(jsonData);
 				// vremennij fail
 				Currency temp = new Currency();
@@ -109,11 +112,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<Category> parseCategory(String jsonData) {
 		ArrayList<Category> accs = new ArrayList<Category>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"category\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"category\":", "");
 				JsArray<CategoryJS> jsobj = parseJsonCategories(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -131,6 +134,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				CategoryJS jsobj = parseJsonCategory(jsonData);
 				// vremennij fail
 				Category temp = new Category();
@@ -153,11 +157,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<Source> parseSource(String jsonData) {
 		ArrayList<Source> accs = new ArrayList<Source>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"source\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"source\":", "");
 				JsArray<SourceJS> jsobj = parseJsonSources(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -175,6 +179,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				SourceJS jsobj = parseJsonSource(jsonData);
 				// vremennij fail
 				Source temp = new Source();
@@ -221,11 +226,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<Expense> parseExpense(String jsonData) {
 		ArrayList<Expense> accs = new ArrayList<Expense>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"expense\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"expense\":", "");
 				JsArray<ExpenseJS> jsobj = parseJsonExpenses(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -242,6 +247,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				ExpenseJS jsobj = parseJsonExpense(jsonData);
 				// vremennij fail
 				Expense temp = new Expense();
@@ -265,11 +271,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<Income> parseIncome(String jsonData) {
 		ArrayList<Income> accs = new ArrayList<Income>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"income\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"income\":", "");
 				JsArray<IncomeJS> jsobj = parseJsonIncomes(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -286,6 +292,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				IncomeJS jsobj = parseJsonIncome(jsonData);
 				// vremennij fail
 				Income temp = new Income();
@@ -309,11 +316,12 @@ public class ParseJson {
 	 */
 	public static ArrayList<Transfer> parseTransfer(String jsonData) {
 		ArrayList<Transfer> accs = new ArrayList<Transfer>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"transfer\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"transfer\":", "");
+				
 				JsArray<TransferJS> jsobj = parseJsonTransfers(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -330,6 +338,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				TransferJS jsobj = parseJsonTransfer(jsonData);
 				// vremennij fail
 				Transfer temp = new Transfer();
@@ -353,11 +362,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<Balance> parseBalance(String jsonData) {
 		ArrayList<Balance> accs = new ArrayList<Balance>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"balance\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"balance\":", "");
 				JsArray<BalanceJS> jsobj = parseJsonBalances(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -374,7 +383,6 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
-				jsonData = jsonData.replace("\"balance\":", "");
 				jsonData=jsonData.substring(1, jsonData.length()-1);
 				BalanceJS jsobj = parseJsonBalance(jsonData);
 				// vremennij fail
@@ -397,11 +405,11 @@ public class ParseJson {
 	 */
 	public static ArrayList<JournalEntry> parseJournal(String jsonData) {
 		ArrayList<JournalEntry> accs = new ArrayList<JournalEntry>();
+		// udaljaem lishnij tekst, ctob izbezatj oshibok
+		jsonData = jsonData.replace("\"journalEntry\":", "");
 		if (jsonData.contains("[")) {
 			// neslojko objektov v spiske
 			try {
-				// udaljaem lishnij tekst, ctob izbezatj oshibok
-				jsonData = jsonData.replace("\"journalEntry\":", "");
 				JsArray<JournalEntryJS> jsobj = parseJsonJournals(jsonData);
 				for (int i = 0; i < jsobj.length(); i++) {
 					// vremennij fail
@@ -422,6 +430,7 @@ public class ParseJson {
 		} else {
 			// odin objekt v spiske
 			try {
+				jsonData=jsonData.substring(1, jsonData.length()-1);
 				JournalEntryJS jsobj = parseJsonJournal(jsonData);
 				// vremennij fail
 				JournalEntry temp = new JournalEntry();
