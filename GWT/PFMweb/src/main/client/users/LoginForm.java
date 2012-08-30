@@ -131,7 +131,8 @@ public class LoginForm {
 							PFMweb.toggleView("loginView", false);
 							SystemPanel.doLogin(u.getUsername());
 							PFMweb.toggleView("sysPanelView", true);
-							PFMweb.toggleView("mainTabsView", true);	
+							PFMweb.toggleView("mainTabsView", true);
+							PFMweb.cleanup();
 							ExpenseTransactions.refreshData();
  
 						} else {

@@ -89,6 +89,11 @@ public class BalanceViewer {
 		
 	}
 	
+	public static void cleanup(){
+		balanceTable.removeAllRows();
+		balanceTable.setText(0, 0, "Nothing to show");
+	}
+	
 	public static void refreshData(){
 		balanceTable.removeAllRows();
 		balanceTable.setVisible(false);

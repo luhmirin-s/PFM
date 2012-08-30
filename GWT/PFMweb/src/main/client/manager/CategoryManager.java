@@ -258,5 +258,10 @@ public class CategoryManager {
 		}
 
 	}
+	
+	public static void cleanup(){
+		catTable.removeAllRows();
+	}
+	
 
 }

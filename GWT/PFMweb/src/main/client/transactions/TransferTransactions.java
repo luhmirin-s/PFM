@@ -88,6 +88,9 @@ public class TransferTransactions {
 						lError.setText("Please specify a valid amount!");
 						SystemPanel.clearStatus();
 					}
+				} else {
+					lError.setText("Accounts must not match!");
+					SystemPanel.clearStatus();
 				}
 				
 			}
@@ -99,7 +102,7 @@ public class TransferTransactions {
 	public static void focus(){
 		amountInput.setFocus(true);
 	}
-	private static void cleanup(){
+	public static void cleanup(){
 		 accountBoxFrom.clear();
 		 accountBoxTo.clear();
 		 currencyBoxFrom.clear();		 

@@ -275,5 +275,10 @@ public class AccountManager {
 		}
 
 	}
+	
+	public static void cleanup(){
+		accTable.removeAllRows();
+	}
+	
 
 }
