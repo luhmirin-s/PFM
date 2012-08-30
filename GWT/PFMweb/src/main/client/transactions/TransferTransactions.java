@@ -88,6 +88,9 @@ public class TransferTransactions {
 						lError.setText("Please specify a valid amount!");
 						SystemPanel.clearStatus();
 					}
+				} else {
+					lError.setText("Accounts must not match!");
+					SystemPanel.clearStatus();
 				}
 				
 			}
@@ -99,11 +102,12 @@ public class TransferTransactions {
 	public static void focus(){
 		amountInput.setFocus(true);
 	}
-	private static void cleanup(){
+	public static void cleanup(){
 		 accountBoxFrom.clear();
 		 accountBoxTo.clear();
 		 currencyBoxFrom.clear();		 
 		 amountInput.setText("");
+		 lError.setText("");
 	 }
 	
 	/**
@@ -121,6 +125,12 @@ public class TransferTransactions {
 	
 	public static void handleAccounts(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("No accounts yet!");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setAccountList(ParseJson.parseAccount(PFMweb.getJSONdata()));
 			if (LocalData.getAccountList().size() > 0) {
 				for (int i = 0; i < LocalData.getAccountList().size(); i++) {
@@ -150,6 +160,12 @@ public class TransferTransactions {
 	
 	public static void handleCurrencies(){
 		if (PFMweb.getJSONdata() != null) {
+			if(PFMweb.getJSONdata().equals("null")){
+				lError.setText("No currencies defined in database");
+				SystemPanel.statusDone();
+				saveButton.setEnabled(false);
+				return;
+			}
 			LocalData.setCurrencyList(ParseJson.parseCurrency(PFMweb.getJSONdata()));
 			if (LocalData.getCurrencyList().size() > 0) {
 				for (int i = 0; i < LocalData.getCurrencyList().size(); i++) {

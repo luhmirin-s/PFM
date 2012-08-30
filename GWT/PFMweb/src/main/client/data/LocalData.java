@@ -18,6 +18,7 @@ public class LocalData {
 	private static ArrayList<Category> categoryList;
 	private static ArrayList<Source> sourceList;
 	private static ArrayList<Balance> balanceList;
+	private static ArrayList<JournalEntry> journalList;
 	
 	public static void initLogin(int id, String username, String password, String email){
 		
@@ -83,6 +84,12 @@ public class LocalData {
 	}
 	public static void setBalanceList(ArrayList<Balance> balanceList) {
 		LocalData.balanceList = balanceList;
+	}
+	public static ArrayList<JournalEntry> getJournalList() {
+		return journalList;
+	}
+	public static void setJournalList(ArrayList<JournalEntry> journalList) {
+		LocalData.journalList = journalList;
 	}
 	
 }
